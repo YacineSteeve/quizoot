@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import HelloWorld from './components/HelloWorld.vue';
 </script>
-  
+
 <template>
     <HelloWorld name=" World!" />
 </template>
-  
+
 <style>
 #app {
     font-family: Avenir, Helvetica, Arial, sans-serif;
@@ -16,4 +16,3 @@ import HelloWorld from './components/HelloWorld.vue';
     margin-top: 60px;
 }
 </style>
-  

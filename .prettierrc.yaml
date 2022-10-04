@@ -1,4 +1,4 @@
 singleQuote: true
 proseWrap: 'always'
-useTabs: true
+useTabs: false
 tabWidth: 4
