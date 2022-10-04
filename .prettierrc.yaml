@@ -1,0 +1,4 @@
+singleQuote: true
+proseWrap: 'always'
+useTabs: true
+tabWidth: 4
