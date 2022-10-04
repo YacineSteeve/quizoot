@@ -1,11 +1,11 @@
-<template>
-    <div>
-        <h1>Hello World</h1>
-    </div>
-</template>
-
-<script>
+<script setup lang="ts">
+defineProps<{
+    name: string;
+}>();
 </script>
 
-<style scoped>
-</style>
+<template>
+    <div>
+        <h1>Hello {{ name }}</h1>
+    </div>
+</template>
