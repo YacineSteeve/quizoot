@@ -7,7 +7,7 @@
 - Install npm dependencies using `yarn`.
 
 ```bash
-$ yarn install
+$ cd frontend && yarn install && cd ..
 ```
 
 2. Server
