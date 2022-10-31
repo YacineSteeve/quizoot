@@ -1,51 +1,14 @@
+:root {
+    --background-color: #dfe2ec;
+    --main-blue: #331e6d;
+    --menu-hover-pink: #bfa8ff66;
+    --main-blue-lightened:  #331e6d99;
+    --light-grey: #c9cacc;
+    --text-yellow: #ffcf31;
+}
+
 body {
     margin: 0;
-    background-color: #ebece6;
-}
-
-.navbar {
-    /* list-style-type: none; */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0;
-    padding: 0 50px;
+    background-color: var(--background-color);
     overflow: hidden;
-    background-color: #331e6d;
-    position: fixed;
-    top: 0;
-    width: 100%;
-    height: 70px;
-}
-
-.navbar img {
-    width: 140px;
-    height: auto;
-    /* margin: 5px; */
-}
-
-.links {
-    list-style-type: none;
-}
-
-.links li {
-    float: left;
-}
-
-.links li a {
-    color: #ffcf31;
-    text-align: center;
-    font-weight: 600;
-    font-size: large;
-    padding: 14px 16px;
-    text-decoration: none;
-}
-
-.links li a:hover:not(.active) {
-    background-color: #bfa8ff96;
-    border-radius: 5px;
-}
-
-.container {
-    padding: 10px;
 }
