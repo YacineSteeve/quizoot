@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import HelloWorld from './HelloWorld.vue';
+import QuizPreview from "@/components/QuizPreview.vue";
 
 </script>
 
 <template>
     <div class="main-container">
         <div class="main">
-            <HelloWorld name=" World !!"/>
+            <QuizPreview />
         </div>
     </div>
 </template>
