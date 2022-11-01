@@ -51,7 +51,7 @@
 .links {
     list-style-type: none;
     display: flex;
-    width: 40%;
+    width: 45%;
     align-items: center;
     justify-content: space-between;
 }
