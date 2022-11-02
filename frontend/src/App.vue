@@ -1,13 +1,11 @@
 <script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue';
-import Navbar from './components/Navbar.vue';
+import Navbar from '@/components/Navbar.vue';
+import Main from "@/components/Main.vue";
 </script>
 
 <template>
     <Navbar />
-    <div class="container">
-        <HelloWorld name=" World!" />
-    </div>
+    <Main />
 </template>
 
 <style>
@@ -18,7 +16,7 @@ import Navbar from './components/Navbar.vue';
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
-    color: #2c3e50;
-    margin-top: 60px;
+    display: flex;
+    flex-direction: column;
 }
 </style>
