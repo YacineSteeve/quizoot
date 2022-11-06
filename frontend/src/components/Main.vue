@@ -1,12 +1,11 @@
 <script setup lang="ts">
-import QuizCard from "@/components/QuizCard.vue";
 
 </script>
 
 <template>
     <div class="main-container">
         <div class="main">
-            <QuizCard v-for="num in [1, 2, 3, 4, 5, 6, 7]" v-bind:index="num"/>
+            <router-view></router-view>
         </div>
     </div>
 </template>
