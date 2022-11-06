@@ -1,12 +1,12 @@
 <script setup lang="ts">
-    import  { useAttrs, reactive, computed } from "vue";
+    import {useAttrs, reactive, computed} from "vue";
 
     const attrs = useAttrs()
 
     const quiz = reactive({
         title: 'Basic Data Types ' + attrs['index'],
         description: 'Here we are going to exercise on Python basic data types.',
-        status: false
+        status: [true, false][Math.floor(Math.random() * 2)]
     });
 
     const bgColor = computed(() => quiz.status ? '#008000' : '#dfe2ec');
@@ -42,7 +42,7 @@
     align-items: start;
     width: 75%;
     height: 16vh;
-    margin-block: 5vh;
+    margin-block: 3vh;
     border-radius: 10px;
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
     background-color: #ffffff;
