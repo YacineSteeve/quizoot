@@ -3,5 +3,5 @@ import { faChevronRight, faCheck } from '@fortawesome/free-solid-svg-icons';
 
 library.add({
     faChevronRight,
-    faCheck
-})
+    faCheck,
+});

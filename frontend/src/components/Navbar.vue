@@ -1,5 +1,4 @@
-<script setup lang="ts">
-</script>
+<script setup lang="ts"></script>
 
 <template>
     <div>
@@ -17,7 +16,7 @@
                 </li>
                 <li id="logo">
                     <router-link to="/" title="Logo">
-                        <img src="../assets/logo-no-background.svg" alt="Quizoot Logo"/>
+                        <img src="../assets/logo-no-background.svg" alt="Quizoot Logo" />
                     </router-link>
                 </li>
                 <li>
@@ -36,7 +35,6 @@
 </template>
 
 <style scoped>
-
 .navbar {
     position: fixed;
     top: 0;
