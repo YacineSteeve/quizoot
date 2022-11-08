@@ -15,12 +15,7 @@ const bgColor = computed(() => (quiz.status ? '#008000' : '#dfe2ec'));
 <template>
     <div class="quiz-preview-container">
         <div class="quiz-status" v-on:click="quiz.status = !quiz.status">
-            <font-awesome-icon
-                icon="fa-solid fa-check"
-                color="#ffffff"
-                size="l"
-                v-if="quiz.status"
-            />
+            <font-awesome-icon icon="fa-solid fa-check" color="#ffffff" size="l" v-if="quiz.status" />
         </div>
         <div class="quiz-details">
             <div class="quiz-title">
@@ -80,7 +75,7 @@ const bgColor = computed(() => (quiz.status ? '#008000' : '#dfe2ec'));
     height: 100%;
 }
 
-.quiz-preview-container .quiz-details > * {
+.quiz-preview-container .quiz-details>* {
     width: 100%;
     height: 8vh;
 }
@@ -101,7 +96,7 @@ const bgColor = computed(() => (quiz.status ? '#008000' : '#dfe2ec'));
     margin-top: 1vh;
 }
 
-.quiz-preview-container .quiz-details > * > * {
+.quiz-preview-container .quiz-details>*>* {
     height: fit-content;
     text-overflow: ellipsis;
     white-space: nowrap;
