@@ -46,6 +46,7 @@ const bgColor = computed(() => (quiz.status ? '#008000' : '#dfe2ec'));
 
 .quiz-preview-container:hover {
     transform: scale(1.05);
+    cursor: pointer;
 }
 
 .quiz-preview-container .quiz-status,
