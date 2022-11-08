@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Navbar from '@/components/Navbar.vue';
-import Main from "@/components/Main.vue";
+import Main from '@/components/Main.vue';
 </script>
 
 <template>
@@ -9,7 +9,7 @@ import Main from "@/components/Main.vue";
 </template>
 
 <style>
-@import "./styles/main.css";
+@import './styles/main.css';
 
 #app {
     font-family: Avenir, Helvetica, Arial, sans-serif;

@@ -1,25 +1,26 @@
 <script setup lang="ts">
-    import {useAttrs, reactive, computed} from "vue";
+import { useAttrs, reactive, computed } from 'vue';
 
-    const attrs = useAttrs()
+const attrs = useAttrs();
 
-    const quiz = reactive({
-        title: 'Basic Data Types ' + attrs['index'],
-        description: 'Here we are going to exercise on Python basic data types.',
-        status: [true, false][Math.floor(Math.random() * 2)]
-    });
+const quiz = reactive({
+    title: 'Basic Data Types ' + attrs['index'],
+    description: 'Here we are going to exercise on Python basic data types.',
+    status: [true, false][Math.floor(Math.random() * 2)],
+});
 
-    const bgColor = computed(() => quiz.status ? '#008000' : '#dfe2ec');
+const bgColor = computed(() => (quiz.status ? '#008000' : '#dfe2ec'));
 </script>
 
 <template>
     <div class="quiz-preview-container">
-        <div class="quiz-status"
-             v-on:click="quiz.status=!quiz.status">
-            <font-awesome-icon icon="fa-solid fa-check"
-                               color="#ffffff"
-                               size="l"
-                               v-if="quiz.status"/>
+        <div class="quiz-status" v-on:click="quiz.status = !quiz.status">
+            <font-awesome-icon
+                icon="fa-solid fa-check"
+                color="#ffffff"
+                size="l"
+                v-if="quiz.status"
+            />
         </div>
         <div class="quiz-details">
             <div class="quiz-title">
@@ -30,8 +31,7 @@
             </div>
         </div>
         <div class="quiz-details-expand-icon">
-            <font-awesome-icon icon="fa-solid fa-chevron-right"
-                               size="l"/>
+            <font-awesome-icon icon="fa-solid fa-chevron-right" size="l" />
         </div>
     </div>
 </template>
@@ -46,14 +46,15 @@
     border-radius: 10px;
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
     background-color: #ffffff;
-    transition: all .5s ease-out;
+    transition: all 0.5s ease-out;
 }
 
 .quiz-preview-container:hover {
     transform: scale(1.05);
 }
 
-.quiz-preview-container .quiz-status, .quiz-details-expand-icon {
+.quiz-preview-container .quiz-status,
+.quiz-details-expand-icon {
     display: flex;
     justify-content: center;
     align-items: center;

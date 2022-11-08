@@ -1,6 +1,4 @@
-<script setup lang="ts">
-
-</script>
+<script setup lang="ts"></script>
 
 <template>
     <div class="main-container">
@@ -11,7 +9,6 @@
 </template>
 
 <style scoped>
-
 .main-container {
     width: 100%;
     height: 90vh;
@@ -39,5 +36,4 @@
     height: 100%;
     margin-inline: 20vw;
 }
-
 </style>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
-    import QuizCard from'@/components/QuizCard.vue';
+import QuizCard from '@/components/QuizCard.vue';
 
-    // Retrieve quizzes list (maybe from routed url params) and pass it to the template
+// Retrieve quizzes list (maybe from routed url params) and pass it to the template
 </script>
 
 <template>
@@ -11,7 +11,7 @@
         </div>
         <!-- Quiz details will be inserted as attributes to QuizCard components
             for each quiz in quizzes list -->
-        <QuizCard v-for="num in [1, 2, 3, 4, 5, 6, 7]" v-bind:index="num"/>
+        <QuizCard v-for="num in [1, 2, 3, 4, 5, 6, 7]" v-bind:index="num" />
     </div>
 </template>
 
