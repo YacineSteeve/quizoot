@@ -6,21 +6,29 @@
         <div class="navbar">
             <ul class="links">
                 <li>
-                    <a href="#home" class="menu-item">Home</a>
+                    <router-link to="/" title="Home" class="menu-item">
+                        Home
+                    </router-link>
                 </li>
                 <li>
-                    <a href="#news" class="menu-item">News</a>
+                    <router-link to="/news" title="News" class="menu-item">
+                        News
+                    </router-link>
                 </li>
                 <li id="logo">
-                    <a href="#">
-                        <img src="../assets/logo-no-background.svg"/>
-                    </a>
+                    <router-link to="/" title="Logo">
+                        <img src="../assets/logo-no-background.svg" alt="Quizoot Logo"/>
+                    </router-link>
                 </li>
                 <li>
-                    <a href="#contact" class="menu-item">Contact</a>
+                    <router-link to="/contact" title="Contact" class="menu-item">
+                        Contact
+                    </router-link>
                 </li>
                 <li>
-                    <a href="#about" class="menu-item">About</a>
+                    <router-link to="/about" title="About" class="menu-item">
+                        About
+                    </router-link>
                 </li>
             </ul>
         </div>
@@ -64,7 +72,7 @@
     color: var(--text-yellow);
     text-align: center;
     font-weight: 600;
-    font-size: large;
+    font-size: medium;
     padding: 14px 16px;
     text-decoration: none;
 }

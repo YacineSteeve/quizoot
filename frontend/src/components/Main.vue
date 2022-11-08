@@ -1,13 +1,11 @@
 <script setup lang="ts">
-import HelloWorld from './HelloWorld.vue';
-import QuizPreview from "@/components/QuizPreview.vue";
 
 </script>
 
 <template>
     <div class="main-container">
         <div class="main">
-            <QuizPreview />
+            <router-view></router-view>
         </div>
     </div>
 </template>
@@ -43,4 +41,3 @@ import QuizPreview from "@/components/QuizPreview.vue";
 }
 
 </style>
-qzzzzzzzzzz
