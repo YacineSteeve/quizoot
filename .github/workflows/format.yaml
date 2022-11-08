@@ -1,0 +1,13 @@
+name: Format
+on: [pull_request]
+jobs:
+  prettier:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install modules
+      working-directory: ./frontend
+      run: yarn
+    - name: Run Prettier check
+      working-directory: ./frontend
+      run: yarn prettier --check src/ '!**/*.{vue}'
