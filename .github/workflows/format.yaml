@@ -10,4 +10,4 @@ jobs:
       run: yarn
     - name: Run Prettier check
       working-directory: ./frontend
-      run: yarn prettier --check src/ --config .prettierrc.yaml '!**/*.{vue}'
+      run: yarn prettier --check src/ --config .prettierrc.yaml '!**/*.vue'
