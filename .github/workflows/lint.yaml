@@ -1,0 +1,11 @@
+name: Lint
+on: [push, pull_request]
+jobs:
+  eslint:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install modules
+      run: cd frontend && yarn
+    - name: Run ESLint
+      run: yarn eslint src/
