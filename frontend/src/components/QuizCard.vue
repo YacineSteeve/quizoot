@@ -4,7 +4,7 @@ import { useAttrs, reactive, computed } from 'vue';
 const attrs = useAttrs();
 
 const quiz = reactive({
-    title: 'Basic Data Types ' + attrs['index'],
+    title: 'Basic Data Types ' + attrs['key'],
     description: 'Here we are going to exercise on Python basic data types.',
     status: [true, false][Math.floor(Math.random() * 2)],
 });
