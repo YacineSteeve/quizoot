@@ -8,6 +8,7 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('@/views/Home.vue'),
     },
 ];
+
 const router = createRouter({
     history: createWebHistory(),
     routes,
