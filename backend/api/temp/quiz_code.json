@@ -1,1 +1,162 @@
-[{"id":516,"question":"To create a combo box (drop down box) which tag will you use?","description":null,"answers":{"answer_a":"<select>","answer_b":"<list>","answer_c":"<input type=\"dropdown\">","answer_d":"all of above","answer_e":null,"answer_f":null},"multiple_correct_answers":"false","correct_answers":{"answer_a_correct":"true","answer_b_correct":"false","answer_c_correct":"false","answer_d_correct":"false","answer_e_correct":"false","answer_f_correct":"false"},"correct_answer":"answer_a","explanation":null,"tip":null,"tags":[{"name":"HTML"}],"category":"Code","difficulty":"Medium"},{"id":445,"question":"HTML Is a subset of","description":null,"answers":{"answer_a":"SGMT","answer_b":"None Of These","answer_c":"SGML","answer_d":"SGMD","answer_e":null,"answer_f":null},"multiple_correct_answers":"false","correct_answers":{"answer_a_correct":"false","answer_b_correct":"false","answer_c_correct":"true","answer_d_correct":"false","answer_e_correct":"false","answer_f_correct":"false"},"correct_answer":"answer_a","explanation":null,"tip":null,"tags":[{"name":"HTML"}],"category":"Code","difficulty":"Medium"},{"id":494,"question":"Which of the following is true about Cookies?","description":null,"answers":{"answer_a":"Cookies are limited to about 4 KB of data . Not enough to store required data.","answer_b":"Cookies are included with every HTTP request, thereby slowing down your web application by transmitting the same data.","answer_c":"Cookies are included with every HTTP request, thereby sending data unencrypted over the internet.","answer_d":"All of the above.","answer_e":null,"answer_f":null},"multiple_correct_answers":"false","correct_answers":{"answer_a_correct":"false","answer_b_correct":"false","answer_c_correct":"false","answer_d_correct":"true","answer_e_correct":"false","answer_f_correct":"false"},"correct_answer":"answer_a","explanation":null,"tip":null,"tags":[{"name":"HTML"}],"category":"Code","difficulty":"Hard"},{"id":776,"question":"Which of the mentioned is not part of the so called Superglobals variables which are automatically available in every scope.","description":null,"answers":{"answer_a":"$GLOBALS","answer_b":"$_SERVER","answer_c":"$_FILES","answer_d":"$_COOKIE","answer_e":"$FILES","answer_f":"$COOKIE"},"multiple_correct_answers":"true","correct_answers":{"answer_a_correct":"true","answer_b_correct":"true","answer_c_correct":"true","answer_d_correct":"true","answer_e_correct":"false","answer_f_correct":"false"},"correct_answer":null,"explanation":null,"tip":null,"tags":[{"name":"PHP"}],"category":"Code","difficulty":"Medium"},{"id":502,"question":"Which tag inserts a line horizontally on your web page?","description":null,"answers":{"answer_a":"<hr>","answer_b":"<line direction=\"horizontal\">","answer_c":"<tr>","answer_d":"<line>","answer_e":null,"answer_f":null},"multiple_correct_answers":"false","correct_answers":{"answer_a_correct":"true","answer_b_correct":"false","answer_c_correct":"false","answer_d_correct":"false","answer_e_correct":"false","answer_f_correct":"false"},"correct_answer":"answer_a","explanation":null,"tip":null,"tags":[{"name":"HTML"}],"category":"Code","difficulty":"Easy"}]
+[
+    {
+        "id": 516,
+        "question": "To create a combo box (drop down box) which tag will you use?",
+        "description": null,
+        "answers": {
+            "answer_a": "<select>",
+            "answer_b": "<list>",
+            "answer_c": "<input type=\"dropdown\">",
+            "answer_d": "all of above",
+            "answer_e": null,
+            "answer_f": null
+        },
+        "multiple_correct_answers": "false",
+        "correct_answers": {
+            "answer_a_correct": "true",
+            "answer_b_correct": "false",
+            "answer_c_correct": "false",
+            "answer_d_correct": "false",
+            "answer_e_correct": "false",
+            "answer_f_correct": "false"
+        },
+        "correct_answer": "answer_a",
+        "explanation": null,
+        "tip": null,
+        "tags": [
+            {
+                "name": "HTML"
+            }
+        ],
+        "category": "Code",
+        "difficulty": "Medium"
+    },
+    {
+        "id": 445,
+        "question": "HTML Is a subset of",
+        "description": null,
+        "answers": {
+            "answer_a": "SGMT",
+            "answer_b": "None Of These",
+            "answer_c": "SGML",
+            "answer_d": "SGMD",
+            "answer_e": null,
+            "answer_f": null
+        },
+        "multiple_correct_answers": "false",
+        "correct_answers": {
+            "answer_a_correct": "false",
+            "answer_b_correct": "false",
+            "answer_c_correct": "true",
+            "answer_d_correct": "false",
+            "answer_e_correct": "false",
+            "answer_f_correct": "false"
+        },
+        "correct_answer": "answer_a",
+        "explanation": null,
+        "tip": null,
+        "tags": [
+            {
+                "name": "HTML"
+            }
+        ],
+        "category": "Code",
+        "difficulty": "Medium"
+    },
+    {
+        "id": 494,
+        "question": "Which of the following is true about Cookies?",
+        "description": null,
+        "answers": {
+            "answer_a": "Cookies are limited to about 4 KB of data . Not enough to store required data.",
+            "answer_b": "Cookies are included with every HTTP request, thereby slowing down your web application by transmitting the same data.",
+            "answer_c": "Cookies are included with every HTTP request, thereby sending data unencrypted over the internet.",
+            "answer_d": "All of the above.",
+            "answer_e": null,
+            "answer_f": null
+        },
+        "multiple_correct_answers": "false",
+        "correct_answers": {
+            "answer_a_correct": "false",
+            "answer_b_correct": "false",
+            "answer_c_correct": "false",
+            "answer_d_correct": "true",
+            "answer_e_correct": "false",
+            "answer_f_correct": "false"
+        },
+        "correct_answer": "answer_a",
+        "explanation": null,
+        "tip": null,
+        "tags": [
+            {
+                "name": "HTML"
+            }
+        ],
+        "category": "Code",
+        "difficulty": "Hard"
+    },
+    {
+        "id": 776,
+        "question": "Which of the mentioned is not part of the so called Superglobals variables which are automatically available in every scope.",
+        "description": null,
+        "answers": {
+            "answer_a": "$GLOBALS",
+            "answer_b": "$_SERVER",
+            "answer_c": "$_FILES",
+            "answer_d": "$_COOKIE",
+            "answer_e": "$FILES",
+            "answer_f": "$COOKIE"
+        },
+        "multiple_correct_answers": "true",
+        "correct_answers": {
+            "answer_a_correct": "true",
+            "answer_b_correct": "true",
+            "answer_c_correct": "true",
+            "answer_d_correct": "true",
+            "answer_e_correct": "false",
+            "answer_f_correct": "false"
+        },
+        "correct_answer": null,
+        "explanation": null,
+        "tip": null,
+        "tags": [
+            {
+                "name": "PHP"
+            }
+        ],
+        "category": "Code",
+        "difficulty": "Medium"
+    },
+    {
+        "id": 502,
+        "question": "Which tag inserts a line horizontally on your web page?",
+        "description": null,
+        "answers": {
+            "answer_a": "<hr>",
+            "answer_b": "<line direction=\"horizontal\">",
+            "answer_c": "<tr>",
+            "answer_d": "<line>",
+            "answer_e": null,
+            "answer_f": null
+        },
+        "multiple_correct_answers": "false",
+        "correct_answers": {
+            "answer_a_correct": "true",
+            "answer_b_correct": "false",
+            "answer_c_correct": "false",
+            "answer_d_correct": "false",
+            "answer_e_correct": "false",
+            "answer_f_correct": "false"
+        },
+        "correct_answer": "answer_a",
+        "explanation": null,
+        "tip": null,
+        "tags": [
+            {
+                "name": "HTML"
+            }
+        ],
+        "category": "Code",
+        "difficulty": "Easy"
+    }
+]

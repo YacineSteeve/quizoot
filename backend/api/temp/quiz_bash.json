@@ -1,1 +1,136 @@
-[{"id":644,"question":"How can you set the default rwx permission to all users on every file which is created in the current shell?","description":null,"answers":{"answer_a":"umask  0777","answer_b":"chmod  777","answer_c":"chown  777","answer_d":"umask  0666","answer_e":null,"answer_f":null},"multiple_correct_answers":"false","correct_answers":{"answer_a_correct":"true","answer_b_correct":"false","answer_c_correct":"false","answer_d_correct":"false","answer_e_correct":"false","answer_f_correct":"false"},"correct_answer":"answer_a","explanation":null,"tip":null,"tags":[{"name":"BASH"}],"category":"bash","difficulty":"Easy"},{"id":9,"question":"#!\/bin\/bash is commonly called as","description":null,"answers":{"answer_a":"shebang","answer_b":"hashbang","answer_c":"Script Initialiser","answer_d":"None of the Above","answer_e":null,"answer_f":null},"multiple_correct_answers":"false","correct_answers":{"answer_a_correct":"true","answer_b_correct":"false","answer_c_correct":"false","answer_d_correct":"false","answer_e_correct":"false","answer_f_correct":"false"},"correct_answer":"answer_a","explanation":null,"tip":null,"tags":[{"name":"Linux"},{"name":"BASH"}],"category":"bash","difficulty":"Easy"},{"id":2,"question":"How to list the contents of a folder?","description":"list the contents of a folder","answers":{"answer_a":"pwd","answer_b":"ls","answer_c":"list","answer_d":"print","answer_e":null,"answer_f":null},"multiple_correct_answers":"false","correct_answers":{"answer_a_correct":"false","answer_b_correct":"true","answer_c_correct":"false","answer_d_correct":"false","answer_e_correct":"false","answer_f_correct":"false"},"correct_answer":"answer_b","explanation":"ls lists the contents of the folder","tip":null,"tags":[{"name":"Linux"},{"name":"BASH"}],"category":"bash","difficulty":"Easy"},{"id":51,"question":"Which command can you use to re-execute a previous command?","description":null,"answers":{"answer_a":"!cat","answer_b":"!!","answer_c":"!a","answer_d":"!3","answer_e":null,"answer_f":null},"multiple_correct_answers":"false","correct_answers":{"answer_a_correct":"false","answer_b_correct":"true","answer_c_correct":"false","answer_d_correct":"false","answer_e_correct":"false","answer_f_correct":"false"},"correct_answer":"answer_b","explanation":null,"tip":null,"tags":[{"name":"BASH"}],"category":"bash","difficulty":"Easy"}]
+[
+    {
+        "id": 644,
+        "question": "How can you set the default rwx permission to all users on every file which is created in the current shell?",
+        "description": null,
+        "answers": {
+            "answer_a": "umask  0777",
+            "answer_b": "chmod  777",
+            "answer_c": "chown  777",
+            "answer_d": "umask  0666",
+            "answer_e": null,
+            "answer_f": null
+        },
+        "multiple_correct_answers": "false",
+        "correct_answers": {
+            "answer_a_correct": "true",
+            "answer_b_correct": "false",
+            "answer_c_correct": "false",
+            "answer_d_correct": "false",
+            "answer_e_correct": "false",
+            "answer_f_correct": "false"
+        },
+        "correct_answer": "answer_a",
+        "explanation": null,
+        "tip": null,
+        "tags": [
+            {
+                "name": "BASH"
+            }
+        ],
+        "category": "bash",
+        "difficulty": "Easy"
+    },
+    {
+        "id": 9,
+        "question": "#!\/bin\/bash is commonly called as",
+        "description": null,
+        "answers": {
+            "answer_a": "shebang",
+            "answer_b": "hashbang",
+            "answer_c": "Script Initialiser",
+            "answer_d": "None of the Above",
+            "answer_e": null,
+            "answer_f": null
+        },
+        "multiple_correct_answers": "false",
+        "correct_answers": {
+            "answer_a_correct": "true",
+            "answer_b_correct": "false",
+            "answer_c_correct": "false",
+            "answer_d_correct": "false",
+            "answer_e_correct": "false",
+            "answer_f_correct": "false"
+        },
+        "correct_answer": "answer_a",
+        "explanation": null,
+        "tip": null,
+        "tags": [
+            {
+                "name": "Linux"
+            },
+            {
+                "name": "BASH"
+            }
+        ],
+        "category": "bash",
+        "difficulty": "Easy"
+    },
+    {
+        "id": 2,
+        "question": "How to list the contents of a folder?",
+        "description": "list the contents of a folder",
+        "answers": {
+            "answer_a": "pwd",
+            "answer_b": "ls",
+            "answer_c": "list",
+            "answer_d": "print",
+            "answer_e": null,
+            "answer_f": null
+        },
+        "multiple_correct_answers": "false",
+        "correct_answers": {
+            "answer_a_correct": "false",
+            "answer_b_correct": "true",
+            "answer_c_correct": "false",
+            "answer_d_correct": "false",
+            "answer_e_correct": "false",
+            "answer_f_correct": "false"
+        },
+        "correct_answer": "answer_b",
+        "explanation": "ls lists the contents of the folder",
+        "tip": null,
+        "tags": [
+            {
+                "name": "Linux"
+            },
+            {
+                "name": "BASH"
+            }
+        ],
+        "category": "bash",
+        "difficulty": "Easy"
+    },
+    {
+        "id": 51,
+        "question": "Which command can you use to re-execute a previous command?",
+        "description": null,
+        "answers": {
+            "answer_a": "!cat",
+            "answer_b": "!!",
+            "answer_c": "!a",
+            "answer_d": "!3",
+            "answer_e": null,
+            "answer_f": null
+        },
+        "multiple_correct_answers": "false",
+        "correct_answers": {
+            "answer_a_correct": "false",
+            "answer_b_correct": "true",
+            "answer_c_correct": "false",
+            "answer_d_correct": "false",
+            "answer_e_correct": "false",
+            "answer_f_correct": "false"
+        },
+        "correct_answer": "answer_b",
+        "explanation": null,
+        "tip": null,
+        "tags": [
+            {
+                "name": "BASH"
+            }
+        ],
+        "category": "bash",
+        "difficulty": "Easy"
+    }
+]

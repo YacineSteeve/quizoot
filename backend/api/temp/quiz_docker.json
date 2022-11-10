@@ -1,1 +1,162 @@
-[{"id":1023,"question":"What does the FROM instruction do in a Dockerfile?","description":null,"answers":{"answer_a":"FROM creates a layer from a base Docker image.","answer_b":"FROM specifies the creator of the image","answer_c":"FROM is an invalid instruction","answer_d":"FROM adds files from your Docker client\u2019s current directory","answer_e":null,"answer_f":null},"multiple_correct_answers":"false","correct_answers":{"answer_a_correct":"true","answer_b_correct":"false","answer_c_correct":"false","answer_d_correct":"false","answer_e_correct":"false","answer_f_correct":"false"},"correct_answer":"answer_a","explanation":null,"tip":null,"tags":[{"name":"Docker"}],"category":"Docker","difficulty":"Easy"},{"id":812,"question":"How to delete an image from the local storage system?","description":null,"answers":{"answer_a":"$ docker rmi <image-id>","answer_b":"$ docker --rmi <image-id>","answer_c":"$ docker rmin <imageid>","answer_d":null,"answer_e":null,"answer_f":null},"multiple_correct_answers":"false","correct_answers":{"answer_a_correct":"true","answer_b_correct":"false","answer_c_correct":"false","answer_d_correct":"false","answer_e_correct":"false","answer_f_correct":"false"},"correct_answer":"answer_a","explanation":null,"tip":null,"tags":[{"name":"Docker"}],"category":"Docker","difficulty":"Medium"},{"id":971,"question":"Which of the following are true for etcd?","description":null,"answers":{"answer_a":"etcd is the primary datastore of Kubernetes; storing and replicating all Kubernetes cluster state","answer_b":"etcd is a distributed key-value store","answer_c":"To encrypt cluster data and send it to a secrets manager","answer_d":"To validate cluster nodes","answer_e":null,"answer_f":null},"multiple_correct_answers":"true","correct_answers":{"answer_a_correct":"true","answer_b_correct":"true","answer_c_correct":"false","answer_d_correct":"false","answer_e_correct":"false","answer_f_correct":"false"},"correct_answer":null,"explanation":null,"tip":null,"tags":[{"name":"Kubernetes"}],"category":"Docker","difficulty":"Easy"},{"id":802,"question":"How do you create a docker container from an image?","description":null,"answers":{"answer_a":"docker run -it -d <image_name>","answer_b":"docker --run -it -d <image_name>","answer_c":"docker run it d <image_name>","answer_d":null,"answer_e":null,"answer_f":null},"multiple_correct_answers":"false","correct_answers":{"answer_a_correct":"true","answer_b_correct":"false","answer_c_correct":"false","answer_d_correct":"false","answer_e_correct":"false","answer_f_correct":"false"},"correct_answer":"answer_a","explanation":null,"tip":null,"tags":[{"name":"Docker"}],"category":"Docker","difficulty":"Medium"},{"id":869,"question":"A Docker container is an instance of an image with a specific configuration.","description":null,"answers":{"answer_a":"True","answer_b":"False","answer_c":null,"answer_d":null,"answer_e":null,"answer_f":null},"multiple_correct_answers":"false","correct_answers":{"answer_a_correct":"true","answer_b_correct":"false","answer_c_correct":"false","answer_d_correct":"false","answer_e_correct":"false","answer_f_correct":"false"},"correct_answer":"answer_a","explanation":null,"tip":null,"tags":[{"name":"Docker"}],"category":"Docker","difficulty":"Medium"}]
+[
+    {
+        "id": 1023,
+        "question": "What does the FROM instruction do in a Dockerfile?",
+        "description": null,
+        "answers": {
+            "answer_a": "FROM creates a layer from a base Docker image.",
+            "answer_b": "FROM specifies the creator of the image",
+            "answer_c": "FROM is an invalid instruction",
+            "answer_d": "FROM adds files from your Docker client\u2019s current directory",
+            "answer_e": null,
+            "answer_f": null
+        },
+        "multiple_correct_answers": "false",
+        "correct_answers": {
+            "answer_a_correct": "true",
+            "answer_b_correct": "false",
+            "answer_c_correct": "false",
+            "answer_d_correct": "false",
+            "answer_e_correct": "false",
+            "answer_f_correct": "false"
+        },
+        "correct_answer": "answer_a",
+        "explanation": null,
+        "tip": null,
+        "tags": [
+            {
+                "name": "Docker"
+            }
+        ],
+        "category": "Docker",
+        "difficulty": "Easy"
+    },
+    {
+        "id": 812,
+        "question": "How to delete an image from the local storage system?",
+        "description": null,
+        "answers": {
+            "answer_a": "$ docker rmi <image-id>",
+            "answer_b": "$ docker --rmi <image-id>",
+            "answer_c": "$ docker rmin <imageid>",
+            "answer_d": null,
+            "answer_e": null,
+            "answer_f": null
+        },
+        "multiple_correct_answers": "false",
+        "correct_answers": {
+            "answer_a_correct": "true",
+            "answer_b_correct": "false",
+            "answer_c_correct": "false",
+            "answer_d_correct": "false",
+            "answer_e_correct": "false",
+            "answer_f_correct": "false"
+        },
+        "correct_answer": "answer_a",
+        "explanation": null,
+        "tip": null,
+        "tags": [
+            {
+                "name": "Docker"
+            }
+        ],
+        "category": "Docker",
+        "difficulty": "Medium"
+    },
+    {
+        "id": 971,
+        "question": "Which of the following are true for etcd?",
+        "description": null,
+        "answers": {
+            "answer_a": "etcd is the primary datastore of Kubernetes; storing and replicating all Kubernetes cluster state",
+            "answer_b": "etcd is a distributed key-value store",
+            "answer_c": "To encrypt cluster data and send it to a secrets manager",
+            "answer_d": "To validate cluster nodes",
+            "answer_e": null,
+            "answer_f": null
+        },
+        "multiple_correct_answers": "true",
+        "correct_answers": {
+            "answer_a_correct": "true",
+            "answer_b_correct": "true",
+            "answer_c_correct": "false",
+            "answer_d_correct": "false",
+            "answer_e_correct": "false",
+            "answer_f_correct": "false"
+        },
+        "correct_answer": null,
+        "explanation": null,
+        "tip": null,
+        "tags": [
+            {
+                "name": "Kubernetes"
+            }
+        ],
+        "category": "Docker",
+        "difficulty": "Easy"
+    },
+    {
+        "id": 802,
+        "question": "How do you create a docker container from an image?",
+        "description": null,
+        "answers": {
+            "answer_a": "docker run -it -d <image_name>",
+            "answer_b": "docker --run -it -d <image_name>",
+            "answer_c": "docker run it d <image_name>",
+            "answer_d": null,
+            "answer_e": null,
+            "answer_f": null
+        },
+        "multiple_correct_answers": "false",
+        "correct_answers": {
+            "answer_a_correct": "true",
+            "answer_b_correct": "false",
+            "answer_c_correct": "false",
+            "answer_d_correct": "false",
+            "answer_e_correct": "false",
+            "answer_f_correct": "false"
+        },
+        "correct_answer": "answer_a",
+        "explanation": null,
+        "tip": null,
+        "tags": [
+            {
+                "name": "Docker"
+            }
+        ],
+        "category": "Docker",
+        "difficulty": "Medium"
+    },
+    {
+        "id": 869,
+        "question": "A Docker container is an instance of an image with a specific configuration.",
+        "description": null,
+        "answers": {
+            "answer_a": "True",
+            "answer_b": "False",
+            "answer_c": null,
+            "answer_d": null,
+            "answer_e": null,
+            "answer_f": null
+        },
+        "multiple_correct_answers": "false",
+        "correct_answers": {
+            "answer_a_correct": "true",
+            "answer_b_correct": "false",
+            "answer_c_correct": "false",
+            "answer_d_correct": "false",
+            "answer_e_correct": "false",
+            "answer_f_correct": "false"
+        },
+        "correct_answer": "answer_a",
+        "explanation": null,
+        "tip": null,
+        "tags": [
+            {
+                "name": "Docker"
+            }
+        ],
+        "category": "Docker",
+        "difficulty": "Medium"
+    }
+]
