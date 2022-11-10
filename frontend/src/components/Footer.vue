@@ -5,17 +5,17 @@
         <div class="container">
             <div class="icons">
                 <a class="icon" href="https://fr-fr.facebook.com/BeninExcellence/">
-                    <i class="fa fa-facebook-f" />
+                    <font-awesome-icon icon="fa-brands fa-facebook-f" />
                 </a>
                 <a class="icon" href="https://twitter.com/excellencebenin">
-                    <i class="fa fa-twitter" />
+                    <font-awesome-icon icon="fa-brands fa-twitter" />
                 </a>
                 <a class="icon" href="#i">
-                    <i class="fa fa-instagram" />
+                    <font-awesome-icon icon="fa-brands fa-instagram" />
                 </a>
                 <a class="icon" target="_blank" rel="noreferrer"
                     href="https://www.linkedin.com/company/benin-excellence/">
-                    <i class="fa fa-linkedin" />
+                    <font-awesome-icon icon="fa-brands fa-linkedin-in" />
                 </a>
             </div>
             <ul class="copyright">
