@@ -1,0 +1,117 @@
+[
+    {
+        "id": 1,
+        "question": "To create a combo box (drop down box) which tag will you use?",
+        "description": null,
+        "answers": {
+            "answer_a": "<select>",
+            "answer_b": "<list>",
+            "answer_c": "<input type=\"dropdown\">",
+            "answer_d": "all of above"
+        },
+        "multiple_correct_answers": "false",
+        "correct_answers": [
+            "answer_a"
+        ],
+        "explanation": null,
+        "tip": null,
+        "tags": [
+            "HTML"
+        ],
+        "category": "Code",
+        "difficulty": "Medium"
+    },
+    {
+        "id": 2,
+        "question": "HTML Is a subset of",
+        "description": null,
+        "answers": {
+            "answer_a": "SGMT",
+            "answer_b": "None Of These",
+            "answer_c": "SGML",
+            "answer_d": "SGMD"
+        },
+        "multiple_correct_answers": "false",
+        "correct_answers": [
+            "answer_a"
+        ],
+        "explanation": null,
+        "tip": null,
+        "tags": [
+            "HTML"
+        ],
+        "category": "Code",
+        "difficulty": "Medium"
+    },
+    {
+        "id": 3,
+        "question": "Which of the following is true about Cookies?",
+        "description": null,
+        "answers": {
+            "answer_a": "Cookies are limited to about 4 KB of data . Not enough to store required data.",
+            "answer_b": "Cookies are included with every HTTP request, thereby slowing down your web application by transmitting the same data.",
+            "answer_c": "Cookies are included with every HTTP request, thereby sending data unencrypted over the internet.",
+            "answer_d": "All of the above."
+        },
+        "multiple_correct_answers": "false",
+        "correct_answers": [
+            "answer_a"
+        ],
+        "explanation": null,
+        "tip": null,
+        "tags": [
+            "HTML"
+        ],
+        "category": "Code",
+        "difficulty": "Hard"
+    },
+    {
+        "id": 4,
+        "question": "Which of the mentioned is not part of the so called Superglobals variables which are automatically available in every scope.",
+        "description": null,
+        "answers": {
+            "answer_a": "$GLOBALS",
+            "answer_b": "$_SERVER",
+            "answer_c": "$_FILES",
+            "answer_d": "$_COOKIE",
+            "answer_e": "$FILES",
+            "answer_f": "$COOKIE"
+        },
+        "multiple_correct_answers": "true",
+        "correct_answers": [
+            "answer_a",
+            "answer_b",
+            "answer_c",
+            "answer_d"
+        ],
+        "explanation": null,
+        "tip": null,
+        "tags": [
+            "PHP"
+        ],
+        "category": "Code",
+        "difficulty": "Medium"
+    },
+    {
+        "id": 5,
+        "question": "Which tag inserts a line horizontally on your web page?",
+        "description": null,
+        "answers": {
+            "answer_a": "<hr>",
+            "answer_b": "<line direction=\"horizontal\">",
+            "answer_c": "<tr>",
+            "answer_d": "<line>"
+        },
+        "multiple_correct_answers": "false",
+        "correct_answers": [
+            "answer_a"
+        ],
+        "explanation": null,
+        "tip": null,
+        "tags": [
+            "HTML"
+        ],
+        "category": "Code",
+        "difficulty": "Easy"
+    }
+]
