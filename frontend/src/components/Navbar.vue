@@ -43,10 +43,10 @@
     align-items: center;
     margin: 0;
     padding: 0;
-    overflow: hidden;
     background-color: var(--main-blue);
     width: 100%;
     height: 10vh;
+    z-index: 99;
 }
 
 .navbar img {
