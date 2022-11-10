@@ -1,0 +1,108 @@
+[
+    {
+        "id": 1,
+        "question": "What is the Ping of Death?",
+        "description": null,
+        "answers": {
+            "answer_a": "The Ping of Death is an occurrence when sending packets are reassembled, are too large for the system to understand.",
+            "answer_b": "The Ping of Death is capturing and deciphering traffic on a network.",
+            "answer_c": "The Ping of Death can be set in wordpress under admin settings."
+        },
+        "multiple_correct_answers": "false",
+        "correct_answers": [
+            "answer_a"
+        ],
+        "explanation": null,
+        "tip": null,
+        "tags": [
+            "WordPress"
+        ],
+        "category": "CMS",
+        "difficulty": "Medium"
+    },
+    {
+        "id": 2,
+        "question": "What is the difference between character 23 and x23?",
+        "description": null,
+        "answers": {
+            "answer_a": "23 specifies the octal 23 and x23 determine the hex 23.",
+            "answer_b": "23 specifies the hex 23 and x23 determine the octal 23"
+        },
+        "multiple_correct_answers": "false",
+        "correct_answers": [
+            "answer_a"
+        ],
+        "explanation": null,
+        "tip": null,
+        "tags": [
+            "BASH"
+        ],
+        "category": "CMS",
+        "difficulty": "Easy"
+    },
+    {
+        "id": 3,
+        "question": "How can you edit a WordPress comment?",
+        "description": null,
+        "answers": {
+            "answer_a": "You can edit WordPress comment using the command. From the panel, under the Comments option, select edit to edit a comment.",
+            "answer_b": "You can edit WordPress comment using the dashboard. From the panel, under the Comments option, select edit to edit a comment.",
+            "answer_c": "You can edit WordPress comment using the profile. From the panel, under the Comments option, select edit to edit a comment."
+        },
+        "multiple_correct_answers": "false",
+        "correct_answers": [
+            "answer_a"
+        ],
+        "explanation": null,
+        "tip": null,
+        "tags": [
+             "WordPress"
+        ],
+        "category": "CMS",
+        "difficulty": "Medium"
+    },
+    {
+        "id": 4,
+        "question": "What is Gravatar?",
+        "description": null,
+        "answers": {
+            "answer_a": "A Plugin",
+            "answer_b": "Globally Recognized Image or Photo",
+            "answer_c": "CMS",
+            "answer_d": "Profile Image",
+            "answer_e": "WordPress core functionality"
+        },
+        "multiple_correct_answers": "false",
+        "correct_answers": [
+            "answer_a"
+        ],
+        "explanation": null,
+        "tip": null,
+        "tags": [
+            "WordPress"
+        ],
+        "category": "CMS",
+        "difficulty": "Easy"
+    },
+    {
+        "id": 5,
+        "question": "What should one use for plugin development? custom post types or custom database tables?",
+        "description": null,
+        "answers": {
+            "answer_a": "custom post type",
+            "answer_b": "custom database tables",
+            "answer_c": "There is no specific preference for plugin development; it depends on what type of plugins one has to develop."
+        },
+        "multiple_correct_answers": "false",
+        "correct_answers": [
+            "answer_a"
+        ],
+        "explanation": null,
+        "tip": null,
+        "tags": [
+            "WordPress"
+        ],
+        "category": "CMS",
+        "difficulty": "Hard"
+    }
+]
