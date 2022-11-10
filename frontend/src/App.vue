@@ -1,13 +1,16 @@
 <script setup lang="ts">
 import Navbar from '@/components/Navbar.vue';
-import Main from '@/components/Main.vue';
 import Footer from '@/components/Footer.vue';
 
 </script>
 
 <template>
     <Navbar />
-    <Main />
+    <div class="main-container">
+        <div class="main">
+            <router-view></router-view>
+        </div>
+    </div>
     <Footer />
 </template>
 
@@ -21,5 +24,16 @@ import Footer from '@/components/Footer.vue';
     text-align: center;
     display: flex;
     flex-direction: column;
+}
+
+.main-container {
+    width: 100%;
+    height: auto;
+    margin-top: 10vh;
+    background-color: var(--background-color);
+}
+
+.main {
+    margin-inline: 20vw;
 }
 </style>

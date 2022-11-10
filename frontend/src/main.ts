@@ -1,8 +1,8 @@
 import App from '@/App.vue';
 import { createApp } from 'vue';
-import router from '@/scripts/router';
+import router from '@/router';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import '@/scripts/font_awesome_icons';
+import '@/lib/init_font_awesome';
 
 createApp(App)
     .use(router)
