@@ -1,6 +1,6 @@
 import App from '@/App.vue';
 import { createApp } from 'vue';
-import router from '@/views/router';
+import router from '@/router';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import '@/lib/init_font_awesome';
 

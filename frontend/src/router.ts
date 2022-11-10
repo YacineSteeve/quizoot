@@ -1,3 +1,4 @@
+import { createRouter, createWebHistory } from 'vue-router';
 import type { RouteRecordRaw } from 'vue-router';
 
 const routes: Array<RouteRecordRaw> = [
@@ -7,5 +8,9 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('@/views/Home.vue'),
     },
 ];
+const router = createRouter({
+    history: createWebHistory(),
+    routes,
+});
 
-export default routes;
+export default router;
