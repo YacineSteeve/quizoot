@@ -4,13 +4,13 @@
     <div>
         <div class="navbar">
             <ul class="links">
-                <li>
-                    <router-link to="/" title="Home" class="menu-item">
+                <li class="menu-item">
+                    <router-link to="/" title="Home">
                         Home
                     </router-link>
                 </li>
-                <li>
-                    <router-link to="/news" title="News" class="menu-item">
+                <li class="menu-item">
+                    <router-link to="/news" title="News">
                         News
                     </router-link>
                 </li>
@@ -19,13 +19,13 @@
                         <img src="../assets/logo-no-background.svg" alt="Quizoot Logo" />
                     </router-link>
                 </li>
-                <li>
-                    <router-link to="/contact" title="Contact" class="menu-item">
+                <li class="menu-item">
+                    <router-link to="/contact" title="Contact">
                         Contact
                     </router-link>
                 </li>
-                <li>
-                    <router-link to="/about" title="About" class="menu-item">
+                <li class="menu-item">
+                    <router-link to="/about" title="About">
                         About
                     </router-link>
                 </li>
@@ -45,37 +45,51 @@
     padding: 0;
     background-color: var(--main-blue);
     width: 100%;
-    height: 10vh;
+    height: 4.5em;
     z-index: 99;
 }
 
-.navbar img {
-    width: 150px;
-    height: auto;
-}
-
 .links {
-    list-style-type: none;
     display: flex;
-    width: 45%;
     align-items: center;
-    justify-content: space-between;
+    flex-shrink: 0;
+    width: 45vw;
+    min-width: 500px;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
 }
 
 .links li#logo {
-    margin-inline: 5%;
+    width: fit-content;
+    height: fit-content;
+    margin-inline: 4vw;
 }
 
-.links li a {
+.navbar img {
+    width: auto;
+    height: 2.5em;
+}
+
+.links li.menu-item {
+    width: 15%;
+    height: 60%;
+}
+
+.links li.menu-item a {
     color: var(--text-yellow);
-    text-align: center;
-    font-weight: 600;
-    font-size: medium;
-    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     text-decoration: none;
+    font-weight: 600;
+    font-size: 1em;
+    width: 100%;
+    height: 100%;
 }
 
-.links li a.menu-item:hover:not(.active) {
+.links li.menu-item:hover {
     background-color: var(--menu-hover-pink);
     border-radius: 5px;
 }
