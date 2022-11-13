@@ -10,8 +10,8 @@ import Footer from '@/components/Footer.vue';
         <div class="main">
             <router-view></router-view>
         </div>
+        <Footer/>
     </div>
-    <Footer />
 </template>
 
 <style>
@@ -28,12 +28,24 @@ import Footer from '@/components/Footer.vue';
 
 .main-container {
     width: 100%;
-    height: auto;
-    margin-top: 10vh;
+    height: calc(100vh - 4.5em);
+    margin-top: 4.5em;
     background-color: var(--background-color);
+    overflow: scroll;
 }
 
-.main {
-    margin-inline: 20vw;
+.main-container::-webkit-scrollbar {
+    width: 10px;
+    height: 100%;
+    background: var(--light-grey);
+}
+
+.main-container::-webkit-scrollbar-thumb {
+    background: var(--main-blue-lightened);
+    border-radius: 4px;
+}
+
+.main-container::-webkit-scrollbar-thumb:hover {
+    background: var(--main-blue);
 }
 </style>
