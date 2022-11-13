@@ -67,14 +67,15 @@
     margin-inline: 4vw;
 }
 
-.navbar img {
+.links li#logo img {
     width: auto;
     height: 2.5em;
 }
 
 .links li.menu-item {
-    width: 15%;
+    flex: 1;
     height: 60%;
+
 }
 
 .links li.menu-item a {
@@ -87,6 +88,27 @@
     font-size: 1em;
     width: 100%;
     height: 100%;
+}
+
+@media only screen and (max-width: 600px) {
+    .links {
+        width: 100%;
+        min-width: min-content;
+    }
+
+    .links li#logo {
+        width: 25%;
+        margin-inline: 3%;
+    }
+
+    .links li#logo img {
+        width: 100%;
+        height: auto;
+    }
+
+    .links li.menu-item a {
+        font-size: .8em;
+    }
 }
 
 .links li.menu-item:hover {

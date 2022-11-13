@@ -35,7 +35,7 @@ import Footer from '@/components/Footer.vue';
 }
 
 .main-container::-webkit-scrollbar {
-    width: 10px;
+    width: 5px;
     height: 100%;
     background: var(--light-grey);
 }
@@ -47,5 +47,16 @@ import Footer from '@/components/Footer.vue';
 
 .main-container::-webkit-scrollbar-thumb:hover {
     background: var(--main-blue);
+}
+
+@media only screen and (min-width: 600px) {
+    .main {
+        margin-left: 20vw;
+        margin-right: calc(20vw - 10px);
+    }
+
+    .main-container::-webkit-scrollbar {
+        width: 10px;
+    }
 }
 </style>

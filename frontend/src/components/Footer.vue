@@ -65,8 +65,7 @@
     color: #aaa;
     text-align: center;
     margin: 0;
-    padding: 0;
-    padding-bottom: 15px;
+    padding: 0 0 15px 0;
 }
 
 .copyright li:first-child {
@@ -83,7 +82,7 @@
     .copyright li {
         display: block;
         border: none;
-        padding: 0px;
+        padding: 0;
     }
 }
 
