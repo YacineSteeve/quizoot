@@ -32,5 +32,5 @@ $ python manage.py migrate
 
 ## Launch and run
 
-- To compiles and hot-reloads the frontend for development, run `yarn server`
+- To compile and hot-reload the frontend for development, run `yarn dev`
 - In another terminal, you can launch the django server with `python manage.py runserver` (assuming your virtual environment is activated).
