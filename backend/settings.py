@@ -19,7 +19,7 @@ env = environ.Env(
     ADMIN_PATH=(str, "admin/"),
     SECRET_KEY=(
         str,
-        "django-insecure-0jg0&w9yc2x@&1g8l#_j^mvxmt#q(cuoknk95a1uvw)0*%j0n2",
+        "YOU_NEED_TO_PROVIDE_A_SECRET",
     ),
 )
 
