@@ -16,11 +16,8 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Setup virtual environment
-      working-directory: ./backend
       run: make venv
     - name: Activate virtual environment
-      working-directory: ./backend
       run: source venv/bin/activate
     - name: Run pycodestyle
-      working-directory: ./backend
       run: make lint
