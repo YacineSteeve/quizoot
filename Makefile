@@ -1,15 +1,17 @@
 
 # Default configuration
-SHELL := /bin/bash
-PYTHON := python3
-PIP := ${PYTHON} -m pip
-MAKE_TAG := --no-print-directory
+SHELL     := /bin/bash
+PYTHON    := python3
+PIP       := ${PYTHON} -m pip
+LINTER    := pycodestyle
+FORMATTER := black
+MAKE_TAG  := --no-print-directory
 
 # Virtual env
 VENV_NAME = venv
 
 
-.PHONY: echo-cyan, echo-purple, echo-green, requirements, clean
+.PHONY: echo-cyan, echo-purple, echo-green, requirements, lint, format, clean
 
 
 ## Create virtualenv
@@ -29,6 +31,13 @@ requirements: venv
 	@. venv/bin/activate; \
 	$(PIP) freeze > requirements.txt
 	@echo "$@.txt updated! ✨\n"
+
+## Linting and formatting
+lint: venv
+	@$(LINTER) .
+
+format: venv
+	@$(FORMATTER) .
 
 ## echo with different colors font https://gist.github.com/iamnewton/8754917
 echo-cyan:  
