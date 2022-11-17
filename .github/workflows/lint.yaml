@@ -11,3 +11,11 @@ jobs:
     - name: Run ESLint
       working-directory: ./frontend
       run: yarn eslint src/
+  pycodestyle:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup virtual environment
+      run: make venv
+    - name: Run pycodestyle
+      run: source venv/bin/activate; make lint
