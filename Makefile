@@ -12,21 +12,25 @@ VENV_NAME   := venv
 VENV_PYTHON := ${VENV_NAME}/bin/${PYTHON}
 
 
-.PHONY: echo-cyan, echo-purple, echo-green, requirements, lint, format, clean
+.PHONY: echo-cyan, echo-purple, echo-green, requirements, migration, serve-back, lint, format, clean
 
 
 ## Create virtualenv
 venv:
 	@$(MAKE) $(MAKE_TAG) echo-cyan msg="Creating and setting up a virtualenv..."
 	@$(PYTHON) -m venv $(VENV_NAME)
-	@. $(VENV_NAME)/bin/activate;
+	@. $(VENV_NAME)/bin/activate; \
+	$(PIP) install --upgrade pip; \
+	$(PIP) install -r requirements.txt
 	@$(MAKE) $(MAKE_TAG) echo-green msg="Virtual environment created successfully ! ✨"
+	@echo
+	@echo "To activate it, please run 'source venv/bin/activate'"
 
 ## Update requirements.txt file
 requirements: venv
-	$(PIP) install --upgrade pip
-	$(PIP) install -r requirements.txt
-	@rm requirements.txt 2> /dev/null
+	@. $(VENV_NAME)/bin/activate; \
+	$(PIP) install -r requirements.txt; \
+	@rm requirements.txt 2> /dev/null; \
 	$(PIP) freeze > requirements.txt
 	@$(MAKE) $(MAKE_TAG) echo-green msg="\n$@.txt updated! ✨\n"
 
