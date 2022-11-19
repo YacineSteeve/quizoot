@@ -12,7 +12,7 @@ VENV_NAME   := venv
 VENV_PYTHON := ${VENV_NAME}/bin/${PYTHON}
 
 
-.PHONY: echo-cyan, echo-purple, echo-green, requirements, migration, serve-back, lint, format, clean
+.PHONY: echo-cyan, echo-purple, echo-green, requirements, migrations, serve-back, lint, format, clean
 
 
 ## Create virtualenv
@@ -34,7 +34,7 @@ requirements: venv
 	$(PIP) freeze > requirements.txt
 	@$(MAKE) $(MAKE_TAG) echo-green msg="\n$@.txt updated! ✨\n"
 
-migration:
+migrations:
 	@$(VENV_PYTHON) manage.py makemigrations
 	@$(VENV_PYTHON) manage.py migrate
 
