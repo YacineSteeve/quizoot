@@ -6,7 +6,7 @@ from .validators import SchemaValidator
 import json
 
 
-schema = SchemaValidator()
+validator = SchemaValidator()
 
 
 @csrf_exempt
@@ -17,7 +17,7 @@ def index(request):
         json_data = json.loads(data.decode("utf8"))
 
         # Validate data
-        schema.validate(json_data)
+        validator.validate(json_data)
 
         # Do something else
         print("Valid question :", json_data)
