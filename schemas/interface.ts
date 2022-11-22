@@ -169,7 +169,7 @@ declare namespace Quizoot {
      */
     type FileType = ".txt" | ".csv" | ".pdf" | ".img" | ".jpg" | ".jpeg" | ".png";
 
-    type CodeQuestion = {
+    interface CodeQuestion  {
         /**
          * Code content. This will be ran using a `python3` runner and evaluated.
          */
@@ -182,5 +182,5 @@ declare namespace Quizoot {
          * Expected output after running the code.
          */
         expected_output: string;
-    };
+    }
 }

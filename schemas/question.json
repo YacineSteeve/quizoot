@@ -1,6 +1,26 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema#",
     "definitions": {
+        "Quizoot.CodeQuestion": {
+            "properties": {
+                "content": {
+                    "description": "Code content. This will be ran using a `python3` runner and evaluated.",
+                    "type": "string"
+                },
+                "expected_output": {
+                    "description": "Expected output after running the code.",
+                    "type": "string"
+                },
+                "language": {
+                    "description": "Coding language. Only `python3` is supported.",
+                    "enum": [
+                        "python3"
+                    ],
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
         "Quizoot.Difficulty": {
             "description": "Question difficulty: easy, medium or hard.",
             "enum": [
@@ -208,24 +228,7 @@
                     "$ref": "#/definitions/Quizoot.UploadQuestion"
                 },
                 {
-                    "properties": {
-                        "content": {
-                            "description": "Code content. This will be ran using a `python3` runner and evaluated.",
-                            "type": "string"
-                        },
-                        "expected_output": {
-                            "description": "Expected output after running the code.",
-                            "type": "string"
-                        },
-                        "language": {
-                            "description": "Coding language. Only `python3` is supported.",
-                            "enum": [
-                                "python3"
-                            ],
-                            "type": "string"
-                        }
-                    },
-                    "type": "object"
+                    "$ref": "#/definitions/Quizoot.CodeQuestion"
                 }
             ],
             "description": "Spec of the question. It specifies what the attributes of the question are. Attributes depends on {@link QuestionKind}.\n\nSee {@link QuestionSpec} for more information about the spec attributes for each question kind."
