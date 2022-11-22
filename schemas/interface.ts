@@ -151,7 +151,6 @@ declare namespace Quizoot {
          * @minimum 1
          */
         max_files: number;
-
     }
 
     interface File {
@@ -183,6 +182,5 @@ declare namespace Quizoot {
          * Expected output after running the code.
          */
         expected_output: string;
-
     };
 }
