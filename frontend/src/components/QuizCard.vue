@@ -16,7 +16,7 @@ const bgColor = computed(() => (quiz.status ? '#008000' : '#dfe2ec'));
     <div class="quiz-preview-container">
         <div class="quiz-status-container">
             <div class="quiz-status" v-on:click="quiz.status = !quiz.status">
-                <font-awesome-icon icon="fa-solid fa-check" color="#ffffff" size="l" v-if="quiz.status"/>
+                <font-awesome-icon icon="fa-solid fa-check" color="#ffffff" size="lg" v-if="quiz.status"/>
             </div>
         </div>
         <div class="quiz-details">
@@ -29,7 +29,7 @@ const bgColor = computed(() => (quiz.status ? '#008000' : '#dfe2ec'));
         </div>
         <div class="quiz-details-expand-icon-container">
             <div class="quiz-details-expand-icon">
-                <font-awesome-icon icon="fa-solid fa-chevron-right" size="l"/>
+                <font-awesome-icon icon="fa-solid fa-chevron-right" size="lg"/>
             </div>
         </div>
     </div>
