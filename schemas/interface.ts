@@ -1,6 +1,6 @@
 declare namespace Quizoot {
     /**
-     * Question objects used to create a quiz. A Quiz is a set of questions
+     * Question object used to create a quiz. A Quiz is a set of questions.
      * 
      * @version 0.1.0
      */
@@ -20,9 +20,9 @@ declare namespace Quizoot {
          */
         kind: QuestionKind;
         /** 
-         * Spec of the questionThe question spec. It specifies what are the attributes of the question. Attributes depends on {@link QuestionKind}.
+         * Spec of the question. It specifies what the attributes of the question are. Attributes depends on {@link QuestionKind}.
          * 
-         * See {@link QuestionSpec} for more information about how the spec attributes for each question kind.
+         * See {@link QuestionSpec} for more information about the spec attributes for each question kind.
          */
         spec: QuestionSpec;
         /** 
@@ -126,7 +126,7 @@ declare namespace Quizoot {
 
     interface TextQuestion {
         /**
-         * List of keywords that the answers should contains. It is up to the developer to implement if the answer should contains ALL or ANY of the keywords.
+         * List of keywords that the answers should contain. It is up to the developer to implement if the answer should contain ALL or ANY of the keywords.
          * 
          * @examples ["bytes", "octets"]
          */

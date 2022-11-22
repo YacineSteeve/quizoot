@@ -127,7 +127,7 @@
         "Quizoot.TextQuestion": {
             "properties": {
                 "keywords": {
-                    "description": "List of keywords that the answers should contains. It is up to the developer to implement if the answer should contains ALL or ANY of the keywords.",
+                    "description": "List of keywords that the answers should contain. It is up to the developer to implement if the answer should contain ALL or ANY of the keywords.",
                     "examples": [
                         "bytes",
                         "octets"
@@ -166,7 +166,7 @@
             "type": "object"
         }
     },
-    "description": "Question objects used to create a quiz. A Quiz is a set of questions",
+    "description": "Question object used to create a quiz. A Quiz is a set of questions.",
     "properties": {
         "difficulty": {
             "$ref": "#/definitions/Quizoot.Difficulty",
@@ -228,7 +228,7 @@
                     "type": "object"
                 }
             ],
-            "description": "Spec of the questionThe question spec. It specifies what are the attributes of the question. Attributes depends on {@link QuestionKind}.\n\nSee {@link QuestionSpec} for more information about how the spec attributes for each question kind."
+            "description": "Spec of the question. It specifies what the attributes of the question are. Attributes depends on {@link QuestionKind}.\n\nSee {@link QuestionSpec} for more information about the spec attributes for each question kind."
         },
         "tags": {
             "description": "List of optional tags associated with the question.",
@@ -240,3 +240,4 @@
     },
     "type": "object"
 }
+
