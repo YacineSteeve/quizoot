@@ -18,7 +18,6 @@
         "@fortawesome/free-regular-svg-icons": "^6.2.0",
         "@fortawesome/free-solid-svg-icons": "^6.2.0",
         "@fortawesome/vue-fontawesome": "^3.0.1",
-        "typescript-json-schema": "^0.55.0",
         "vue": "^3.2.38",
         "vue-router": "4"
     },
