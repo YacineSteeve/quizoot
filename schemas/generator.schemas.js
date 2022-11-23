@@ -10,19 +10,19 @@ const settings = {
 
 const schemasToGenerate = [
     {
-        filePath: './question.ts',
         typeName: 'Quizoot.Question',
         schemaName: 'question'
     },
     {
-        filePath: './quiz.ts',
         typeName: 'Quizoot.Quiz',
         schemaName: 'quiz'
     }
 ];
 
+const sourceFilePath = './interface.ts';
+
 schemasToGenerate.forEach((obj) => {
-    const program = TJS.getProgramFromFiles([resolve(obj.filePath)]);
+    const program = TJS.getProgramFromFiles([resolve(sourceFilePath)]);
 
     const schema = TJS.generateSchema(program, obj.typeName, settings);
 
