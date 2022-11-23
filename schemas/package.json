@@ -1,0 +1,13 @@
+{
+    "name": "quizoot_schemas",
+    "version": "0.1.0",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "gen-schemas": "node generator.schemas.js"
+    },
+    "devDependencies": {
+        "@types/node": "^16.11.56",
+        "typescript-json-schema": "^0.55.0"
+    }
+}
