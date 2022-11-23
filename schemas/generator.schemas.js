@@ -16,7 +16,7 @@ const schemasToGenerate = [
     },
     {
         filePath: './quiz.ts',
-        typeName: 'Quiz',
+        typeName: 'Quizoot.Quiz',
         schemaName: 'quiz'
     }
 ];
