@@ -1,0 +1,8 @@
+{
+    "name": "quizoot",
+    "version": "0.1.0",
+    "private": true,
+    "devDependencies": {
+        "typescript-json-schema": "^0.55.0"
+    }
+}

@@ -12,7 +12,7 @@ VENV_NAME   := venv
 VENV_PYTHON := ${VENV_NAME}/bin/${PYTHON}
 
 
-.PHONY: echo-cyan, echo-purple, echo-green, requirements, question-schema, migrations, serve-back, lint, format, clean
+.PHONY: echo-cyan, echo-purple, echo-green, json-schemas, requirements, migrations, serve-back, lint, format, clean
 
 
 ## Create virtualenv
@@ -34,9 +34,9 @@ requirements: venv
 	$(PIP) freeze > requirements.txt
 	@$(MAKE) $(MAKE_TAG) echo-green msg="\n$@.txt updated! ✨\n"
 
-question-schema:
-	@typescript-json-schema ./schemas/interface.ts Question --out ./schemas/quetion.json --noExtraProps
-	@$(MAKE) $(MAKE_TAG) echo-green msg="\nquestion.json successfully generated in ./schemas/ ! ✨"
+json-schemas:
+	@typescript-json-schema ./schemas/question.ts Quizoot.Question --out ./schemas/question.json --noExtraProps --aliasRefs
+	@typescript-json-schema ./schemas/quiz.ts Quiz --out ./schemas/quiz.json --noExtraProps --aliasRefs
 
 migrations:
 	@$(VENV_PYTHON) manage.py makemigrations
