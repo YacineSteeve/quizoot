@@ -1,10 +1,12 @@
 :root {
     --background-color: #dfe2ec;
+    /* --background-color: #fff; */
     --main-blue: #331e6d;
     --menu-hover-pink: #bfa8ff66;
     --main-blue-lightened: #331e6d99;
     --light-grey: #c9cacc;
-    --text-yellow: #ffcf31;
+    --text-yellow: #ffc400;
+    --text-yellow-lightened: #ffcf31;
 }
 
 body {

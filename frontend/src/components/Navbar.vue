@@ -79,7 +79,7 @@
 }
 
 .links li.menu-item a {
-    color: var(--text-yellow);
+    color: var(--text-yellow-lightened);
     display: flex;
     align-items: center;
     justify-content: center;
