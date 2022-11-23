@@ -2,284 +2,84 @@
     "$schema": "http://json-schema.org/draft-07/schema#",
     "additionalProperties": false,
     "definitions": {
-        "Quizoot.CodeQuestion": {
+        "Quizoot.Author": {
             "additionalProperties": false,
             "properties": {
-                "content": {
-                    "description": "Code content. This will be ran using a `python3` runner and evaluated.",
+                "firstName": {
+                    "description": "The quiz author's first name. Is optional.",
                     "type": "string"
                 },
-                "expected_output": {
-                    "description": "Expected output after running the code.",
+                "lastName": {
+                    "description": "The quiz author's last name. Is optional.",
                     "type": "string"
                 },
-                "language": {
-                    "description": "Coding language. Only `python3` is supported.",
-                    "enum": [
-                        "python3"
-                    ],
+                "pseudo": {
+                    "description": "A pseudo for the quiz author.",
                     "type": "string"
                 }
             },
             "type": "object"
         },
-        "Quizoot.Difficulty": {
-            "description": "Question difficulty: easy, medium or hard.",
-            "enum": [
-                "EASY",
-                "HARD",
-                "MEDIUM"
-            ],
-            "type": "string"
-        },
-        "Quizoot.Feedback": {
+        "Quizoot.QuestionItem": {
             "additionalProperties": false,
             "properties": {
-                "explanation": {
-                    "description": "General feedback/explanation displayed whether the answer is wrong or correct.",
+                "next_question_id": {
+                    "description": "Id of the next question in the quiz chronology. Is null if it is the last question.",
                     "type": "string"
                 },
-                "when_right": {
-                    "description": "Feedback when answer is right.",
+                "prev_question_id": {
+                    "description": "Id of the previous question in the quiz chronology. Is null if it is the first question.",
                     "type": "string"
                 },
-                "when_wrong": {
-                    "description": "Feedback when answer is wrong.",
-                    "type": "string"
-                }
-            },
-            "type": "object"
-        },
-        "Quizoot.File": {
-            "additionalProperties": false,
-            "properties": {
-                "content": {
-                    "description": "Encoded `base64` string of the file's content.",
-                    "type": "string"
-                },
-                "type": {
-                    "$ref": "#/definitions/Quizoot.FileType",
-                    "description": "File type enum. Can be `.txt`, `.csv`, `.pdf`, etc. See {@link FileType}."
-                }
-            },
-            "type": "object"
-        },
-        "Quizoot.FileType": {
-            "description": "Enum of supported file extensions.",
-            "enum": [
-                ".csv",
-                ".img",
-                ".jpeg",
-                ".jpg",
-                ".pdf",
-                ".png",
-                ".txt"
-            ],
-            "type": "string"
-        },
-        "Quizoot.Grading": {
-            "additionalProperties": false,
-            "properties": {
-                "feedback": {
-                    "$ref": "#/definitions/Quizoot.Feedback",
-                    "description": "Feedback given after answering the question."
-                },
-                "point_value": {
-                    "description": "Specifies how much a correct answer count for in the total score.",
-                    "type": "number"
-                }
-            },
-            "type": "object"
-        },
-        "Quizoot.MultipleChoicesQuestion": {
-            "additionalProperties": false,
-            "properties": {
-                "answers_id": {
-                    "description": "Id of the correct answers to the question.",
-                    "items": {
-                        "type": "string"
-                    },
-                    "type": "array"
-                },
-                "options": {
-                    "description": "Question options. See {@link QuestionOption}.",
-                    "items": {
-                        "$ref": "#/definitions/Quizoot.QuestionOption"
-                    },
-                    "type": "array"
-                }
-            },
-            "type": "object"
-        },
-        "Quizoot.OptionId": {
-            "type": "string"
-        },
-        "Quizoot.Question": {
-            "additionalProperties": false,
-            "description": "Question object used to create a quiz. A Quiz is a set of questions.",
-            "properties": {
-                "difficulty": {
-                    "$ref": "#/definitions/Quizoot.Difficulty",
-                    "description": "Rate how diffuclt the question is. See {@link Difficulty}."
-                },
-                "grading": {
-                    "$ref": "#/definitions/Quizoot.Grading",
-                    "description": "The grading object specifies how to grade for the current question. See {@link Grading}."
-                },
-                "hint": {
-                    "description": "Hint given to help answering the question",
-                    "type": "string"
-                },
-                "id": {
-                    "description": "Id of the question",
-                    "pattern": "[a-z0-9]{12}",
-                    "type": "string"
-                },
-                "kind": {
-                    "$ref": "#/definitions/Quizoot.QuestionKind",
-                    "description": "The question kind. Please refer to {@link QuestionKind}."
-                },
-                "question": {
-                    "description": "The actual question as a human readable string.",
-                    "type": "string"
-                },
-                "spec": {
-                    "$ref": "#/definitions/Quizoot.QuestionSpec",
-                    "description": "Spec of the question. It specifies what the attributes of the question are. Attributes depends on {@link QuestionKind}.\n\nSee {@link QuestionSpec} for more information about the spec attributes for each question kind."
-                },
-                "tags": {
-                    "description": "List of optional tags associated with the question.",
-                    "items": {
-                        "type": "string"
-                    },
-                    "type": "array"
-                }
-            },
-            "type": "object"
-        },
-        "Quizoot.QuestionKind": {
-            "description": "Different kind of question we might have.",
-            "enum": [
-                "CHOICE_QUESTION",
-                "CODE_QUESTION",
-                "TEXT_QUESTION",
-                "UPLOAD_QUESTION"
-            ],
-            "type": "string"
-        },
-        "Quizoot.QuestionOption": {
-            "additionalProperties": false,
-            "properties": {
-                "display": {
-                    "description": "The actual display of the option as a human readable string.",
-                    "type": "string"
-                },
-                "id": {
-                    "$ref": "#/definitions/Quizoot.OptionId",
-                    "description": "Id of the option."
-                }
-            },
-            "type": "object"
-        },
-        "Quizoot.QuestionSpec": {
-            "anyOf": [
-                {
-                    "$ref": "#/definitions/Quizoot.SingleChoiceQuestion"
-                },
-                {
-                    "$ref": "#/definitions/Quizoot.MultipleChoicesQuestion"
-                },
-                {
-                    "$ref": "#/definitions/Quizoot.TextQuestion"
-                },
-                {
-                    "$ref": "#/definitions/Quizoot.UploadQuestion"
-                },
-                {
-                    "$ref": "#/definitions/Quizoot.CodeQuestion"
-                }
-            ],
-            "description": "Question spec. It depends on the question kind."
-        },
-        "Quizoot.SingleChoiceQuestion": {
-            "additionalProperties": false,
-            "properties": {
-                "answer_id": {
-                    "$ref": "#/definitions/Quizoot.OptionId",
-                    "description": "Id of the correct answer to the question."
-                },
-                "options": {
-                    "description": "Question options. See {@link QuestionOption}.",
-                    "items": {
-                        "$ref": "#/definitions/Quizoot.QuestionOption"
-                    },
-                    "type": "array"
-                }
-            },
-            "type": "object"
-        },
-        "Quizoot.TextQuestion": {
-            "additionalProperties": false,
-            "properties": {
-                "keywords": {
-                    "description": "List of keywords that the answers should contain. It is up to the developer to implement if the answer should contain ALL or ANY of the keywords.",
-                    "examples": [
-                        "bytes",
-                        "octets"
-                    ],
-                    "items": {
-                        "type": "string"
-                    },
-                    "type": "array"
-                }
-            },
-            "type": "object"
-        },
-        "Quizoot.UploadQuestion": {
-            "additionalProperties": false,
-            "properties": {
-                "files": {
-                    "description": "List of files to upload.",
-                    "items": {
-                        "$ref": "#/definitions/Quizoot.File"
-                    },
-                    "type": "array"
-                },
-                "max_files": {
-                    "default": 1,
-                    "description": "Maximum number of files to upload.",
-                    "minimum": 1,
-                    "type": "number"
-                },
-                "max_size": {
-                    "description": "Maximum size of each files. Can be expressed in bytes, megabytes (MB), etc. See TODO for valid units.",
-                    "examples": [
-                        "10MB"
-                    ],
+                "question_id": {
+                    "description": "Id of a question referenced in the quiz.",
                     "type": "string"
                 }
             },
             "type": "object"
         }
     },
+    "description": "A Quiz object represents a set of questions.",
     "properties": {
+        "authors": {
+            "description": "List of optional authors or contributors of the quiz. See {@link Author}.",
+            "items": {
+                "$ref": "#/definitions/Quizoot.Author"
+            },
+            "type": "array"
+        },
         "description": {
-            "description": "Nothing",
+            "description": "A brief description of the quiz content, topic...",
             "type": "string"
         },
         "id": {
-            "description": "Nothing",
+            "description": "Id of the quiz.",
             "type": "string"
         },
+        "max_score": {
+            "default": 0,
+            "description": "Maximum score the user can get. Will be used to compute the final score: sum(question_i_score) / max_score.",
+            "minimum": 0,
+            "type": "number"
+        },
         "questions": {
-            "description": "Nothing",
+            "description": "All the questions the quiz is made of.",
             "items": {
-                "$ref": "#/definitions/Quizoot.Question"
+                "$ref": "#/definitions/Quizoot.QuestionItem"
+            },
+            "type": "array"
+        },
+        "tags": {
+            "description": "List of optional tags associated with the quiz.",
+            "items": {
+                "type": "string"
             },
             "type": "array"
         },
         "title": {
-            "description": "Nothing",
+            "description": "The title (header) of the quiz.",
+            "maxLength": 40,
+            "minLength": 1,
             "type": "string"
         }
     },

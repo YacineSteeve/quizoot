@@ -1,10 +1,12 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema#",
+    "additionalProperties": false,
     "definitions": {
         "Quizoot.CodeQuestion": {
+            "additionalProperties": false,
             "properties": {
                 "content": {
-                    "description": "Code content. This will be ran using a `python3` runner and evaluated.",
+                    "description": "Code content. This will be run using a `python3` runner and evaluated.",
                     "type": "string"
                 },
                 "expected_output": {
@@ -31,6 +33,7 @@
             "type": "string"
         },
         "Quizoot.Feedback": {
+            "additionalProperties": false,
             "properties": {
                 "explanation": {
                     "description": "General feedback/explanation displayed whether the answer is wrong or correct.",
@@ -48,6 +51,7 @@
             "type": "object"
         },
         "Quizoot.File": {
+            "additionalProperties": false,
             "properties": {
                 "content": {
                     "description": "Encoded `base64` string of the file's content.",
@@ -74,6 +78,7 @@
             "type": "string"
         },
         "Quizoot.Grading": {
+            "additionalProperties": false,
             "properties": {
                 "feedback": {
                     "$ref": "#/definitions/Quizoot.Feedback",
@@ -87,6 +92,7 @@
             "type": "object"
         },
         "Quizoot.MultipleChoicesQuestion": {
+            "additionalProperties": false,
             "properties": {
                 "answers_id": {
                     "description": "Id of the correct answers to the question.",
@@ -105,6 +111,9 @@
             },
             "type": "object"
         },
+        "Quizoot.OptionId": {
+            "type": "string"
+        },
         "Quizoot.QuestionKind": {
             "description": "Different kind of question we might have.",
             "enum": [
@@ -116,23 +125,45 @@
             "type": "string"
         },
         "Quizoot.QuestionOption": {
+            "additionalProperties": false,
             "properties": {
                 "display": {
-                    "description": "The actual display of the option as a human readable string.",
+                    "description": "The actual display of the option as a human-readable string.",
                     "type": "string"
                 },
                 "id": {
-                    "description": "Id of the option.",
-                    "type": "string"
+                    "$ref": "#/definitions/Quizoot.OptionId",
+                    "description": "Id of the option."
                 }
             },
             "type": "object"
         },
+        "Quizoot.QuestionSpec": {
+            "anyOf": [
+                {
+                    "$ref": "#/definitions/Quizoot.SingleChoiceQuestion"
+                },
+                {
+                    "$ref": "#/definitions/Quizoot.MultipleChoicesQuestion"
+                },
+                {
+                    "$ref": "#/definitions/Quizoot.TextQuestion"
+                },
+                {
+                    "$ref": "#/definitions/Quizoot.UploadQuestion"
+                },
+                {
+                    "$ref": "#/definitions/Quizoot.CodeQuestion"
+                }
+            ],
+            "description": "Question spec. It depends on the question kind."
+        },
         "Quizoot.SingleChoiceQuestion": {
+            "additionalProperties": false,
             "properties": {
                 "answer_id": {
-                    "description": "Id of the correct answer to the question.",
-                    "type": "string"
+                    "$ref": "#/definitions/Quizoot.OptionId",
+                    "description": "Id of the correct answer to the question."
                 },
                 "options": {
                     "description": "Question options. See {@link QuestionOption}.",
@@ -145,6 +176,7 @@
             "type": "object"
         },
         "Quizoot.TextQuestion": {
+            "additionalProperties": false,
             "properties": {
                 "keywords": {
                     "description": "List of keywords that the answers should contain. It is up to the developer to implement if the answer should contain ALL or ANY of the keywords.",
@@ -161,6 +193,7 @@
             "type": "object"
         },
         "Quizoot.UploadQuestion": {
+            "additionalProperties": false,
             "properties": {
                 "files": {
                     "description": "List of files to upload.",
@@ -190,7 +223,7 @@
     "properties": {
         "difficulty": {
             "$ref": "#/definitions/Quizoot.Difficulty",
-            "description": "Rate how diffuclt the question is. See {@link Difficulty}."
+            "description": "Rate how difficult the question is. See {@link Difficulty}."
         },
         "grading": {
             "$ref": "#/definitions/Quizoot.Grading",
@@ -210,27 +243,11 @@
             "description": "The question kind. Please refer to {@link QuestionKind}."
         },
         "question": {
-            "description": "The actual question as a human readable string.",
+            "description": "The actual question as a human-readable string.",
             "type": "string"
         },
         "spec": {
-            "anyOf": [
-                {
-                    "$ref": "#/definitions/Quizoot.SingleChoiceQuestion"
-                },
-                {
-                    "$ref": "#/definitions/Quizoot.MultipleChoicesQuestion"
-                },
-                {
-                    "$ref": "#/definitions/Quizoot.TextQuestion"
-                },
-                {
-                    "$ref": "#/definitions/Quizoot.UploadQuestion"
-                },
-                {
-                    "$ref": "#/definitions/Quizoot.CodeQuestion"
-                }
-            ],
+            "$ref": "#/definitions/Quizoot.QuestionSpec",
             "description": "Spec of the question. It specifies what the attributes of the question are. Attributes depends on {@link QuestionKind}.\n\nSee {@link QuestionSpec} for more information about the spec attributes for each question kind."
         },
         "tags": {
