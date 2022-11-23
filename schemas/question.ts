@@ -1,4 +1,4 @@
-declare namespace Quizoot {
+export declare namespace Quizoot {
     /**
      * Question object used to create a quiz. A Quiz is a set of questions.
      * 
