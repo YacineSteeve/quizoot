@@ -43,7 +43,7 @@
     align-items: center;
     margin: 0;
     padding: 0;
-    background-color: var(--main-blue);
+    background-color: var(--main-purple);
     width: 100%;
     height: 4.5em;
     z-index: 99;

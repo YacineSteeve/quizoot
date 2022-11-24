@@ -10,7 +10,7 @@ import Footer from '@/components/Footer.vue';
         <div class="main">
             <router-view></router-view>
         </div>
-        <Footer/>
+        <Footer />
     </div>
 </template>
 
@@ -41,12 +41,12 @@ import Footer from '@/components/Footer.vue';
 }
 
 .main-container::-webkit-scrollbar-thumb {
-    background: var(--main-blue-lightened);
+    background: var(--main-purple-lightened);
     border-radius: 4px;
 }
 
 .main-container::-webkit-scrollbar-thumb:hover {
-    background: var(--main-blue);
+    background: var(--main-purple);
 }
 
 @media only screen and (min-width: 600px) {

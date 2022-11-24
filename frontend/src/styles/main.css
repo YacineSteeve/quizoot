@@ -1,12 +1,23 @@
 :root {
     --background-color: #dfe2ec;
-    /* --background-color: #fff; */
-    --main-blue: #331e6d;
+    --main-purple: #331e6d;
     --menu-hover-pink: #bfa8ff66;
-    --main-blue-lightened: #331e6d99;
+    --main-purple-lightened: #331e6d99;
     --light-grey: #c9cacc;
     --text-yellow: #ffc400;
     --text-yellow-lightened: #ffcf31;
+    --text-red: #ea4335;
+    --text-blue: #4285f4;
+    --text-green: #34a853;
+
+    /* Color palette
+        - See classy palette here: https://mycolor.space/?hex=%23331E6D&sub=1
+        - And see https://chir.ag/projects/name-that-color for the color names.
+    */
+    --palette-spun-pearl: #afa8ba;
+    --palette-mobster: #7b7485;
+    --palette-lonestar: #670000;
+    --palette-well-read: #a1392b;
 }
 
 body {

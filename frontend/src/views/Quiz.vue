@@ -52,7 +52,7 @@
 
 .question-count {
     font-weight: 800;
-    color: var(--text-yellow);
+    color: var(--palette-well-read);
 }
 
 .btn-group {
@@ -63,7 +63,7 @@
 }
 
 .btn-group button {
-    background-color: #34a853;
+    background-color: var(--palette-mobster);
     color: white;
     font-weight: 600;
     font-size: 1.1em;
