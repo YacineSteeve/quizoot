@@ -192,10 +192,13 @@ declare namespace Quizoot {
     export interface Quiz {
         /**
          * Id of the quiz.
+         *
+         * @pattern [a-z0-9]{12}
          */
         id: string;
         /**
          * The title (header) of the quiz.
+         *
          * @minLength 1
          * @maxLength 40
          */
@@ -206,6 +209,7 @@ declare namespace Quizoot {
         description: string;
         /**
          * Maximum score the user can get. Will be used to compute the final score: sum(question_i_score) / max_score.
+         *
          * @default 0
          * @minimum 0
          */
@@ -227,6 +231,8 @@ declare namespace Quizoot {
     interface QuestionItem {
         /**
          * Id of a question referenced in the quiz.
+         *
+         * @pattern [a-z0-9]{12}
          */
         question_id: string;
         /**
@@ -252,5 +258,11 @@ declare namespace Quizoot {
          * A pseudo for the quiz author.
          */
         pseudo: string | null;
+        /**
+         * The quiz author's email.
+         *
+         * @pattern ^[a-zA-Z]+[\w.\d-]*@[a-zA-Z]+\.[a-zA-Z]{1,3}$
+         */
+        email: string;
     }
 }
