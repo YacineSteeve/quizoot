@@ -1,7 +1,17 @@
-<script setup lang="ts">
+<script lang="ts">
+import { defineComponent } from 'vue';
 import QuizCard from '@/components/QuizCard.vue';
 
-// Retrieve quizzes list (maybe from routed url params) and pass it to the template
+export default defineComponent({
+    components: {
+        QuizCard,
+    },
+    methods: {
+        goToQuiz(quizId: number) {
+            this.$router.push({ path: `/quiz/${quizId}` });
+        }
+    },
+})
 </script>
 
 <template>
@@ -11,7 +21,9 @@ import QuizCard from '@/components/QuizCard.vue';
         </div>
         <!-- Quiz details will be inserted as attributes to QuizCard components
             for each quiz in quizzes list -->
-        <QuizCard v-for="num in 7" v-bind:key="num" />
+        <div v-for="num in 7" :key="num">
+            <QuizCard @click="goToQuiz(num)" />
+        </div>
     </div>
 </template>
 

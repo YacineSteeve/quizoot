@@ -43,7 +43,7 @@
     align-items: center;
     margin: 0;
     padding: 0;
-    background-color: var(--main-blue);
+    background-color: var(--main-purple);
     width: 100%;
     height: 4.5em;
     z-index: 99;
@@ -79,7 +79,7 @@
 }
 
 .links li.menu-item a {
-    color: var(--text-yellow);
+    color: var(--text-yellow-lightened);
     display: flex;
     align-items: center;
     justify-content: center;
