@@ -11,7 +11,7 @@
                     "type": "string"
                 },
                 "firstName": {
-                    "description": "The quiz author's first name. Is optional.",
+                    "description": "The quiz author's first name.",
                     "type": "string"
                 },
                 "lastName": {
