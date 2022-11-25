@@ -1,7 +1,7 @@
 declare namespace Quizoot {
     /**
      * Question object used to create a quiz. A Quiz is a set of questions.
-     * 
+     *
      * @version 0.1.0
      */
     export interface Question {
@@ -12,7 +12,7 @@ declare namespace Quizoot {
          */
         id: string;
         /**
-         * The actual question as a human readable string.
+         * The actual question as a human-readable string.
          */
         question: string;
         /** 
@@ -30,7 +30,7 @@ declare namespace Quizoot {
         */
         grading: Grading;
         /** 
-         * Rate how diffuclt the question is. See {@link Difficulty}.
+         * Rate how difficult the question is. See {@link Difficulty}.
          */
         difficulty: Difficulty;
         /** 
@@ -117,7 +117,7 @@ declare namespace Quizoot {
          */
         id: OptionId;
         /**
-         * The actual display of the option as a human readable string.
+         * The actual display of the option as a human-readable string.
          */
         display: string;
     }
@@ -171,7 +171,7 @@ declare namespace Quizoot {
 
     interface CodeQuestion  {
         /**
-         * Code content. This will be ran using a `python3` runner and evaluated.
+         * Code content. This will be run using a `python3` runner and evaluated.
          */
         content: string;
         /**
@@ -182,5 +182,87 @@ declare namespace Quizoot {
          * Expected output after running the code.
          */
         expected_output: string;
+    }
+
+    /**
+     * A Quiz object represents a set of questions.
+     *
+     * @version 0.1.0
+     */
+    export interface Quiz {
+        /**
+         * Id of the quiz.
+         *
+         * @pattern [a-z0-9]{12}
+         */
+        id: string;
+        /**
+         * The title (header) of the quiz.
+         *
+         * @minLength 1
+         * @maxLength 40
+         */
+        title: string;
+        /**
+         * A brief description of the quiz content, topic...
+         */
+        description: string;
+        /**
+         * Maximum score the user can get. Will be used to compute the final score: sum(question_i_score) / max_score.
+         *
+         * @default 0
+         * @minimum 0
+         */
+        max_score: number;
+        /**
+         * All the questions the quiz is made of.
+         */
+        questions: QuestionItem[]
+        /**
+         * List of optional authors or contributors of the quiz. See {@link Author}.
+         */
+        authors?: Author[];
+        /**
+         * List of optional tags associated with the quiz.
+         */
+        tags?: string[];
+    }
+
+    interface QuestionItem {
+        /**
+         * Id of a question referenced in the quiz.
+         *
+         * @pattern [a-z0-9]{12}
+         */
+        question_id: string;
+        /**
+         * Id of the next question in the quiz chronology. Is null if it is the last question.
+         */
+        next_question_id: string | null;
+        /**
+         * Id of the previous question in the quiz chronology. Is null if it is the first question.
+         */
+        prev_question_id: string | null;
+    }
+
+    interface Author {
+        /**
+         * The quiz author's first name.
+         */
+        firstName: string;
+        /**
+         * The quiz author's last name. Is optional.
+         */
+        lastName?: string;
+        /**
+         * A pseudo for the quiz author.
+         */
+        pseudo?: string | null;
+        /**
+         * The quiz author's email.
+         *
+         * @pattern ^[a-zA-Z]+[\w.\d-]*@[a-zA-Z]+\.[a-zA-Z]{1,3}$
+         */
+        email: string;
     }
 }
