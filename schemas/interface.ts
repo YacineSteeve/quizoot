@@ -247,9 +247,9 @@ declare namespace Quizoot {
 
     interface Author {
         /**
-         * The quiz author's first name. Is optional.
+         * The quiz author's first name.
          */
-        firstName?: string;
+        firstName: string;
         /**
          * The quiz author's last name. Is optional.
          */
@@ -257,7 +257,7 @@ declare namespace Quizoot {
         /**
          * A pseudo for the quiz author.
          */
-        pseudo: string | null;
+        pseudo?: string | null;
         /**
          * The quiz author's email.
          *
