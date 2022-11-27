@@ -29,5 +29,4 @@ schemasToGenerate.forEach((schema) => {
     } catch (err) {
         console.error(err);
     }
-
 });
