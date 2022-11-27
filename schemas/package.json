@@ -3,7 +3,7 @@
     "version": "0.1.0",
     "private": true,
     "scripts": {
-        "gen-schemas": "yarn typescript-json-schema interface.ts Question --out question.json --noExtraProps"
+        "gen-schemas": "yarn ts-node ."
     },
     "devDependencies": {
         "@swc/core": "^1.3.20",

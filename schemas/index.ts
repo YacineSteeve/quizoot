@@ -25,7 +25,7 @@ schemasToGenerate.forEach((schema) => {
     const definition = tjs.generateSchema(program, schema.type, settings);
     
     try {
-        fs.writeFileSync(`./${schema.name}.json`, JSON.stringify(definition?.contains));
+        fs.writeFileSync(`./${schema.name}.json`, JSON.stringify(definition));
     } catch (err) {
         console.error(err);
     }
