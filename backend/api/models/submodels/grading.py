@@ -1,15 +1,21 @@
 from djongo import models
 
-
-class Grading(models.Model):
-    point_value = models.IntegerField()
-    feedback = models.OneToOneField('Feedback', on_delete=models.CASCADE)
-
-    def __str__(self):
-        return str(self.point_value)
+from .feedback import Feedback
 
 
-class Feedback(models.Model):
-    explanation = models.TextField()
-    when_wrong = models.TextField()
-    when_right = models.TextField()
+class GradingAbstract(models.Model):
+    point_value = models.IntegerField(
+        help_text="Specifies how much a correct answer count for in the total score."
+    )
+    # Feedback
+    feedback = models.EmbeddedField(
+        model_container=Feedback,
+        help_text="Feedback given after answering the question.",
+    )
+
+    class Meta:
+        abstract = True
+
+
+class Grading(GradingAbstract):
+    _id = models.ObjectIdField()
