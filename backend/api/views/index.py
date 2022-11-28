@@ -1,10 +1,9 @@
-# from django.shortcuts import render
-from django.http import HttpResponse
-
-from django.views.decorators.csrf import csrf_exempt
-from .validators import SchemaValidator
 import json
 
+from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
+
+from ..validators import SchemaValidator
 
 validator = SchemaValidator()
 
@@ -17,7 +16,7 @@ def index(request):
         json_data = json.loads(data.decode("utf8"))
 
         # Validate data
-        validator.validate(json_data)
+        validator.validate(json_data, "quizzes")
 
         # Do something else
         print("Valid question :", json_data)

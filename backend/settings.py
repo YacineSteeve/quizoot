@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 from pathlib import Path
 import environ
 
-env = environ.Env(
+ENV = environ.Env(
     # set casting, default value
     IN_PROD=(bool, False),
     ADMIN_PATH=(str, "admin/"),
@@ -29,9 +29,9 @@ environ.Env.read_env()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = env("SECRET_KEY")
+SECRET_KEY = ENV("SECRET_KEY")
 
-DEBUG = not env("IN_PROD")
+DEBUG = not ENV("IN_PROD")
 
 ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
 
@@ -85,10 +85,10 @@ WSGI_APPLICATION = "backend.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "djongo",
-        "NAME": env("DATABASE_NAME"),
+        "NAME": ENV("DATABASE_NAME"),
         "ENFORCE_SCHEMA": False,
         "CLIENT": {
-            "host": env("DATABASE_URL"),
+            "host": ENV("DATABASE_URL"),
         },
     }
 }
