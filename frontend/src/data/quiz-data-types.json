@@ -1,0 +1,72 @@
+{
+    "id": "123456789012",
+    "title": "Basic Data Types in Python",
+    "description": "Test your understanding of the basic data types that are built into Python, like numbers, strings, and Booleans.",
+    "max_score": 6,
+    "authors": [
+        {
+            "name": "Merchrist",
+            "surname": "KIKI"
+        }
+    ],
+    "tags": [],
+    "questions": [
+        {
+            "id": "123456789000",
+            "kind": "CHOICE_QUESTION",
+            "question": "Which of the following are valid ways to specify the string literal foo'bar in Python ?",
+            "spec": {
+                "options": [
+                    {
+                        "id": "1111",
+                        "display": "'foo''bar'"
+                    },
+                    {
+                        "id": "1112",
+                        "display": "\"foo'bar\""
+                    },
+                    {
+                        "id": "1113",
+                        "display": "\"\"\"foo'bar\"\"\""
+                    },
+                    {
+                        "id": "1114",
+                        "display": "'foo'bar'"
+                    },
+                    {
+                        "id": "1121",
+                        "display": "'foo\\'bar'"
+                    }
+                ],
+                "answers_id": ["1112", "1113", "1121"]
+            },
+            "grading": {
+                "point_value": 3,
+                "feedback": {
+                    "explanation": ""
+                }
+            },
+            "difficulty": "EASY",
+            "tags": [],
+            "hint": ""
+        },
+        {
+            "id": "123456789001",
+            "kind": "TEXT_QUESTION",
+            "question": "Write an expression for a string literal consisting of the following ASCII characters",
+            "spec": {
+                "placeholder": "Type your answer here",
+                "keywords": []
+            },
+            "grading": {
+                "point_value": 3,
+                "feedback": {
+                    "explanation": "'\\t' is the escape sequence for the Horizontal Tab character.\n\n'\\n' is the escape sequence for the Newline character.\n\nTo specify a character by hexadecimal value, use '\\xhh', where hh specifies the hexadecimal digits.\n\nHere are a few possible correct answers :\n- \"\\t\\n\\x7E\"\n- '\\t\\n\\x7E'\n- '''\\t\\n\\x7E'''"
+                }
+            },
+            "difficulty": "MEDIUM",
+            "tags": [],
+            "hint": "'\\t' is the escape sequence for the Horizontal Tab character.\n\n'\\n' is the escape sequence for the Newline character.\n\nTo specify a character by hexadecimal value, use '\\xhh', where hh specifies the hexadecimal digits."
+        }
+    ]
+}
