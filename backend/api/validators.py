@@ -8,6 +8,7 @@ from django.conf import settings
 class InvalidData(Exception):
     pass
 
+
 class InvalidCollection(Exception):
     pass
 
@@ -32,6 +33,8 @@ class SchemaValidator:
             elif collection == "questions":
                 jsonschema.validate(data, self._question_schema)
             else:
-                raise InvalidCollection("Collection must be literal 'quiz' or 'question'")
+                raise InvalidCollection(
+                    "Collection must be literal 'quiz' or 'question'"
+                )
         except jsonschema.exceptions.ValidationError as err:
             raise InvalidData(err.message)

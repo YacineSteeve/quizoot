@@ -14,8 +14,7 @@ class ApiClient(pymongo.MongoClient):
                 _ = self._database[collection]
 
             self._database[collection].create_index(
-                [("id", pymongo.ASCENDING)],
-                unique=True
+                [("id", pymongo.ASCENDING)], unique=True
             )
 
     @property
