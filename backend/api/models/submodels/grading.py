@@ -8,7 +8,7 @@ class GradingAbstract(models.Model):
         help_text="Specifies how much a correct answer count for in the total score."
     )
     # Feedback
-    feedback = models.EmbeddedField(
+    feedback = models.ArrayField(
         model_container=Feedback,
         help_text="Feedback given after answering the question.",
     )

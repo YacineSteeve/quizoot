@@ -19,10 +19,12 @@ class ChoiceQuestion(BaseQuestionSpec):
 
 
 class SingleChoiceQuestion(ChoiceQuestion):
-    answer_id = models.EmbeddedField(
-        model_container=OptionId,
+    answer_id = models.ForeignKey(
+        OptionId,
+        on_delete=models.SET_NULL,
         null=True,
         blank=True,
+        related_name="answer_id",
         help_text="Id of the correct answer to the question (if single choice).",
     )
 
@@ -31,7 +33,7 @@ class SingleChoiceQuestion(ChoiceQuestion):
 
 
 class MultipleChoicesQuestion(ChoiceQuestion):
-    answers_id = models.ArrayField(
+    answers_id = models.ArrayReferenceField(
         OptionId,
         null=True,
         blank=True,
