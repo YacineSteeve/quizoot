@@ -34,26 +34,12 @@ function getQuestionComponent() {
 
 const componentId = computed(getQuestionComponent);
 </script>
+
 <template>
     <div class="progress-bar"></div>
     <div class="question">
         <component :is="componentId" />
     </div>
 </template>
-<style>
-.quiz-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    width: 65%;
-    margin-left: 17.5%;
-    margin-right: 17.5%;
-    padding-bottom: 30px;
-    min-height: 60vh;
-}
 
-.quiz-title {
-    margin-bottom: 0;
-}
-</style>
+<style></style>
