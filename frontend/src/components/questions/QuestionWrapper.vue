@@ -4,8 +4,8 @@ import { computed, defineProps } from 'vue';
 import type { Quizoot } from '@schemas/interface';
 
 /** Import the different questions */
-import CodeQuestion from './CodeQuestion.vue';
 import ChoiceQuestion from './ChoiceQuestion.vue';
+import CodeQuestion from './CodeQuestion.vue';
 import TextQuestion from './TextQuestion.vue';
 import UploadQuestion from './UploadQuestion.vue';
 
@@ -28,7 +28,7 @@ function getQuestionComponent() {
         case 'UPLOAD_QUESTION':
             return UploadQuestion;
         default:
-            throw Error('Unknown Question');
+            throw Error(`Unknown QuestionKind "${props.question.kind}"`);
     }
 }
 
