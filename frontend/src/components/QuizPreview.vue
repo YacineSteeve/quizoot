@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { Quizoot } from "@schemas/interface";
-import { defineProps } from "vue";
+import type { Quizoot } from '@schemas/interface';
+import { defineProps, computed } from 'vue';
 
 interface QuizPreviewProps {
     questionsCount: number;
@@ -12,12 +12,13 @@ interface QuizPreviewProps {
 const props = defineProps<QuizPreviewProps>();
 
 // Get the first author (for now)
-const author = props.authors?.[0];
+const author = computed(() => props.authors?.[0]);
 </script>
 
 <template>
     <div class="quiz-subtitle">
-        Interactive Quiz <span>&#8226;</span> <span class="question-count">{{ props.questionsCount }}</span>
+        Interactive Quiz <span>&#8226;</span>
+        <span class="question-count">{{ props.questionsCount }}</span>
         Questions
         <p v-if="author">By {{ author.name }} {{ author.surname }}</p>
     </div>
@@ -25,11 +26,8 @@ const author = props.authors?.[0];
         <p>{{ props.description }}</p>
     </div>
     <div class="btn-group">
-        <button @click="onStart">
-            Start the quiz <span>&#187;</span>
-        </button>
+        <button @click="onStart">Start the quiz <span>&#187;</span></button>
     </div>
-
 </template>
 
 <style>

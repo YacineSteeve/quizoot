@@ -4,7 +4,10 @@
     <div id="footer">
         <div class="container">
             <div class="icons">
-                <a class="icon" href="https://fr-fr.facebook.com/BeninExcellence/">
+                <a
+                    class="icon"
+                    href="https://fr-fr.facebook.com/BeninExcellence/"
+                >
                     <font-awesome-icon icon="fa-brands fa-facebook-f" />
                 </a>
                 <a class="icon" href="https://twitter.com/excellencebenin">
@@ -13,15 +16,23 @@
                 <a class="icon" href="#i">
                     <font-awesome-icon icon="fa-brands fa-instagram" />
                 </a>
-                <a class="icon" target="_blank" rel="noreferrer"
-                    href="https://www.linkedin.com/company/benin-excellence/">
+                <a
+                    class="icon"
+                    target="_blank"
+                    rel="noreferrer"
+                    href="https://www.linkedin.com/company/benin-excellence/"
+                >
                     <font-awesome-icon icon="fa-brands fa-linkedin-in" />
                 </a>
             </div>
             <ul class="copyright">
                 <li>&copy; Fondation Vallet</li>
                 <li>
-                    <a target="_blank" rel="noreferrer" href="https://www.fondationvallet.org/eeia/">
+                    <a
+                        target="_blank"
+                        rel="noreferrer"
+                        href="https://www.fondationvallet.org/eeia/"
+                    >
                         École d'Été en Intelligence Artificielle (EEIA)
                     </a>
                 </li>
@@ -45,7 +56,7 @@
     font-size: 2.7em;
     text-align: center;
     padding-top: 1em;
-    padding-bottom: .5em;
+    padding-bottom: 0.5em;
 }
 
 .icon {

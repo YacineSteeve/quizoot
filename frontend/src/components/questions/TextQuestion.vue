@@ -2,6 +2,4 @@
     <div>Hello <code>TextQuestion</code></div>
 </template>
 
-<style>
-
-</style>
+<style></style>

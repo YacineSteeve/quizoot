@@ -2,6 +2,4 @@
     <div>Hello <code>ChoiceQuestion</code></div>
 </template>
 
-<style>
-
-</style>
+<style></style>

@@ -1,19 +1,18 @@
 <script setup lang="ts">
-import { defineProps, withDefaults, ref } from "vue";
-import type { Ref } from "vue";
-import QuizPreview from "@/components/QuizPreview.vue";
-import QuestionWrapper from "@/components/questions/QuestionWrapper.vue";
-import type { Quizoot } from "@schemas/interface";
-import quiz from "@/data/quiz-data-types.json";
+import { defineProps, withDefaults, ref } from 'vue';
+import type { Ref } from 'vue';
+import QuizPreview from '@/components/QuizPreview.vue';
+import QuestionWrapper from '@/components/questions/QuestionWrapper.vue';
+import type { Quizoot } from '@schemas/interface';
+import quiz from '@/data/quiz-data-types.json';
 
 interface QuizProps {
     data: Quizoot.Quiz;
 }
 
-const props = withDefaults(defineProps<QuizProps>(), {
-    data: () => (quiz as Quizoot.Quiz)
+withDefaults(defineProps<QuizProps>(), {
+    data: () => quiz as Quizoot.Quiz,
 });
-const { data } = props;
 
 const currentQuestion: Ref<number | null> = ref(null);
 function startQuiz() {
@@ -24,8 +23,13 @@ function startQuiz() {
 <template>
     <div class="quiz-container">
         <h1 class="quiz-title">{{ data.title }}</h1>
-        <QuizPreview v-if="currentQuestion == null" :questionsCount="data.questions.length"
-            :description="data.description" :authors="data.authors" :onStart=startQuiz />
+        <QuizPreview
+            v-if="currentQuestion == null"
+            :questionsCount="data.questions.length"
+            :description="data.description"
+            :authors="data.authors"
+            :onStart="startQuiz"
+        />
         <QuestionWrapper v-else :question="data.questions[currentQuestion]" />
     </div>
 </template>

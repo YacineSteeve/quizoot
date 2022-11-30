@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import QuizCard from '@/components/QuizCard.vue';
-import { useRouter } from "vue-router";
+import { useRouter } from 'vue-router';
 
 const router = useRouter();
 function goToQuiz(quizId: number) {

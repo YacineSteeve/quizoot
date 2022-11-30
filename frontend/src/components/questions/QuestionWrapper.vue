@@ -19,26 +19,23 @@ const props = defineProps<QuestionWrapperProps>();
 // the questions component.
 function getQuestionComponent() {
     switch (props.question.kind) {
-        case "CHOICE_QUESTION":
+        case 'CHOICE_QUESTION':
             return ChoiceQuestion;
-        case "CODE_QUESTION":
+        case 'CODE_QUESTION':
             return CodeQuestion;
-        case "TEXT_QUESTION":
+        case 'TEXT_QUESTION':
             return TextQuestion;
-        case "UPLOAD_QUESTION":
+        case 'UPLOAD_QUESTION':
             return UploadQuestion;
         default:
-            throw Error("Unknown Question");
+            throw Error('Unknown Question');
     }
 }
 
 const componentId = computed(getQuestionComponent);
-
 </script>
 <template>
-    <div class="progress-bar">
-
-    </div>
+    <div class="progress-bar"></div>
     <div class="question">
         <component :is="componentId" />
     </div>
