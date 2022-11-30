@@ -1,6 +1,6 @@
 from rest_framework.decorators import api_view
 
-from ..config import client
+from ..client import client
 from ..utils import JsonResponse
 
 
