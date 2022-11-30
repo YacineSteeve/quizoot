@@ -65,7 +65,7 @@
                 }
             },
             "difficulty": "MEDIUM",
-            "tags": [],
+            "tags": ["string", "ascii"],
             "hint": "'\\t' is the escape sequence for the Horizontal Tab character.\n\n'\\n' is the escape sequence for the Newline character.\n\nTo specify a character by hexadecimal value, use '\\xhh', where hh specifies the hexadecimal digits."
         }
     ]
