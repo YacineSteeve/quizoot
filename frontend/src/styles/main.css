@@ -25,3 +25,29 @@ body {
     background-color: var(--background-color);
     overflow: hidden;
 }
+
+.btn-group {
+    display: flex;
+    width: 100%;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.btn-group button {
+    background-color: var(--palette-mobster);
+    color: white;
+    font-weight: 600;
+    font-size: 1.1em;
+    padding-left: 10px;
+    padding-right: 10px;
+    width: auto;
+    min-height: 40px;
+    border-radius: 5px;
+    cursor: pointer;
+    border: none;
+}
+
+.btn-group button:hover {
+    transform: translate(2px, 2px);
+    opacity: 0.8;
+}
