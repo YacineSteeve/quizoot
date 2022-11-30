@@ -4,14 +4,7 @@ from typing import Any, Literal
 import jsonschema
 from django.conf import settings
 
-
-class InvalidData(Exception):
-    pass
-
-
-class InvalidCollection(Exception):
-    pass
-
+from .exceptions import InvalidData, InvalidCollection
 
 class SchemaValidator:
     __schema_dir = settings.BASE_DIR / "schemas"
@@ -34,7 +27,7 @@ class SchemaValidator:
                 jsonschema.validate(data, self._question_schema)
             else:
                 raise InvalidCollection(
-                    "Collection must be literal 'quiz' or 'question'"
+                    "Collection must be literal 'quizzes' or 'questions'"
                 )
         except jsonschema.exceptions.ValidationError as err:
             raise InvalidData(err.message)
