@@ -46,6 +46,4 @@ const componentId = computed(() => {
     </div>
 </template>
 
-<style>
-
-</style>
+<style></style>
