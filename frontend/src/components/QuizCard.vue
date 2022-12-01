@@ -16,7 +16,12 @@ const bgColor = computed(() => (quiz.status ? '#008000' : '#dfe2ec'));
     <div class="quiz-preview-container">
         <div class="quiz-status-container">
             <div class="quiz-status" v-on:click="quiz.status = !quiz.status">
-                <font-awesome-icon icon="fa-solid fa-check" color="#ffffff" size="lg" v-if="quiz.status"/>
+                <font-awesome-icon
+                    icon="fa-solid fa-check"
+                    color="#ffffff"
+                    size="lg"
+                    v-if="quiz.status"
+                />
             </div>
         </div>
         <div class="quiz-details">
@@ -29,7 +34,7 @@ const bgColor = computed(() => (quiz.status ? '#008000' : '#dfe2ec'));
         </div>
         <div class="quiz-details-expand-icon-container">
             <div class="quiz-details-expand-icon">
-                <font-awesome-icon icon="fa-solid fa-chevron-right" size="lg"/>
+                <font-awesome-icon icon="fa-solid fa-chevron-right" size="lg" />
             </div>
         </div>
     </div>
@@ -107,7 +112,7 @@ const bgColor = computed(() => (quiz.status ? '#008000' : '#dfe2ec'));
     }
 }
 
-.quiz-preview-container .quiz-details>* {
+.quiz-preview-container .quiz-details > * {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -115,7 +120,7 @@ const bgColor = computed(() => (quiz.status ? '#008000' : '#dfe2ec'));
     height: 35%;
 }
 
-.quiz-preview-container .quiz-details>*>* {
+.quiz-preview-container .quiz-details > * > * {
     width: 100%;
     height: fit-content;
     margin: 0;

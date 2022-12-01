@@ -1,17 +1,11 @@
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
 import QuizCard from '@/components/QuizCard.vue';
+import { useRouter } from 'vue-router';
 
-export default defineComponent({
-    components: {
-        QuizCard,
-    },
-    methods: {
-        goToQuiz(quizId: number) {
-            this.$router.push({ path: `/quiz/${quizId}` });
-        }
-    },
-})
+const router = useRouter();
+function goToQuiz(quizId: number) {
+    router.push({ path: `/quiz/${quizId}` });
+}
 </script>
 
 <template>

@@ -1,4 +1,4 @@
-declare namespace Quizoot {
+export declare namespace Quizoot {
     /**
      * Question object used to create a quiz. A Quiz is a set of questions.
      *
@@ -126,6 +126,12 @@ declare namespace Quizoot {
 
     interface TextQuestion {
         /**
+         * Placeholder to display in the html `textarea` or `input`
+         * 
+         * @examples ["Type your text here..."]
+         */
+        placeholder?: string;
+        /**
          * List of keywords that the answers should contain. It is up to the developer to implement if the answer should contain ALL or ANY of the keywords.
          * 
          * @examples ["bytes", "octets"]
@@ -217,7 +223,7 @@ declare namespace Quizoot {
         /**
          * All the questions the quiz is made of.
          */
-        questions: QuestionItem[]
+        questions: Question[]
         /**
          * List of optional authors or contributors of the quiz. See {@link Author}.
          */
@@ -249,11 +255,11 @@ declare namespace Quizoot {
         /**
          * The quiz author's first name.
          */
-        firstName: string;
+        name: string;
         /**
          * The quiz author's last name. Is optional.
          */
-        lastName?: string;
+        surname?: string;
         /**
          * A pseudo for the quiz author.
          */
@@ -263,6 +269,6 @@ declare namespace Quizoot {
          *
          * @pattern ^[a-zA-Z]+[\w.\d-]*@[a-zA-Z]+\.[a-zA-Z]{1,3}$
          */
-        email: string;
+        email?: string;
     }
 }

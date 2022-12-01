@@ -5,18 +5,17 @@
         <div class="navbar">
             <ul class="links">
                 <li class="menu-item">
-                    <router-link to="/" title="Home">
-                        Home
-                    </router-link>
+                    <router-link to="/" title="Home"> Home </router-link>
                 </li>
                 <li class="menu-item">
-                    <router-link to="/news" title="News">
-                        News
-                    </router-link>
+                    <router-link to="/news" title="News"> News </router-link>
                 </li>
                 <li id="logo">
                     <router-link to="/" title="Logo">
-                        <img src="../assets/logo-no-background.svg" alt="Quizoot Logo" />
+                        <img
+                            src="../assets/logo-no-background.svg"
+                            alt="Quizoot Logo"
+                        />
                     </router-link>
                 </li>
                 <li class="menu-item">
@@ -25,9 +24,7 @@
                     </router-link>
                 </li>
                 <li class="menu-item">
-                    <router-link to="/about" title="About">
-                        About
-                    </router-link>
+                    <router-link to="/about" title="About"> About </router-link>
                 </li>
             </ul>
         </div>
@@ -75,7 +72,6 @@
 .links li.menu-item {
     flex: 1;
     height: 60%;
-
 }
 
 .links li.menu-item a {
@@ -107,7 +103,7 @@
     }
 
     .links li.menu-item a {
-        font-size: .8em;
+        font-size: 0.8em;
     }
 }
 
