@@ -2,7 +2,7 @@
 import { defineProps, withDefaults, ref } from 'vue';
 import type { Ref } from 'vue';
 import QuizPreview from '@/components/QuizPreview.vue';
-import QuestionWrapper from '@/components/questions/QuestionWrapper.vue';
+import Question from '@/components/Question.vue';
 import type { Quizoot } from '@schemas/interface';
 import quiz from '@/data/quiz-data-types.json';
 
@@ -30,7 +30,7 @@ function startQuiz() {
             :authors="data.authors"
             :onStart="startQuiz"
         />
-        <QuestionWrapper v-else :question="data.questions[currentQuestion]" />
+        <Question v-else :question="data.questions[currentQuestion]" />
     </div>
 </template>
 
