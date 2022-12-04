@@ -1,37 +1,65 @@
 <script setup lang="ts">
-import { defineProps, withDefaults, ref } from 'vue';
-import type { Ref } from 'vue';
+import { withDefaults, ref, computed } from 'vue';
+import type { Ref, ComputedRef } from 'vue';
+import type {Quizoot} from '@schemas/interface';
 import QuizPreview from '@/components/QuizPreview.vue';
-import Question from '@/components/Question.vue';
-import type { Quizoot } from '@schemas/interface';
+import QuestionWrapper from '@/components/QuestionWrapper.vue';
 import quiz from '@/data/quiz-data-types.json';
 
 interface QuizProps {
     data: Quizoot.Quiz;
 }
 
-withDefaults(defineProps<QuizProps>(), {
+const props = withDefaults(defineProps<QuizProps>(), {
     data: () => quiz as Quizoot.Quiz,
 });
 
-const currentQuestion: Ref<number | null> = ref(null);
+const currentQuestionIndex: Ref<number | null> = ref(null);
+
+const questionsFlow: ComputedRef = computed(() => {
+    return {
+        isFirstQuestion: currentQuestionIndex.value == 0,
+        isLastQuestion: currentQuestionIndex.value == props.data.questions.length - 1
+    }
+});
+
 function startQuiz() {
-    currentQuestion.value = 0;
+    currentQuestionIndex.value = 0;
+}
+
+function goToNextQuestion() {
+    if (currentQuestionIndex.value != null && currentQuestionIndex.value < props.data.questions.length - 1) {
+        currentQuestionIndex.value++;
+    }
+}
+
+function goToPreviousQuestion() {
+    if (currentQuestionIndex.value != null && currentQuestionIndex.value > 0) {
+        currentQuestionIndex.value--;
+    }
 }
 </script>
 
 <template>
     <div class="quiz-container">
-        <h1 class="quiz-title">{{ data.title }}</h1>
-        <br/>
+        <h1 class="quiz-title">{{ props.data.title }}</h1>
+        <br />
         <QuizPreview
-            v-if="currentQuestion == null"
-            :questionsCount="data.questions.length"
-            :description="data.description"
-            :authors="data.authors"
+            v-if="currentQuestionIndex == null"
+            :questionsCount="props.data.questions.length"
+            :description="props.data.description"
+            :authors="props.data.authors"
             :onStart="startQuiz"
         />
-        <Question v-else :question="data.questions[currentQuestion]" />
+        <question-wrapper
+                v-else
+                :question="props.data.questions[currentQuestionIndex]"
+                :questionsCount="props.data.questions.length"
+                :questionsFlow="questionsFlow"
+                :goToNextQuestion="goToNextQuestion"
+                :goToPreviousQuestion="goToPreviousQuestion"
+        >
+        </question-wrapper>
     </div>
 </template>
 
@@ -45,7 +73,7 @@ function startQuiz() {
 
 @media only screen and (max-width: 600px) {
     .quiz-container {
-        margin-inline: 5%
+        margin-inline: 5%;
     }
 }
 
