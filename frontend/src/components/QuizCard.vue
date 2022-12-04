@@ -19,7 +19,6 @@ const bgColor = computed(() => (quiz.status ? '#008000' : '#dfe2ec'));
                 <font-awesome-icon
                     icon="fa-solid fa-check"
                     color="#ffffff"
-                    size="lg"
                     v-if="quiz.status"
                 />
             </div>
@@ -84,6 +83,10 @@ const bgColor = computed(() => (quiz.status ? '#008000' : '#dfe2ec'));
     background-color: v-bind(bgColor);
 }
 
+.quiz-preview-container .quiz-status > * {
+    width: 80%;
+}
+
 .quiz-preview-container .quiz-details {
     display: flex;
     flex-direction: column;
@@ -96,8 +99,8 @@ const bgColor = computed(() => (quiz.status ? '#008000' : '#dfe2ec'));
 
 @media only screen and (max-width: 600px) {
     .quiz-preview-container {
-        width: 85%;
-        min-width: auto;
+        width: 85vw;
+        min-width: unset;
         height: 14vh;
         margin-block: 2vh;
     }

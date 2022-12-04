@@ -23,6 +23,7 @@ function startQuiz() {
 <template>
     <div class="quiz-container">
         <h1 class="quiz-title">{{ data.title }}</h1>
+        <br/>
         <QuizPreview
             v-if="currentQuestion == null"
             :questionsCount="data.questions.length"
@@ -40,11 +41,12 @@ function startQuiz() {
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    width: 65%;
-    margin-left: 17.5%;
-    margin-right: 17.5%;
-    padding-bottom: 30px;
-    min-height: 60vh;
+}
+
+@media only screen and (max-width: 600px) {
+    .quiz-container {
+        margin-inline: 5%
+    }
 }
 
 .quiz-title {

@@ -5,15 +5,16 @@
         <div class="container">
             <div class="icons">
                 <a
+                    target="_blank"
                     class="icon"
                     href="https://fr-fr.facebook.com/BeninExcellence/"
                 >
                     <font-awesome-icon icon="fa-brands fa-facebook-f" />
                 </a>
-                <a class="icon" href="https://twitter.com/excellencebenin">
+                <a target="_blank" class="icon" href="https://twitter.com/excellencebenin">
                     <font-awesome-icon icon="fa-brands fa-twitter" />
                 </a>
-                <a class="icon" href="#i">
+                <a target="_blank" class="icon" href="#i">
                     <font-awesome-icon icon="fa-brands fa-instagram" />
                 </a>
                 <a

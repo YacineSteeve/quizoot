@@ -42,7 +42,7 @@
     padding: 0;
     background-color: var(--main-purple);
     width: 100%;
-    height: 4.5em;
+    height: 3.5em;
     z-index: 99;
 }
 
