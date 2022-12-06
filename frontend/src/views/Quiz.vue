@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { withDefaults, ref, computed } from 'vue';
 import type { Ref, ComputedRef } from 'vue';
-import type {Quizoot} from '@schemas/interface';
+import type { Quizoot } from '@schemas/interface';
 import QuizPreview from '@/components/QuizPreview.vue';
 import QuestionWrapper from '@/components/QuestionWrapper.vue';
 import quiz from '@/data/quiz-data-types.json';
@@ -18,12 +18,14 @@ const currentQuestionIndex: Ref<number | null> = ref(null);
 
 const questionsFlow: ComputedRef = computed(() => {
     return {
-        questionNumber: currentQuestionIndex.value == null
-            ? 0
-            : currentQuestionIndex.value + 1,
+        questionNumber:
+            currentQuestionIndex.value == null
+                ? 0
+                : currentQuestionIndex.value + 1,
         isFirstQuestion: currentQuestionIndex.value == 0,
-        isLastQuestion: currentQuestionIndex.value == props.data.questions.length - 1
-    }
+        isLastQuestion:
+            currentQuestionIndex.value == props.data.questions.length - 1,
+    };
 });
 
 function startQuiz() {
@@ -35,7 +37,10 @@ function quitQuiz() {
 }
 
 function goToNextQuestion() {
-    if (currentQuestionIndex.value != null && currentQuestionIndex.value < props.data.questions.length - 1) {
+    if (
+        currentQuestionIndex.value != null &&
+        currentQuestionIndex.value < props.data.questions.length - 1
+    ) {
         currentQuestionIndex.value++;
     }
 }
@@ -52,11 +57,11 @@ function goToPreviousQuestion() {
         <h1 class="quiz-title">
             <span class="back-to-quiz-preview-icon">
                 <font-awesome-icon
-                        v-show="currentQuestionIndex != null"
-                        @click="quitQuiz"
-                        icon="fa-solid fa-chevron-left"
-                />
-            </span>{{ props.data.title }}
+                    v-show="currentQuestionIndex != null"
+                    @click="quitQuiz"
+                    icon="fa-solid fa-chevron-left"
+                /> </span
+            >{{ props.data.title }}
         </h1>
         <br />
         <QuizPreview
@@ -67,12 +72,12 @@ function goToPreviousQuestion() {
             :onStart="startQuiz"
         />
         <question-wrapper
-                v-else
-                :question="props.data.questions[currentQuestionIndex]"
-                :questionsCount="props.data.questions.length"
-                :questionsFlow="questionsFlow"
-                :goToNextQuestion="goToNextQuestion"
-                :goToPreviousQuestion="goToPreviousQuestion"
+            v-else
+            :question="props.data.questions[currentQuestionIndex]"
+            :questionsCount="props.data.questions.length"
+            :questionsFlow="questionsFlow"
+            :goToNextQuestion="goToNextQuestion"
+            :goToPreviousQuestion="goToPreviousQuestion"
         >
         </question-wrapper>
     </div>

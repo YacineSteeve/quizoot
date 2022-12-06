@@ -5,7 +5,6 @@ import type { Quizoot } from '@schemas/interface';
 import NavigationButton from '@/components/NavigationButton.vue';
 import { pascalToSnake } from '@/lib/string-utils';
 
-
 interface QuestionsFlow {
     questionNumber: number;
     isFirstQuestion: boolean;
@@ -44,17 +43,21 @@ const components = getComponents();
 
 const props = defineProps<QuestionWrapperProps>();
 
-const QuestionComponent: ComputedRef = computed(() => components[props.question.kind] as Component);
+const QuestionComponent: ComputedRef = computed(
+    () => components[props.question.kind] as Component
+);
 
 const difficultiesColors: Record<Quizoot.Difficulty, string> = {
-    'EASY': 'green',
-    'MEDIUM': 'orange',
-    'HARD': 'red'
-}
+    EASY: 'green',
+    MEDIUM: 'orange',
+    HARD: 'red',
+};
 
 const questionDifficultyColor: ComputedRef = computed(() => {
-    return difficultiesColors[props.question.difficulty.toUpperCase() as Quizoot.Difficulty]
-})
+    return difficultiesColors[
+        props.question.difficulty.toUpperCase() as Quizoot.Difficulty
+    ];
+});
 </script>
 
 <template>
@@ -67,27 +70,31 @@ const questionDifficultyColor: ComputedRef = computed(() => {
             </h1>
         </div>
         <div class="question-props">
-            <span id="difficulty">{{ props.question.difficulty.toUpperCase() }}</span>
+            <span id="difficulty">{{
+                props.question.difficulty.toUpperCase()
+            }}</span>
             <span>&#8226; </span>
-            <span id="grading">{{ props.question.grading.point_value }} pts</span>
+            <span id="grading"
+                >{{ props.question.grading.point_value }} pts</span
+            >
         </div>
-        <QuestionComponent/>
+        <QuestionComponent />
         <div class="navigation-button-group">
             <navigation-button
-                    v-if="!props.questionsFlow.isFirstQuestion"
-                    @click="goToPreviousQuestion"
-                    backgroundColor="var(--palette-well-read)"
-                    navigateTo="left"
-                    class="previous-button button"
+                v-if="!props.questionsFlow.isFirstQuestion"
+                @click="goToPreviousQuestion"
+                backgroundColor="var(--palette-well-read)"
+                navigateTo="left"
+                class="previous-button button"
             >
                 Previous
             </navigation-button>
             <navigation-button
-                    v-if="!props.questionsFlow.isLastQuestion"
-                    @click="goToNextQuestion"
-                    backgroundColor="var(--palette-well-read)"
-                    navigateTo="right"
-                    class="next-button button"
+                v-if="!props.questionsFlow.isLastQuestion"
+                @click="goToNextQuestion"
+                backgroundColor="var(--palette-well-read)"
+                navigateTo="right"
+                class="next-button button"
             >
                 Next
             </navigation-button>
@@ -102,7 +109,7 @@ const questionDifficultyColor: ComputedRef = computed(() => {
 }
 
 .question-wrapper .question-number h1 span {
-    font-size: .7em;
+    font-size: 0.7em;
 }
 
 .question-wrapper .question-props {

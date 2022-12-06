@@ -1,5 +1,9 @@
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faChevronLeft, faChevronRight, faCheck } from '@fortawesome/free-solid-svg-icons';
+import {
+    faChevronLeft,
+    faChevronRight,
+    faCheck,
+} from '@fortawesome/free-solid-svg-icons';
 import {
     faFacebookF,
     faInstagram,

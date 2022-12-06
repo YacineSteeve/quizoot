@@ -11,7 +11,11 @@
                 >
                     <font-awesome-icon icon="fa-brands fa-facebook-f" />
                 </a>
-                <a target="_blank" class="icon" href="https://twitter.com/excellencebenin">
+                <a
+                    target="_blank"
+                    class="icon"
+                    href="https://twitter.com/excellencebenin"
+                >
                     <font-awesome-icon icon="fa-brands fa-twitter" />
                 </a>
                 <a target="_blank" class="icon" href="#i">

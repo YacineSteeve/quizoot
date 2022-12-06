@@ -16,7 +16,7 @@ const buttonAttrs = useAttrs();
 
 <style scoped>
 .navigation-button-container button {
-    background-color: v-bind(buttonAttrs['backgroundColor']);
+    background-color: v-bind(buttonAttrs[ 'backgroundColor' ]);
     color: white;
     font-weight: 600;
     font-size: 1.1em;

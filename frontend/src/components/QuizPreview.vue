@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Quizoot } from '@schemas/interface';
 import { computed } from 'vue';
-import NavigationButton from "@/components/NavigationButton.vue";
+import NavigationButton from '@/components/NavigationButton.vue';
 
 interface QuizPreviewProps {
     questionsCount: number;
@@ -29,9 +29,10 @@ const author = computed(() => props.authors?.[0]);
     <br />
     <div class="btn-group">
         <navigation-button
-                @click="onStart"
-                backgroundColor="var(--palette-cutty-sark)"
-                navigateTo="right">
+            @click="onStart"
+            backgroundColor="var(--palette-cutty-sark)"
+            navigateTo="right"
+        >
             Start the quiz
         </navigation-button>
     </div>
