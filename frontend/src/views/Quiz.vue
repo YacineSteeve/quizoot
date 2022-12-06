@@ -18,6 +18,9 @@ const currentQuestionIndex: Ref<number | null> = ref(null);
 
 const questionsFlow: ComputedRef = computed(() => {
     return {
+        questionNumber: currentQuestionIndex.value == null
+            ? 0
+            : currentQuestionIndex.value + 1,
         isFirstQuestion: currentQuestionIndex.value == 0,
         isLastQuestion: currentQuestionIndex.value == props.data.questions.length - 1
     }
@@ -25,6 +28,10 @@ const questionsFlow: ComputedRef = computed(() => {
 
 function startQuiz() {
     currentQuestionIndex.value = 0;
+}
+
+function quitQuiz() {
+    currentQuestionIndex.value = null;
 }
 
 function goToNextQuestion() {
@@ -42,7 +49,15 @@ function goToPreviousQuestion() {
 
 <template>
     <div class="quiz-container">
-        <h1 class="quiz-title">{{ props.data.title }}</h1>
+        <h1 class="quiz-title">
+            <span class="back-to-quiz-preview-icon">
+                <font-awesome-icon
+                        v-show="currentQuestionIndex != null"
+                        @click="quitQuiz"
+                        icon="fa-solid fa-chevron-left"
+                />
+            </span>{{ props.data.title }}
+        </h1>
         <br />
         <QuizPreview
             v-if="currentQuestionIndex == null"
@@ -63,7 +78,7 @@ function goToPreviousQuestion() {
     </div>
 </template>
 
-<style>
+<style scoped>
 .quiz-container {
     display: flex;
     flex-direction: column;
@@ -71,13 +86,54 @@ function goToPreviousQuestion() {
     align-items: center;
 }
 
+.quiz-container .quiz-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    height: fit-content;
+    margin-top: 1em;
+}
+
+.quiz-container .quiz-title .back-to-quiz-preview-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 0.8em;
+    aspect-ratio: 1 / 1;
+    color: var(--main-purple-lightened);
+}
+
+.quiz-container .quiz-title .back-to-quiz-preview-icon:hover {
+    color: var(--palette-carribean-green);
+}
+
+.quiz-container .quiz-title .back-to-quiz-preview-icon > * {
+    width: 100%;
+    height: 100%;
+}
+
+.quiz-container .quiz-title {
+    cursor: pointer;
+    text-align: left;
+    flex: 1;
+}
+
+.quiz-container .quiz-title h1 {
+    margin: 0;
+}
+
+.quiz-container h1.quiz-title {
+    margin-bottom: 0;
+}
+
 @media only screen and (max-width: 600px) {
     .quiz-container {
         margin-inline: 5%;
     }
-}
 
-.quiz-title {
-    margin-bottom: 0;
+    .quiz-container .quiz-title .back-to-quiz-preview-icon {
+        width: 1.25em;
+    }
 }
 </style>

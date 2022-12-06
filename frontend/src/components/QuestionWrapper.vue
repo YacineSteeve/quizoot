@@ -7,6 +7,7 @@ import { pascalToSnake } from '@/lib/string-utils';
 
 
 interface QuestionsFlow {
+    questionNumber: number;
     isFirstQuestion: boolean;
     isLastQuestion: boolean;
 }
@@ -18,8 +19,6 @@ interface QuestionWrapperProps {
     goToPreviousQuestion: () => void;
     goToNextQuestion: () => void;
 }
-
-const props = defineProps<QuestionWrapperProps>();
 
 type Components = Promise<any>;
 type ComponentsMap = Record<Quizoot.QuestionKind, Components>;
@@ -43,12 +42,35 @@ function getComponents() {
 
 const components = getComponents();
 
+const props = defineProps<QuestionWrapperProps>();
+
 const QuestionComponent: ComputedRef = computed(() => components[props.question.kind] as Component);
+
+const difficultiesColors: Record<Quizoot.Difficulty, string> = {
+    'EASY': 'green',
+    'MEDIUM': 'orange',
+    'HARD': 'red'
+}
+
+const questionDifficultyColor: ComputedRef = computed(() => {
+    return difficultiesColors[props.question.difficulty.toUpperCase() as Quizoot.Difficulty]
+})
 </script>
 
 <template>
     <div class="progress-bar"></div>
     <div class="question-wrapper">
+        <div class="question-number">
+            <h1>
+                Question {{ props.questionsFlow.questionNumber }}
+                <span> / {{ props.questionsCount }}</span>
+            </h1>
+        </div>
+        <div class="question-props">
+            <span id="difficulty">{{ props.question.difficulty.toUpperCase() }}</span>
+            <span>&#8226; </span>
+            <span id="grading">{{ props.question.grading.point_value }} pts</span>
+        </div>
         <QuestionComponent/>
         <div class="navigation-button-group">
             <navigation-button
@@ -79,10 +101,48 @@ const QuestionComponent: ComputedRef = computed(() => components[props.question.
     height: 100%;
 }
 
+.question-wrapper .question-number h1 span {
+    font-size: .7em;
+}
+
+.question-wrapper .question-props {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.question-wrapper .question-props > * {
+    width: fit-content;
+}
+
+.question-wrapper .question-props #difficulty {
+    text-align: right;
+    flex: 1;
+    letter-spacing: 1px;
+    color: v-bind(questionDifficultyColor);
+}
+
+.question-wrapper .question-props #grading {
+    text-align: left;
+    flex: 1;
+}
+
 .question-wrapper .navigation-button-group {
     display: flex;
-    width: 100%;
+    width: 70%;
     align-items: center;
+    margin-inline: 50%;
+    transform: translateX(-50%);
+}
+
+@media only screen and (max-width: 600px) {
+    .question-wrapper .navigation-button-group {
+        width: 100%;
+    }
+}
+
+.question-wrapper .navigation-button-group .button {
+    min-width: 150px;
 }
 
 .question-wrapper .navigation-button-group:has(.button:nth-child(2)) {

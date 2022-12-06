@@ -22,7 +22,7 @@ const buttonAttrs = useAttrs();
     font-size: 1.1em;
     padding-left: 10px;
     padding-right: 10px;
-    width: auto;
+    width: 100%;
     min-height: 50px;
     border-radius: 10px;
     cursor: pointer;
