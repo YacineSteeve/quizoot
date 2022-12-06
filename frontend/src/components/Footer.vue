@@ -53,10 +53,6 @@
     background-color: #f6f6f6;
 }
 
-#footer .container {
-    height: 300px;
-}
-
 #footer .container .copyright {
     display: flex;
     flex-wrap: wrap;
@@ -101,6 +97,10 @@
 }
 
 @media only screen and (max-width: 600px) {
+    #footer .container {
+        height: 300px;
+    }
+
     #footer .container .icons {
         font-size: 2em;
     }
