@@ -49,7 +49,17 @@
 
 <style scoped>
 #footer {
+    height: fit-content;
     background-color: #f6f6f6;
+}
+
+#footer .container {
+    height: 300px;
+}
+
+#footer .container .copyright {
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .icons {
@@ -73,7 +83,7 @@
 }
 
 .copyright {
-    list-style: disc;
+    list-style: none;
     color: #aaa;
     text-align: center;
     margin: 0;
@@ -85,16 +95,24 @@
 }
 
 .copyright li {
-    display: inline-block;
     border-left: solid 1px rgba(144, 144, 144, 0.25);
     padding: 15px;
+    flex: 1;
 }
 
 @media only screen and (max-width: 600px) {
+    #footer .container .icons {
+        font-size: 2em;
+    }
+
+    .copyright {
+        flex-direction: column;
+    }
+
     .copyright li {
-        display: block;
         border: none;
         padding: 0;
+        margin-block: 15px;
     }
 }
 
