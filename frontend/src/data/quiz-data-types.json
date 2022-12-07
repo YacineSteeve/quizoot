@@ -84,10 +84,7 @@
                 }
             },
             "difficulty": "HARD",
-            "tags": [
-                "list",
-                "loop"
-            ],
+            "tags": ["list", "loop"],
             "hint": "Use two nested 'for' loops."
         },
         {
@@ -106,11 +103,7 @@
                 }
             },
             "difficulty": "EASY",
-            "tags": [
-                "pandas",
-                "csv",
-                "dataframe"
-            ],
+            "tags": ["pandas", "csv", "dataframe"],
             "hint": "The first line of the file must contain the headers of your columns."
         }
     ]
