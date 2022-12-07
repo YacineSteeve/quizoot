@@ -3,7 +3,7 @@ import { withDefaults, ref, computed } from 'vue';
 import type { Ref, ComputedRef } from 'vue';
 import type { Quizoot } from '@schemas/interface';
 import QuizPreview from '@/components/QuizPreview.vue';
-import QuestionWrapper from '@/components/QuestionWrapper.vue';
+import Question from '@/components/Question.vue';
 import quiz from '@/data/quiz-data-types.json';
 
 interface QuizProps {
@@ -61,17 +61,17 @@ function goToPreviousQuestion() {
                     @click="quitQuiz"
                     icon="fa-solid fa-chevron-left"
                 /> </span
-            >{{ props.data.title }}
+            >{{ data.title }}
         </h1>
         <br />
         <QuizPreview
             v-if="currentQuestionIndex == null"
-            :questionsCount="props.data.questions.length"
-            :description="props.data.description"
-            :authors="props.data.authors"
+            :questionsCount="data.questions.length"
+            :description="data.description"
+            :authors="data.authors"
             :onStart="startQuiz"
         />
-        <question-wrapper
+        <question
             v-else
             :question="props.data.questions[currentQuestionIndex]"
             :questionsCount="props.data.questions.length"
@@ -79,7 +79,7 @@ function goToPreviousQuestion() {
             :goToNextQuestion="goToNextQuestion"
             :goToPreviousQuestion="goToPreviousQuestion"
         >
-        </question-wrapper>
+        </question>
     </div>
 </template>
 

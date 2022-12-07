@@ -31,7 +31,7 @@ const author = computed(() => props.authors?.[0]);
         <navigation-button
             @click="onStart"
             backgroundColor="var(--palette-cutty-sark)"
-            navigateTo="right"
+            chevronRight
         >
             Start the quiz
         </navigation-button>

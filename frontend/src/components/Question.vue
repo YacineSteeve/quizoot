@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent } from 'vue';
-import type { ComputedRef, Component } from 'vue';
+import type { ComputedRef } from 'vue';
 import type { Quizoot } from '@schemas/interface';
 import NavigationButton from '@/components/NavigationButton.vue';
 import { pascalToSnake } from '@/lib/string-utils';
@@ -43,9 +43,13 @@ const components = getComponents();
 
 const props = defineProps<QuestionWrapperProps>();
 
-const QuestionComponent: ComputedRef = computed(
-    () => components[props.question.kind] as Component
-);
+const QuestionComponent: ComputedRef = computed(() => {
+    if (props.question.kind in components) {
+        return components[props.question.kind];
+    } else {
+        throw Error(`Unknown QuestionKind "${props.question.kind}"`);
+    }
+});
 
 const difficultiesColors: Record<Quizoot.Difficulty, string> = {
     EASY: 'green',
@@ -53,11 +57,9 @@ const difficultiesColors: Record<Quizoot.Difficulty, string> = {
     HARD: 'red',
 };
 
-const questionDifficultyColor: ComputedRef = computed(() => {
-    return difficultiesColors[
-        props.question.difficulty.toUpperCase() as Quizoot.Difficulty
-    ];
-});
+const questionDifficultyColor: ComputedRef = computed(
+    () => difficultiesColors[props.question.difficulty]
+);
 </script>
 
 <template>
@@ -84,7 +86,7 @@ const questionDifficultyColor: ComputedRef = computed(() => {
                 v-if="!props.questionsFlow.isFirstQuestion"
                 @click="goToPreviousQuestion"
                 backgroundColor="var(--palette-well-read)"
-                navigateTo="left"
+                chevronLeft
                 class="previous-button button"
             >
                 Previous
@@ -93,7 +95,7 @@ const questionDifficultyColor: ComputedRef = computed(() => {
                 v-if="!props.questionsFlow.isLastQuestion"
                 @click="goToNextQuestion"
                 backgroundColor="var(--palette-well-read)"
-                navigateTo="right"
+                chevronRight
                 class="next-button button"
             >
                 Next

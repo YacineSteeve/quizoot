@@ -1,22 +1,26 @@
 <script setup lang="ts">
-import { useAttrs } from 'vue';
+interface NavigateButtonProps {
+    backgroundColor: string;
+    chevronLeft?: boolean;
+    chevronRight?: boolean;
+}
 
-const buttonAttrs = useAttrs();
+const props = defineProps<NavigateButtonProps>();
 </script>
 
 <template>
     <div class="navigation-button-container">
         <button>
-            <span v-if="buttonAttrs['navigateTo'] === 'left'">&#171;</span>
+            <span v-if="props.chevronLeft">&#171;</span>
             <slot></slot>
-            <span v-if="buttonAttrs['navigateTo'] === 'right'">&#187;</span>
+            <span v-if="props.chevronRight">&#187;</span>
         </button>
     </div>
 </template>
 
 <style scoped>
 .navigation-button-container button {
-    background-color: v-bind(buttonAttrs[ 'backgroundColor' ]);
+    background-color: v-bind('props.backgroundColor');
     color: white;
     font-weight: 600;
     font-size: 1.1em;
@@ -27,7 +31,7 @@ const buttonAttrs = useAttrs();
     border-radius: 10px;
     cursor: pointer;
     border: none;
-    box-shadow: 0 0 15px 1px dimgray;
+    box-shadow: 0 0 3px 1px dimgray;
 }
 
 .navigation-button-container button:hover {
