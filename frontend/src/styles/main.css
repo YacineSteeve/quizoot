@@ -11,13 +11,18 @@
     --text-green: #34a853;
 
     /* Color palette
-        - See classy palette here: https://mycolor.space/?hex=%23331E6D&sub=1
+        - See here: https://mycolor.space/?hex=%23331E6D&sub=1
         - And see https://chir.ag/projects/name-that-color for the color names.
     */
+    /* Classy Palette */
     --palette-spun-pearl: #afa8ba;
     --palette-mobster: #7b7485;
     --palette-lonestar: #670000;
     --palette-well-read: #a1392b;
+    /* Twisted Spot Palette */
+    --palette-carribean-green: #00c9a5;
+    --palette-foam: #c5fcef;
+    --palette-cutty-sark: #4d8075;
 }
 
 body {

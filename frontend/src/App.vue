@@ -27,8 +27,8 @@ import Footer from '@/components/Footer.vue';
 
 .main-container {
     width: 100%;
-    height: calc(100vh - 4.5em);
-    margin-top: 4.5em;
+    height: calc(100vh - 3.5em);
+    margin-top: 3.5em;
     background-color: var(--background-color);
     overflow: scroll;
 }
@@ -46,6 +46,11 @@ import Footer from '@/components/Footer.vue';
 
 .main-container::-webkit-scrollbar-thumb:hover {
     background: var(--main-purple);
+}
+
+.main {
+    min-height: calc(100vh - 3.5em);
+    padding-top: 1em;
 }
 
 @media only screen and (min-width: 600px) {

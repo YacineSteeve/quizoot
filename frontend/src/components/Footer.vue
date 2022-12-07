@@ -5,15 +5,20 @@
         <div class="container">
             <div class="icons">
                 <a
+                    target="_blank"
                     class="icon"
                     href="https://fr-fr.facebook.com/BeninExcellence/"
                 >
                     <font-awesome-icon icon="fa-brands fa-facebook-f" />
                 </a>
-                <a class="icon" href="https://twitter.com/excellencebenin">
+                <a
+                    target="_blank"
+                    class="icon"
+                    href="https://twitter.com/excellencebenin"
+                >
                     <font-awesome-icon icon="fa-brands fa-twitter" />
                 </a>
-                <a class="icon" href="#i">
+                <a target="_blank" class="icon" href="#i">
                     <font-awesome-icon icon="fa-brands fa-instagram" />
                 </a>
                 <a
@@ -48,7 +53,13 @@
 
 <style scoped>
 #footer {
+    height: fit-content;
     background-color: #f6f6f6;
+}
+
+#footer .container .copyright {
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .icons {
@@ -72,7 +83,7 @@
 }
 
 .copyright {
-    list-style: disc;
+    list-style: none;
     color: #aaa;
     text-align: center;
     margin: 0;
@@ -84,16 +95,28 @@
 }
 
 .copyright li {
-    display: inline-block;
     border-left: solid 1px rgba(144, 144, 144, 0.25);
     padding: 15px;
+    flex: 1;
 }
 
 @media only screen and (max-width: 600px) {
+    #footer .container {
+        height: 300px;
+    }
+
+    #footer .container .icons {
+        font-size: 2em;
+    }
+
+    .copyright {
+        flex-direction: column;
+    }
+
     .copyright li {
-        display: block;
         border: none;
         padding: 0;
+        margin-block: 15px;
     }
 }
 

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { Quizoot } from '@schemas/interface';
-import { defineProps, computed } from 'vue';
+import { computed } from 'vue';
+import NavigationButton from '@/components/NavigationButton.vue';
 
 interface QuizPreviewProps {
     questionsCount: number;
@@ -17,16 +18,23 @@ const author = computed(() => props.authors?.[0]);
 
 <template>
     <div class="quiz-subtitle">
-        Interactive Quiz <span>&#8226;</span>
+        <p v-if="author">by {{ author.name }} {{ author.surname }}</p>
         <span class="question-count">{{ props.questionsCount }}</span>
         Questions
-        <p v-if="author">By {{ author.name }} {{ author.surname }}</p>
     </div>
+    <br />
     <div class="quiz-content">
         <p>{{ props.description }}</p>
     </div>
+    <br />
     <div class="btn-group">
-        <button @click="onStart">Start the quiz <span>&#187;</span></button>
+        <navigation-button
+            @click="onStart"
+            backgroundColor="var(--palette-cutty-sark)"
+            chevronRight
+        >
+            Start the quiz
+        </navigation-button>
     </div>
 </template>
 
@@ -35,9 +43,14 @@ const author = computed(() => props.authors?.[0]);
     margin-top: 5px;
 }
 
+.quiz-subtitle p {
+    font-style: italic;
+}
+
 .quiz-content {
     text-align: left;
     font-size: 1.2em;
+    margin-inline: 10%;
 }
 
 .question-count {
