@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed, defineAsyncComponent } from 'vue';
-import type { ComputedRef } from 'vue';
+import { computed, ref, defineAsyncComponent } from 'vue';
+import type { ComputedRef, Ref } from 'vue';
 import type { Quizoot } from '@schemas/interface';
 import NavigationButton from '@/components/NavigationButton.vue';
 import { pascalToSnake } from '@/lib/string-utils';
@@ -43,7 +43,7 @@ const components = getComponents();
 
 const props = defineProps<QuestionWrapperProps>();
 
-const QuestionComponent: ComputedRef = computed(() => {
+const QuestionSpecComponent: ComputedRef = computed(() => {
     if (props.question.kind in components) {
         return components[props.question.kind];
     } else {
@@ -60,6 +60,32 @@ const difficultiesColors: Record<Quizoot.Difficulty, string> = {
 const questionDifficultyColor: ComputedRef = computed(
     () => difficultiesColors[props.question.difficulty]
 );
+
+const hintIsDisplayed: Ref<boolean> = ref(false);
+
+function toggleHint() {
+    hintIsDisplayed.value = !hintIsDisplayed.value;
+}
+
+function resetHint() {
+    hintIsDisplayed.value = false;
+}
+
+const hintStyleProps: ComputedRef = computed(() => {
+    return hintIsDisplayed.value
+        ? {
+              display: 'flex',
+              hintButtonBgColor: 'var(--palette-spun-pearl)',
+              hintAreaBgColor: 'var(--palette-spun-pearl)',
+              hintAreaMargin: '40px',
+          }
+        : {
+              display: 'none',
+              hintButtonBgColor: 'var(--palette-mobster)',
+              hintAreaBgColor: 'transparent',
+              hintAreaMargin: '20px',
+          };
+});
 </script>
 
 <template>
@@ -80,11 +106,26 @@ const questionDifficultyColor: ComputedRef = computed(
                 >{{ props.question.grading.point_value }} pts</span
             >
         </div>
-        <QuestionComponent />
+        <div class="question">
+            <p>{{ props.question.question }}</p>
+        </div>
+        <QuestionSpecComponent :spec="props.question.spec" />
+        <div v-if="props.question.hint" class="question-hint">
+            <div @click="toggleHint" class="hint-button">
+                <font-awesome-icon icon="fa-solid fa-question" size="lg" />
+                <p>Hint</p>
+            </div>
+            <div class="hint">
+                {{ props.question.hint }}
+            </div>
+        </div>
         <div class="navigation-button-group">
             <navigation-button
                 v-if="!props.questionsFlow.isFirstQuestion"
-                @click="goToPreviousQuestion"
+                @click="
+                    resetHint();
+                    goToPreviousQuestion();
+                "
                 backgroundColor="var(--palette-well-read)"
                 chevronLeft
                 class="previous-button button"
@@ -93,7 +134,10 @@ const questionDifficultyColor: ComputedRef = computed(
             </navigation-button>
             <navigation-button
                 v-if="!props.questionsFlow.isLastQuestion"
-                @click="goToNextQuestion"
+                @click="
+                    resetHint();
+                    goToNextQuestion();
+                "
                 backgroundColor="var(--palette-well-read)"
                 chevronRight
                 class="next-button button"
@@ -136,6 +180,61 @@ const questionDifficultyColor: ComputedRef = computed(
     flex: 1;
 }
 
+.question-wrapper .question {
+    width: 100%;
+    text-align: justify;
+    margin-block: 30px;
+}
+
+.question-wrapper .question-hint {
+    display: flex;
+    gap: 30px;
+    width: max-content;
+    max-width: 100%;
+    margin-inline: 50%;
+    transform: translateX(-50%);
+    margin-bottom: v-bind('hintStyleProps.hintAreaMargin');
+    padding: 20px;
+    border-radius: 8px;
+    background-color: v-bind('hintStyleProps.hintAreaBgColor');
+}
+
+.question-wrapper .question-hint .hint-button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 1.7em;
+    height: 1.7em;
+    min-width: 1.7em;
+    padding: 5px;
+    border-radius: 8px;
+    border: 2px solid var(--palette-mobster);
+    color: var(--text-yellow);
+    background-color: v-bind('hintStyleProps.hintButtonBgColor');
+}
+
+.question-wrapper .question-hint .hint-button p {
+    margin: 0;
+    font-size: 0.6em;
+    font-weight: bold;
+}
+
+.question-wrapper .question-hint .hint-button:hover {
+    cursor: pointer;
+    background-color: var(--palette-mobster);
+}
+
+.question-wrapper .question-hint .hint {
+    display: v-bind('hintStyleProps.display');
+    align-items: center;
+    text-align: left;
+    color: white;
+    padding: 10px;
+    border-radius: 8px;
+    background-color: var(--palette-mobster);
+}
+
 .question-wrapper .navigation-button-group {
     display: flex;
     width: 70%;
@@ -145,6 +244,15 @@ const questionDifficultyColor: ComputedRef = computed(
 }
 
 @media only screen and (max-width: 600px) {
+    .question-wrapper .question {
+        text-align: left;
+    }
+
+    .question-wrapper .question-hint {
+        flex-direction: column;
+        width: 90%;
+    }
+
     .question-wrapper .navigation-button-group {
         width: 100%;
     }

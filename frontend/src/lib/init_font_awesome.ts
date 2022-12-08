@@ -3,6 +3,7 @@ import {
     faChevronLeft,
     faChevronRight,
     faCheck,
+    faQuestion,
 } from '@fortawesome/free-solid-svg-icons';
 import {
     faFacebookF,
@@ -19,4 +20,5 @@ library.add({
     faTwitter,
     faInstagram,
     faLinkedinIn,
+    faQuestion,
 });
