@@ -2,7 +2,7 @@
     "id": "123456789012",
     "title": "Basic Data Types in Python",
     "description": "Test your understanding of the basic data types that are built into Python, like numbers, strings, and Booleans.",
-    "max_score": 6,
+    "max_score": 13,
     "authors": [
         {
             "name": "Merchrist",
@@ -67,6 +67,44 @@
             "difficulty": "MEDIUM",
             "tags": ["string", "ascii"],
             "hint": "'\\t' is the escape sequence for the Horizontal Tab character.\n\n'\\n' is the escape sequence for the Newline character.\n\nTo specify a character by hexadecimal value, use '\\xhh', where hh specifies the hexadecimal digits."
+        },
+        {
+            "id": "123456789002",
+            "kind": "CODE_QUESTION",
+            "question": "Use list comprehension to get the list ['ad', 'ae', 'bd', 'be', 'cd', 'ce'] from the two strings 'abc' and 'de'.",
+            "spec": {
+                "content": "",
+                "language": "python3",
+                "expected_output": "['ad', 'ae', 'bd', 'be', 'cd', 'ce']"
+            },
+            "grading": {
+                "point_value": 5,
+                "feedback": {
+                    "explanation": "Nested 'for' loops in list comprehension are put in the same order as normal ones."
+                }
+            },
+            "difficulty": "HARD",
+            "tags": ["list", "loop"],
+            "hint": "Use two nested 'for' loops."
+        },
+        {
+            "id": "123456789003",
+            "kind": "UPLOAD_QUESTION",
+            "question": "Write or generate programmatically a '.csv' file of 15 lines, using a suitable separator.\nUpload you answer file here (and the code file, if done programmatically).",
+            "spec": {
+                "files": [],
+                "max_size": "2MB",
+                "max_files": 2
+            },
+            "grading": {
+                "point_value": 2,
+                "feedback": {
+                    "explanation": "The separator must be comma, mostly used."
+                }
+            },
+            "difficulty": "EASY",
+            "tags": ["pandas", "csv", "dataframe"],
+            "hint": "The first line of the file must contain the headers of your columns."
         }
     ]
 }
