@@ -2,7 +2,7 @@
     "id": "123456789012",
     "title": "Basic Data Types in Python",
     "description": "Test your understanding of the basic data types that are built into Python, like numbers, strings, and Booleans.",
-    "max_score": 6,
+    "max_score": 13,
     "authors": [
         {
             "name": "Merchrist",
