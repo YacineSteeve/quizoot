@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Quizoot } from '@schemas/interface';
+import type { Quizoot } from '@interfaces/quizoot';
 import { computed } from 'vue';
 import NavigationButton from '@/components/NavigationButton.vue';
 

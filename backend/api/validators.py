@@ -6,8 +6,9 @@ from django.conf import settings
 
 from .exceptions import InvalidData, InvalidCollection
 
+
 class SchemaValidator:
-    __schema_dir = settings.BASE_DIR / "schemas"
+    __schema_dir = settings.BASE_DIR / "interfaces/schemas"
 
     def __init__(self) -> None:
         self._quiz_schema = None

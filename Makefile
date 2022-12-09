@@ -35,7 +35,7 @@ requirements: venv
 	@$(MAKE) $(MAKE_TAG) echo-green msg="\n$@.txt updated! ✨\n"
 
 json-schemas:
-	@yarn --cwd ./schemas/ run gen-schemas
+	@yarn --cwd ./interfaces/ run gen-schemas
 
 migrations:
 	@$(VENV_PYTHON) manage.py makemigrations
