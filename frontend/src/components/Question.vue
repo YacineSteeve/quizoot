@@ -172,8 +172,11 @@ const hintStyleProps: ComputedRef = computed(() => {
 
 .question-wrapper .question {
     width: 100%;
-    text-align: justify;
     margin-block: 30px;
+}
+
+.question-wrapper .question p {
+    width: 100%;
 }
 
 .question-wrapper .question-hint {
