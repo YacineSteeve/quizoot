@@ -67,10 +67,6 @@ function toggleHint() {
     hintIsDisplayed.value = !hintIsDisplayed.value;
 }
 
-function resetHint() {
-    hintIsDisplayed.value = false;
-}
-
 const hintStyleProps: ComputedRef = computed(() => {
     return hintIsDisplayed.value
         ? {
@@ -122,10 +118,7 @@ const hintStyleProps: ComputedRef = computed(() => {
         <div class="navigation-button-group">
             <navigation-button
                 v-if="!props.questionsFlow.isFirstQuestion"
-                @click="
-                    resetHint();
-                    goToPreviousQuestion();
-                "
+                @click="goToPreviousQuestion()"
                 backgroundColor="var(--palette-well-read)"
                 chevronLeft
                 class="previous-button button"
@@ -134,10 +127,7 @@ const hintStyleProps: ComputedRef = computed(() => {
             </navigation-button>
             <navigation-button
                 v-if="!props.questionsFlow.isLastQuestion"
-                @click="
-                    resetHint();
-                    goToNextQuestion();
-                "
+                @click="goToNextQuestion()"
                 backgroundColor="var(--palette-well-read)"
                 chevronRight
                 class="next-button button"
