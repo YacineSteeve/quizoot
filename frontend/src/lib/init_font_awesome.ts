@@ -4,6 +4,7 @@ import {
     faChevronRight,
     faCheck,
     faQuestion,
+    faFileArrowUp,
 } from '@fortawesome/free-solid-svg-icons';
 import {
     faFacebookF,
@@ -21,4 +22,5 @@ library.add({
     faInstagram,
     faLinkedinIn,
     faQuestion,
+    faFileArrowUp,
 });
