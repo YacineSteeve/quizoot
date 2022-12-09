@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { computed, ref, defineAsyncComponent } from 'vue';
-import type { ComputedRef, Ref } from 'vue';
-import type { Quizoot } from '@schemas/interface';
+import { computed, defineAsyncComponent } from 'vue';
+import type { ComputedRef } from 'vue';
+import type { Quizoot } from '@interfaces/quizoot';
 import NavigationButton from '@/components/NavigationButton.vue';
 import { pascalToSnake } from '@/lib/string-utils';
 

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { withDefaults, ref, computed } from 'vue';
 import type { Ref, ComputedRef } from 'vue';
-import type { Quizoot } from '@schemas/interface';
+import type { Quizoot } from '@interfaces/quizoot';
 import QuizPreview from '@/components/QuizPreview.vue';
 import Question from '@/components/Question.vue';
 import quiz from '@/data/quiz-data-types.json';
