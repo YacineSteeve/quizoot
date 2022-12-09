@@ -51,6 +51,7 @@ import Footer from '@/components/Footer.vue';
 .main {
     min-height: calc(100vh - 3.5em);
     padding-top: 1em;
+    padding-bottom: 3.5em;
 }
 
 @media only screen and (min-width: 600px) {
