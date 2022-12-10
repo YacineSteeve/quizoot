@@ -5,16 +5,15 @@ import type { Quizoot } from '@interfaces/quizoot';
 
 interface Specs {
     spec: Quizoot.UploadQuestion;
-    filesList: Ref<File[]>;
 }
 
 interface HTMLInputEvent extends Event {
     target: HTMLInputElement & EventTarget;
 }
 
-const props = withDefaults(defineProps<Specs>(), {
-    filesList: () => ref([]),
-});
+const props = defineProps<Specs>();
+
+const filesList: Ref<File[]> = ref([]);
 
 const isDragOver: Ref<boolean> = ref(false);
 
@@ -23,7 +22,7 @@ const dragDropAreaColor: ComputedRef = computed(() => {
 });
 
 function removeFileFromList(fileIndex: number) {
-    props.filesList.value.splice(fileIndex, 1);
+    filesList.value.splice(fileIndex, 1);
 }
 
 function onDragOver(event: DragEvent) {
@@ -43,11 +42,12 @@ function onFileAdd(event: HTMLInputEvent | DragEvent) {
         (event as DragEvent).dataTransfer?.files;
     if (files?.length) {
         for (const file of files) {
-            if (props.filesList.value.includes(file)) {
-                removeFileFromList(props.filesList.value.indexOf(file));
+            if (filesList.value.includes(file)) {
+                removeFileFromList(filesList.value.indexOf(file));
             }
-            if (props.filesList.value.length < props.spec.max_files) { // TODO: Check file size too
-                props.filesList.value.push(file);
+            if (filesList.value.length < props.spec.max_files) {
+                // TODO: Check file size too
+                filesList.value.push(file);
             }
         }
         // TODO: Process the files in filesList as needed (maybe using a helper func defined in libs)
@@ -92,8 +92,8 @@ function onFileAdd(event: HTMLInputEvent | DragEvent) {
                 </label>
             </div>
         </div>
-        <ul v-if="props.filesList.value.length" class="files-list">
-            <li v-for="(file, index) in props.filesList.value" :key="index">
+        <ul v-if="filesList.value.length" class="files-list">
+            <li v-for="(file, index) in filesList.value" :key="index">
                 <div class="file-name" :title="file.name">{{ file.name }}</div>
                 <button
                     @click="removeFileFromList(index)"
