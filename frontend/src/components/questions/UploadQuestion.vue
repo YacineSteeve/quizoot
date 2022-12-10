@@ -92,8 +92,8 @@ function onFileAdd(event: HTMLInputEvent | DragEvent) {
                 </label>
             </div>
         </div>
-        <ul v-if="filesList.value.length" class="files-list">
-            <li v-for="(file, index) in filesList.value" :key="index">
+        <ul v-if="filesList.length" class="files-list">
+            <li v-for="(file, index) in filesList" :key="index">
                 <div class="file-name" :title="file.name">{{ file.name }}</div>
                 <button
                     @click="removeFileFromList(index)"
