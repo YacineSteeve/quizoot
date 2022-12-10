@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
-import type { ComputedRef, Ref } from 'vue';
+import { ref } from 'vue';
+import type { Ref } from 'vue';
 import type { Quizoot } from '@interfaces/quizoot';
 
-interface Specs {
+interface UploadQuestionProps {
     spec: Quizoot.UploadQuestion;
 }
 
@@ -11,15 +11,20 @@ interface HTMLInputEvent extends Event {
     target: HTMLInputElement & EventTarget;
 }
 
-const props = defineProps<Specs>();
+const props = defineProps<UploadQuestionProps>();
 
 const filesList: Ref<File[]> = ref([]);
 
 const isDragOver: Ref<boolean> = ref(false);
 
-const dragDropAreaColor: ComputedRef = computed(() => {
-    return isDragOver.value ? 'var(--palette-foam)' : 'white';
-});
+const isDragEvent = (event: HTMLInputEvent | DragEvent): event is DragEvent => 'dataTransfer' in event;
+
+const getFiles = (event: HTMLInputEvent | DragEvent) => {
+    if (isDragEvent(event)) {
+        return event.dataTransfer?.files;
+    }
+    return event.target.files;
+}
 
 function removeFileFromList(fileIndex: number) {
     filesList.value.splice(fileIndex, 1);
@@ -37,9 +42,7 @@ function onDragLeave(event: DragEvent) {
 
 function onFileAdd(event: HTMLInputEvent | DragEvent) {
     event.preventDefault();
-    const files =
-        (event as HTMLInputEvent).target.files ||
-        (event as DragEvent).dataTransfer?.files;
+    const files = getFiles(event);
     if (files?.length) {
         for (const file of files) {
             if (filesList.value.includes(file)) {
@@ -66,8 +69,8 @@ function onFileAdd(event: HTMLInputEvent | DragEvent) {
                 Max number of files: <b>{{ spec.max_files }}</b>
             </div>
         </div>
-        <div class="drag-drop-outer">
-            <div class="inner">
+        <div class="drag-drop-outer" :class="{dragover: isDragOver, dragleave: !isDragOver}">
+            <div class="drag-drop-inner">
                 <input
                     @change="onFileAdd"
                     type="file"
@@ -120,25 +123,32 @@ function onFileAdd(event: HTMLInputEvent | DragEvent) {
     width: 70%;
 }
 
-.upload-question-container .allowed-info {
+.allowed-info {
     display: flex;
     justify-content: flex-start;
     font-size: 0.9em;
 }
 
-.upload-question-container .allowed-info div {
+.allowed-info div {
     width: 100%;
 }
 
-.upload-question-container .drag-drop-outer {
+.drag-drop-outer {
     height: 150px;
     padding: 6px;
     border-radius: 12px;
     border: 2px solid var(--palette-mobster);
-    background-color: v-bind(dragDropAreaColor);
 }
 
-.upload-question-container .drag-drop-outer .inner {
+.dragover {
+    background-color: var(--palette-foam);
+}
+
+.dragleave {
+    background-color: white;
+}
+
+.drag-drop-inner {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -149,11 +159,11 @@ function onFileAdd(event: HTMLInputEvent | DragEvent) {
     border: 2px dashed var(--palette-mobster);
 }
 
-.upload-question-container .drag-drop-outer .inner input {
+.drag-drop-inner input {
     display: none;
 }
 
-.upload-question-container .drag-drop-outer .inner label {
+.drag-drop-inner label {
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -164,7 +174,7 @@ function onFileAdd(event: HTMLInputEvent | DragEvent) {
     height: 100%;
 }
 
-.upload-question-container .files-list {
+.files-list {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -172,7 +182,7 @@ function onFileAdd(event: HTMLInputEvent | DragEvent) {
     margin-bottom: 0;
 }
 
-.upload-question-container .files-list li {
+.files-list li {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -183,26 +193,26 @@ function onFileAdd(event: HTMLInputEvent | DragEvent) {
 }
 
 @media only screen and (max-width: 600px) {
-    .upload-question-container .drag-drop-outer {
+    .drag-drop-outer {
         width: 90%;
     }
 
-    .upload-question-container .files-list {
+    .files-list {
         width: 100%;
         padding: 0;
     }
 
-    .upload-question-container .files-list li {
+    .files-list li {
         width: 100%;
         max-width: 100%;
     }
 }
 
-.upload-question-container .files-list li:first-child {
+.files-list li:first-child {
     border: none;
 }
 
-.upload-question-container .files-list li .file-name {
+.files-list li .file-name {
     flex: 1;
     text-align: left;
     font-style: italic;
@@ -212,7 +222,7 @@ function onFileAdd(event: HTMLInputEvent | DragEvent) {
     overflow: hidden;
 }
 
-.upload-question-container .files-list li .remove-file-button {
+.files-list li .remove-file-button {
     cursor: pointer;
     font-size: 0.8em;
     color: white;
