@@ -51,20 +51,34 @@ const QuestionSpec: ComputedRef = computed(() => {
     }
 });
 
-const difficultiesColors: Record<Quizoot.Difficulty, string> = {
+const DIFFICULTY_COLOR_MAP: Record<Quizoot.Difficulty, string> = {
     EASY: 'green',
     MEDIUM: 'orange',
     HARD: 'var(--palette-well-read)',
 };
 
-const questionDifficultyColor: ComputedRef = computed(
-    () => difficultiesColors[props.question.difficulty]
+const difficultyColor: ComputedRef = computed(
+    () => DIFFICULTY_COLOR_MAP[props.question.difficulty]
 );
 
 const displayHint: Ref<boolean> = ref(false);
 
 function toggleHint() {
     displayHint.value = !displayHint.value;
+}
+
+function goTo(s: 'next' | 'previous') {
+    displayHint.value = false;
+    switch (s) {
+        case 'next':
+            props.goToNextQuestion();
+            break;
+        case 'previous':
+            props.goToPreviousQuestion();
+            break;
+        default:
+            break;
+    }
 }
 </script>
 
@@ -92,7 +106,9 @@ function toggleHint() {
             <p>{{ props.question.question }}</p>
         </div>
 
-        <QuestionSpec :spec="props.question.spec" />
+        <keep-alive>
+            <QuestionSpec :spec="props.question.spec" />
+        </keep-alive>
 
         <div v-if="props.question.hint" class="question-hint">
             <div @click="toggleHint" class="hint-toggler">
@@ -116,7 +132,7 @@ function toggleHint() {
         <div class="navigation-button-group">
             <navigation-button
                 v-if="!props.questionsFlow.isFirstQuestion"
-                @click="goToPreviousQuestion()"
+                @click="goTo('previous')"
                 backgroundColor="var(--palette-mobster)"
                 chevronLeft
                 class="previous-button button"
@@ -126,7 +142,7 @@ function toggleHint() {
 
             <navigation-button
                 v-if="!props.questionsFlow.isLastQuestion"
-                @click="goToNextQuestion()"
+                @click="goTo('next')"
                 backgroundColor="var(--main-purple-lightened)"
                 chevronRight
                 class="next-button button"
@@ -164,7 +180,7 @@ function toggleHint() {
     text-align: right;
     flex: 1;
     letter-spacing: 1px;
-    color: v-bind(questionDifficultyColor);
+    color: v-bind(difficultyColor);
     font-weight: 600;
 }
 
