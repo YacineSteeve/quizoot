@@ -17,14 +17,15 @@ const filesList: Ref<File[]> = ref([]);
 
 const isDragOver: Ref<boolean> = ref(false);
 
-const isDragEvent = (event: HTMLInputEvent | DragEvent): event is DragEvent => 'dataTransfer' in event;
+const isDragEvent = (event: HTMLInputEvent | DragEvent): event is DragEvent =>
+    'dataTransfer' in event;
 
 const getFiles = (event: HTMLInputEvent | DragEvent) => {
     if (isDragEvent(event)) {
         return event.dataTransfer?.files;
     }
     return event.target.files;
-}
+};
 
 function removeFileFromList(fileIndex: number) {
     filesList.value.splice(fileIndex, 1);
@@ -69,7 +70,10 @@ function onFileAdd(event: HTMLInputEvent | DragEvent) {
                 Max number of files: <b>{{ spec.max_files }}</b>
             </div>
         </div>
-        <div class="drag-drop-outer" :class="{dragover: isDragOver, dragleave: !isDragOver}">
+        <div
+            class="drag-drop-outer"
+            :class="{ dragover: isDragOver, dragleave: !isDragOver }"
+        >
             <div class="drag-drop-inner">
                 <input
                     @change="onFileAdd"
