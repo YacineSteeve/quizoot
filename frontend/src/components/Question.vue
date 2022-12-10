@@ -43,7 +43,7 @@ const components = getComponents();
 
 const props = defineProps<QuestionWrapperProps>();
 
-const QuestionSpecComponent: ComputedRef = computed(() => {
+const QuestionSpec: ComputedRef = computed(() => {
     if (props.question.kind in components) {
         return components[props.question.kind];
     } else {
@@ -51,37 +51,35 @@ const QuestionSpecComponent: ComputedRef = computed(() => {
     }
 });
 
-const difficultiesColors: Record<Quizoot.Difficulty, string> = {
+const DIFFICULTY_COLOR_MAP: Record<Quizoot.Difficulty, string> = {
     EASY: 'green',
     MEDIUM: 'orange',
-    HARD: 'red',
+    HARD: 'var(--palette-well-read)',
 };
 
-const questionDifficultyColor: ComputedRef = computed(
-    () => difficultiesColors[props.question.difficulty]
+const difficultyColor: ComputedRef = computed(
+    () => DIFFICULTY_COLOR_MAP[props.question.difficulty]
 );
 
-const hintIsDisplayed: Ref<boolean> = ref(false);
+const displayHint: Ref<boolean> = ref(false);
 
 function toggleHint() {
-    hintIsDisplayed.value = !hintIsDisplayed.value;
+    displayHint.value = !displayHint.value;
 }
 
-const hintStyleProps: ComputedRef = computed(() => {
-    return hintIsDisplayed.value
-        ? {
-              display: 'flex',
-              hintButtonBgColor: 'var(--palette-spun-pearl)',
-              hintAreaBgColor: 'var(--palette-spun-pearl)',
-              hintAreaMargin: '40px',
-          }
-        : {
-              display: 'none',
-              hintButtonBgColor: 'var(--palette-mobster)',
-              hintAreaBgColor: 'transparent',
-              hintAreaMargin: '20px',
-          };
-});
+function goTo(s: 'next' | 'previous') {
+    displayHint.value = false;
+    switch (s) {
+        case 'next':
+            props.goToNextQuestion();
+            break;
+        case 'previous':
+            props.goToPreviousQuestion();
+            break;
+        default:
+            break;
+    }
+}
 </script>
 
 <template>
@@ -93,6 +91,7 @@ const hintStyleProps: ComputedRef = computed(() => {
                 <span> / {{ props.questionsCount }}</span>
             </h1>
         </div>
+
         <div class="question-props">
             <span id="difficulty">{{
                 props.question.difficulty.toUpperCase()
@@ -102,33 +101,49 @@ const hintStyleProps: ComputedRef = computed(() => {
                 >{{ props.question.grading.point_value }} pts</span
             >
         </div>
+
         <div class="question">
             <p>{{ props.question.question }}</p>
         </div>
-        <QuestionSpecComponent :spec="props.question.spec" />
+
+        <keep-alive>
+            <QuestionSpec :spec="props.question.spec" />
+        </keep-alive>
+
         <div v-if="props.question.hint" class="question-hint">
-            <div @click="toggleHint" class="hint-button">
-                <font-awesome-icon icon="fa-solid fa-question" size="lg" />
+            <div @click="toggleHint" class="hint-toggler">
+                <font-awesome-icon
+                    v-if="displayHint"
+                    icon="fa-solid fa-caret-down"
+                    size="lg"
+                />
+                <font-awesome-icon
+                    v-else
+                    icon="fa-solid fa-caret-right"
+                    size="lg"
+                />
                 <p>Hint</p>
             </div>
-            <div class="hint">
+            <div class="hint" :class="{ display: displayHint }">
                 {{ props.question.hint }}
             </div>
         </div>
+
         <div class="navigation-button-group">
             <navigation-button
                 v-if="!props.questionsFlow.isFirstQuestion"
-                @click="goToPreviousQuestion()"
-                backgroundColor="var(--palette-well-read)"
+                @click="goTo('previous')"
+                backgroundColor="var(--palette-mobster)"
                 chevronLeft
                 class="previous-button button"
             >
                 Previous
             </navigation-button>
+
             <navigation-button
                 v-if="!props.questionsFlow.isLastQuestion"
-                @click="goToNextQuestion()"
-                backgroundColor="var(--palette-well-read)"
+                @click="goTo('next')"
+                backgroundColor="var(--main-purple-lightened)"
                 chevronRight
                 class="next-button button"
             >
@@ -140,130 +155,129 @@ const hintStyleProps: ComputedRef = computed(() => {
 
 <style scoped>
 .question-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     width: 100%;
     height: 100%;
 }
 
-.question-wrapper .question-number h1 span {
+.question-number h1 span {
     font-size: 0.7em;
 }
 
-.question-wrapper .question-props {
+.question-props {
     display: flex;
     justify-content: center;
     gap: 10px;
 }
 
-.question-wrapper .question-props > * {
+.question-props > * {
     width: fit-content;
 }
 
-.question-wrapper .question-props #difficulty {
+.question-props #difficulty {
     text-align: right;
     flex: 1;
     letter-spacing: 1px;
-    color: v-bind(questionDifficultyColor);
+    color: v-bind(difficultyColor);
+    font-weight: 600;
 }
 
-.question-wrapper .question-props #grading {
+.question-props #grading {
     text-align: left;
     flex: 1;
 }
 
-.question-wrapper .question {
-    width: 100%;
+.question {
+    width: 80%;
     margin-block: 30px;
 }
 
-.question-wrapper .question p {
+.question p {
     width: 100%;
+    text-align: left;
+    font-size: 1.2em;
 }
 
-.question-wrapper .question-hint {
-    display: flex;
-    gap: 30px;
-    width: max-content;
-    max-width: 100%;
-    margin-inline: 50%;
-    transform: translateX(-50%);
-    margin-bottom: v-bind('hintStyleProps.hintAreaMargin');
-    padding: 20px;
-    border-radius: 8px;
-    background-color: v-bind('hintStyleProps.hintAreaBgColor');
-}
-
-.question-wrapper .question-hint .hint-button {
+.question-hint {
     display: flex;
     flex-direction: column;
+    gap: 5px;
+    width: 80%;
+    color: var(--main-purple-lightened);
+    font-size: 1.1em;
+    margin-bottom: 50px;
+}
+
+.question-hint .hint-toggler:hover {
+    color: var(--main-purple);
+}
+
+.question-hint p {
+    margin-block: 5px;
+}
+
+.hint-toggler {
+    display: flex;
     align-items: center;
-    justify-content: space-evenly;
-    width: 1.7em;
-    height: 1.7em;
-    min-width: 1.7em;
-    padding: 5px;
-    border-radius: 8px;
-    border: 2px solid var(--palette-mobster);
-    color: var(--text-yellow);
-    background-color: v-bind('hintStyleProps.hintButtonBgColor');
-}
-
-.question-wrapper .question-hint .hint-button p {
-    margin: 0;
-    font-size: 0.6em;
-    font-weight: bold;
-}
-
-.question-wrapper .question-hint .hint-button:hover {
     cursor: pointer;
-    background-color: var(--palette-mobster);
 }
 
-.question-wrapper .question-hint .hint {
-    display: v-bind('hintStyleProps.display');
+.hint-toggler p {
+    margin-inline-start: 10px;
+}
+
+.hint {
+    display: none;
     align-items: center;
     text-align: left;
-    color: white;
+    color: black;
     padding: 10px;
-    border-radius: 8px;
-    background-color: var(--palette-mobster);
+    /* margin-bottom: 50px; */
+    border: 2px solid var(--main-purple-lightened);
+    border-radius: 4px;
 }
 
-.question-wrapper .navigation-button-group {
+.display {
+    display: block;
+}
+
+.navigation-button-group {
     display: flex;
-    width: 70%;
+    width: 80%;
     align-items: center;
-    margin-inline: 50%;
-    transform: translateX(-50%);
+    justify-content: center;
 }
 
 @media only screen and (max-width: 600px) {
-    .question-wrapper .question {
+    .question {
         text-align: left;
     }
 
-    .question-wrapper .question-hint {
+    .question-hint {
         flex-direction: column;
         width: 90%;
     }
 
-    .question-wrapper .navigation-button-group {
+    .navigation-button-group {
         width: 100%;
     }
 }
 
-.question-wrapper .navigation-button-group .button {
+.navigation-button-group .button {
     min-width: 150px;
 }
 
-.question-wrapper .navigation-button-group:has(.button:nth-child(2)) {
+.navigation-button-group:has(.button:nth-child(2)) {
     justify-content: space-between;
 }
 
-.question-wrapper .navigation-button-group:has(.previous-button) {
+.navigation-button-group:has(.previous-button) {
     justify-content: flex-start;
 }
 
-.question-wrapper .navigation-button-group:has(.next-button) {
+.navigation-button-group:has(.next-button) {
     justify-content: flex-end;
 }
 </style>

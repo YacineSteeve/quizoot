@@ -27,14 +27,16 @@ const author = computed(() => props.authors?.[0]);
         <p>{{ props.description }}</p>
     </div>
     <br />
-    <div class="btn-group">
-        <navigation-button
-            @click="onStart"
-            backgroundColor="var(--palette-cutty-sark)"
-            chevronRight
-        >
-            Start the quiz
-        </navigation-button>
+    <div class="quiz-footer">
+        <div class="btn-group">
+            <navigation-button
+                @click="onStart"
+                backgroundColor="var(--palette-cutty-sark)"
+                chevronRight
+            >
+                Start the quiz
+            </navigation-button>
+        </div>
     </div>
 </template>
 
@@ -50,11 +52,20 @@ const author = computed(() => props.authors?.[0]);
 .quiz-content {
     text-align: left;
     font-size: 1.2em;
-    margin-inline: 10%;
+    width: 90%;
+}
+
+.quiz-content p {
+    font-size: 1.1em;
+    font-weight: 400;
 }
 
 .question-count {
     font-weight: 800;
     color: var(--palette-well-read);
+}
+
+.quiz-footer {
+    width: 90%;
 }
 </style>

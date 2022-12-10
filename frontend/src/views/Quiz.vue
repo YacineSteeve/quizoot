@@ -55,13 +55,16 @@ function goToPreviousQuestion() {
 <template>
     <div class="quiz-container">
         <h1 class="quiz-title">
-            <span class="back-to-quiz-preview-icon">
+            <span
+                v-if="currentQuestionIndex != null"
+                class="back-to-quiz-preview-icon"
+            >
                 <font-awesome-icon
-                    v-show="currentQuestionIndex != null"
                     @click="quitQuiz"
                     icon="fa-solid fa-chevron-left"
-                /> </span
-            >{{ data.title }}
+                />
+            </span>
+            {{ data.title }}
         </h1>
         <br />
         <QuizPreview
@@ -87,17 +90,19 @@ function goToPreviousQuestion() {
 .quiz-container {
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: center;
+    width: 80%;
+    margin: 0;
 }
 
 .quiz-container .quiz-title {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
-    height: fit-content;
-    margin-top: 1em;
+    width: 100%;
+    gap: 20px;
+    margin-top: 0.5em;
 }
 
 .quiz-container .quiz-title .back-to-quiz-preview-icon {
@@ -110,7 +115,7 @@ function goToPreviousQuestion() {
 }
 
 .quiz-container .quiz-title .back-to-quiz-preview-icon:hover {
-    color: var(--palette-carribean-green);
+    color: var(--main-purple);
 }
 
 .quiz-container .quiz-title .back-to-quiz-preview-icon > * {

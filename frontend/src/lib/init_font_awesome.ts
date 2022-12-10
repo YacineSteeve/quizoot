@@ -1,19 +1,24 @@
-import { library } from '@fortawesome/fontawesome-svg-core';
 import {
+    faCaretDown,
+    faCaretRight,
+    faCheck,
     faChevronLeft,
     faChevronRight,
-    faCheck,
     faQuestion,
     faFileArrowUp,
 } from '@fortawesome/free-solid-svg-icons';
 import {
     faFacebookF,
     faInstagram,
-    faTwitter,
     faLinkedinIn,
+    faTwitter,
 } from '@fortawesome/free-brands-svg-icons';
 
+import { library } from '@fortawesome/fontawesome-svg-core';
+
 library.add({
+    faCaretDown,
+    faCaretRight,
     faChevronLeft,
     faChevronRight,
     faCheck,

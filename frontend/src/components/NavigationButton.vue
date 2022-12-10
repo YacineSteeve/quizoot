@@ -28,10 +28,9 @@ const props = defineProps<NavigateButtonProps>();
     padding-right: 10px;
     width: 100%;
     min-height: 50px;
-    border-radius: 10px;
+    border-radius: 5px;
     cursor: pointer;
     border: none;
-    box-shadow: 0 0 3px 1px dimgray;
 }
 
 .navigation-button-container button:hover {
