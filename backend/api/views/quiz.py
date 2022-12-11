@@ -46,7 +46,7 @@ def quiz_create(request) -> JsonResponse:
             inserted_quiz = __quizzes_collection.find_one(
                 {"_id": insertion_result.inserted_id}
             )
-            return JsonResponse(data=inserted_quiz)
+            return JsonResponse(data=inserted_quiz, status=status.HTTP_201_CREATED)
 
 
 @api_view(["GET"])
@@ -107,4 +107,4 @@ def quiz_delete(request, pk: str) -> JsonResponse:
             __quizzes_collection.find_one_and_delete({"id": pk})
             return JsonResponse(
                 data={}
-            )  # An empty JSON is returned as to confirm deletion
+            )  # An empty JSON is returned, as to confirm deletion

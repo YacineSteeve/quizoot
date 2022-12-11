@@ -3,13 +3,14 @@ from bson import json_util
 from typing import Any, List, Tuple, Type
 
 import pymongo
-from django.core.handlers.wsgi import WSGIRequest
 from rest_framework.response import Response
+from rest_framework.request import Request
 
 from .exceptions import CollectionFull
 
 
 __Collection = type(Type[pymongo.collection.Collection])
+__ApiRequest = type(Type[Request])
 
 MIN_ID_VALUE = 100_000_000_000
 MAX_ID_VALUE = 999_999_999_999
@@ -31,7 +32,7 @@ class JsonResponse(Response):
 
 
 def get_sort_order_from_request(
-    request: WSGIRequest, collection: __Collection
+    request: Request, collection: __Collection
 ) -> List[Tuple[str, int]]:
 
     sort_key: Any = request.query_params.get("sort_key", None)
