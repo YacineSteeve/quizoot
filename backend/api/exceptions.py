@@ -4,3 +4,7 @@ class InvalidData(Exception):
 
 class InvalidCollection(Exception):
     pass
+
+
+class CollectionFull(Exception):
+    pass
