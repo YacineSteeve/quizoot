@@ -9,26 +9,21 @@ from .exceptions import InvalidData, InvalidCollection
 
 class SchemaValidator:
     __schema_dir = settings.BASE_DIR / "interfaces/schemas"
+    __schema_names = {
+        "quizzes": "quiz.json",
+        "questions": "question.json"
+    }
 
-    def __init__(self) -> None:
-        self._quiz_schema = None
-        self._question_schema = None
+    def __init__(self, collection: Literal["quizzes", "questions"]) -> None:
+        self._schema = None
+        if collection in self.__schema_names.keys():
+            with open(self.__schema_dir / self.__schema_names[collection]) as file:
+                self._schema = json.load(file)
+        else:
+            raise InvalidCollection("Collection must be literal 'quizzes' or 'questions")
 
-        with open(self.__schema_dir / "quiz.json") as file:
-            self._quiz_schema = json.load(file)
-
-        with open(self.__schema_dir / "question.json") as file:
-            self._schema = json.load(file)
-
-    def validate(self, data: Any, collection: Literal["quizzes", "questions"]) -> None:
+    def validate(self, data: Any) -> None:
         try:
-            if collection == "quizzes":
-                jsonschema.validate(data, self._quiz_schema)
-            elif collection == "questions":
-                jsonschema.validate(data, self._question_schema)
-            else:
-                raise InvalidCollection(
-                    "Collection must be literal 'quizzes' or 'questions'"
-                )
+            jsonschema.validate(data, self._schema)
         except jsonschema.exceptions.ValidationError as err:
             raise InvalidData(err.message)
