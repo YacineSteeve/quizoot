@@ -36,7 +36,7 @@ function onSelect(event: Event) {
 <template>
     <div class="choices">
         <ul>
-            <li v-for="option in spec.options">
+            <li v-for="option in spec.options" :key="option.id">
                 <input
                     :type="inputType"
                     :id="option.id"
