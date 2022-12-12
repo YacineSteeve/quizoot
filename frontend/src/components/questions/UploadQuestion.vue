@@ -13,22 +13,35 @@ interface HTMLInputEvent extends Event {
 
 const props = defineProps<UploadQuestionProps>();
 
-const filesList: Ref<File[]> = ref([]);
+const files: Ref<File[]> = ref([]);
 
-const isDragOver: Ref<boolean> = ref(false);
+const isDragOver = ref(false);
 
 const isDragEvent = (event: HTMLInputEvent | DragEvent): event is DragEvent =>
     'dataTransfer' in event;
 
-const getFiles = (event: HTMLInputEvent | DragEvent) => {
+const getFileList = (event: HTMLInputEvent | DragEvent) => {
     if (isDragEvent(event)) {
         return event.dataTransfer?.files;
     }
     return event.target.files;
 };
 
-function removeFileFromList(fileIndex: number) {
-    filesList.value.splice(fileIndex, 1);
+function addFiles(fileList: FileList) {
+    for (const file of fileList) {
+        if (files.value.includes(file)) {
+            removeFile(files.value.indexOf(file));
+        }
+        if (files.value.length < props.spec.max_files) {
+            // TODO: Check file size too
+            files.value.push(file);
+        }
+    }
+    // TODO: Process the files as needed (maybe using a helper func defined in libs)
+}
+
+function removeFile(fileIndex: number) {
+    files.value.splice(fileIndex, 1);
 }
 
 function onDragOver(event: DragEvent) {
@@ -41,22 +54,18 @@ function onDragLeave(event: DragEvent) {
     isDragOver.value = false;
 }
 
-function onFileAdd(event: HTMLInputEvent | DragEvent) {
+function onFileAdd(event: Event) {
     event.preventDefault();
-    const files = getFiles(event);
-    if (files?.length) {
-        for (const file of files) {
-            if (filesList.value.includes(file)) {
-                removeFileFromList(filesList.value.indexOf(file));
-            }
-            if (filesList.value.length < props.spec.max_files) {
-                // TODO: Check file size too
-                filesList.value.push(file);
-            }
-        }
-        // TODO: Process the files in filesList as needed (maybe using a helper func defined in libs)
+    const fileList = getFileList(<HTMLInputEvent | DragEvent>event);
+    if (fileList) {
+        addFiles(fileList);
     }
-    onDragLeave(event as DragEvent);
+}
+
+function onFileDrop(event: DragEvent) {
+    onFileAdd(event);
+    onDragLeave(event);
+
 }
 </script>
 
@@ -70,42 +79,21 @@ function onFileAdd(event: HTMLInputEvent | DragEvent) {
                 Max number of files: <b>{{ spec.max_files }}</b>
             </div>
         </div>
-        <div
-            class="drag-drop-outer"
-            :class="{ dragover: isDragOver, dragleave: !isDragOver }"
-        >
+        <div class="drag-drop-outer" :class="{ dragover: isDragOver, dragleave: !isDragOver }">
             <div class="drag-drop-inner">
-                <input
-                    @change="onFileAdd"
-                    type="file"
-                    multiple
-                    id="file-input"
-                />
-                <label
-                    @dragover="onDragOver"
-                    @dragleave="onDragLeave"
-                    @drop="onFileAdd"
-                    title="Upload file"
-                    for="file-input"
-                >
-                    <font-awesome-icon
-                        icon="fa-solid fa-file-arrow-up"
-                        color="var(--palette-mobster)"
-                    />
-                    <span
-                        >Drag and drop or <u>click here</u> to upload your
-                        files</span
-                    >
+                <input @change="onFileAdd" type="file" multiple id="file-input" />
+                <label @dragover="onDragOver" @dragleave="onDragLeave" @drop="onFileDrop" title="Upload file"
+                    for="file-input">
+                    <font-awesome-icon icon="fa-solid fa-file-arrow-up" color="var(--palette-mobster)" />
+                    <span>Drag and drop or <u>click here</u> to upload your
+                        files</span>
                 </label>
             </div>
         </div>
-        <ul v-if="filesList.length" class="files-list">
-            <li v-for="(file, index) in filesList" :key="index">
+        <ul v-if="files.length" class="files-list">
+            <li v-for="(file, index) in files" :key="index">
                 <div class="file-name" :title="file.name">{{ file.name }}</div>
-                <button
-                    @click="removeFileFromList(index)"
-                    class="remove-file-button"
-                >
+                <button @click="removeFile(index)" class="remove-file-button">
                     Remove
                 </button>
             </li>
@@ -121,7 +109,7 @@ function onFileAdd(event: HTMLInputEvent | DragEvent) {
     margin-block: 50px;
 }
 
-.upload-question-container > * {
+.upload-question-container>* {
     margin-inline: 50%;
     transform: translateX(-50%);
     width: 70%;
