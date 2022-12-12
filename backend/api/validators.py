@@ -9,10 +9,7 @@ from .exceptions import InvalidData, InvalidCollection
 
 class SchemaValidator:
     __schema_dir = settings.BASE_DIR / "interfaces/schemas"
-    __schema_names = {
-        "quizzes": "quiz.json",
-        "questions": "question.json"
-    }
+    __schema_names = {"quizzes": "quiz.json", "questions": "question.json"}
 
     def __init__(self, collection: Literal["quizzes", "questions"]) -> None:
         self._schema = None
@@ -20,7 +17,9 @@ class SchemaValidator:
             with open(self.__schema_dir / self.__schema_names[collection]) as file:
                 self._schema = json.load(file)
         else:
-            raise InvalidCollection("Collection must be literal 'quizzes' or 'questions")
+            raise InvalidCollection(
+                "Collection must be literal 'quizzes' or 'questions"
+            )
 
     def validate(self, data: Any) -> None:
         try:

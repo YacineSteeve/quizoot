@@ -35,8 +35,8 @@ def get_sort_order_from_request(
     request: Request, collection: __Collection
 ) -> List[Tuple[str, int]]:
 
-    sort_key: Any = request.query_params.get("sort_key", None)
-    sort_order: Any = request.query_params.get("sort_order", None)
+    sort_key = request.query_params.get("sort_key", None)
+    sort_order = request.query_params.get("sort_order", None)
 
     if sort_key is None:
         sort_key = DEFAULT_QUERY_LIST_SORT_KEY
