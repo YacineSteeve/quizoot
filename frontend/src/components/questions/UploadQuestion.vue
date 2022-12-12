@@ -65,7 +65,6 @@ function onFileAdd(event: Event) {
 function onFileDrop(event: DragEvent) {
     onFileAdd(event);
     onDragLeave(event);
-
 }
 </script>
 
@@ -79,14 +78,32 @@ function onFileDrop(event: DragEvent) {
                 Max number of files: <b>{{ spec.max_files }}</b>
             </div>
         </div>
-        <div class="drag-drop-outer" :class="{ dragover: isDragOver, dragleave: !isDragOver }">
+        <div
+            class="drag-drop-outer"
+            :class="{ dragover: isDragOver, dragleave: !isDragOver }"
+        >
             <div class="drag-drop-inner">
-                <input @change="onFileAdd" type="file" multiple id="file-input" />
-                <label @dragover="onDragOver" @dragleave="onDragLeave" @drop="onFileDrop" title="Upload file"
-                    for="file-input">
-                    <font-awesome-icon icon="fa-solid fa-file-arrow-up" color="var(--palette-mobster)" />
-                    <span>Drag and drop or <u>click here</u> to upload your
-                        files</span>
+                <input
+                    @change="onFileAdd"
+                    type="file"
+                    multiple
+                    id="file-input"
+                />
+                <label
+                    @dragover="onDragOver"
+                    @dragleave="onDragLeave"
+                    @drop="onFileDrop"
+                    title="Upload file"
+                    for="file-input"
+                >
+                    <font-awesome-icon
+                        icon="fa-solid fa-file-arrow-up"
+                        color="var(--palette-mobster)"
+                    />
+                    <span
+                        >Drag and drop or <u>click here</u> to upload your
+                        files</span
+                    >
                 </label>
             </div>
         </div>
@@ -109,7 +126,7 @@ function onFileDrop(event: DragEvent) {
     margin-block: 50px;
 }
 
-.upload-question-container>* {
+.upload-question-container > * {
     margin-inline: 50%;
     transform: translateX(-50%);
     width: 70%;
