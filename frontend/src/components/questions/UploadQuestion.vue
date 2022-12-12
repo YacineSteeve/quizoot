@@ -56,7 +56,7 @@ function onDragLeave(event: DragEvent) {
 
 function onFileAdd(event: Event) {
     event.preventDefault();
-    const fileList = getFileList(<HTMLInputEvent | DragEvent>event);
+    const fileList = getFileList(event as HTMLInputEvent | DragEvent);
     if (fileList) {
         addFiles(fileList);
     }
