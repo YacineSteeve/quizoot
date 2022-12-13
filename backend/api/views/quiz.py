@@ -38,12 +38,12 @@ class QuizList(APIView):
 
 
 class QuizDetails(APIView):
-    __collection = client.collection("quizzes")
+    __quizzes = client.collection("quizzes")
     __validator = SchemaValidator("quizzes")
 
     def get(self, request: Request, pk: str) -> JsonResponse:
         if request.method == "GET":
-            quiz = self.__collection.find_one({"id": pk})
+            quiz = self.__quizzes.find_one({"id": pk})
 
             if quiz is None:
                 raise Http404("There is no quiz matching your query.")
@@ -62,7 +62,7 @@ class QuizDetails(APIView):
                     status=status.HTTP_400_BAD_REQUEST,
                 )
             else:
-                updated_quiz = self.__collection.find_one_and_update(
+                updated_quiz = self.__quizzes.find_one_and_update(
                     {"id": pk},
                     {"$set": quiz_data},
                     # If the document is not already in collection, insert it
@@ -74,7 +74,7 @@ class QuizDetails(APIView):
 
     def delete(self, request: Request, pk: str) -> JsonResponse:
         if request.method == "DELETE":
-            self.__collection.find_one_and_delete({"id": pk})
+            self.__quizzes.find_one_and_delete({"id": pk})
             return JsonResponse(
                 data={}
             )  # An empty JSON is returned, as to confirm deletion
