@@ -13,7 +13,9 @@ class SchemaValidator:
 
     def __init__(self, collection: Literal["quizzes", "questions"]) -> None:
         if collection not in self.__schemas:
-            raise InvalidCollection("Collection must be literal 'quizzes' or 'questions")
+            raise InvalidCollection(
+                "Collection must be literal 'quizzes' or 'questions"
+            )
 
         schema_path = self.__schemas_base_dir / self.__schemas[collection]
 
