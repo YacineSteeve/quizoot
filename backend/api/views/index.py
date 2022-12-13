@@ -5,7 +5,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from ..validators import SchemaValidator
 
-validator = SchemaValidator()
+validator = SchemaValidator("quizzes")
 
 
 @csrf_exempt
@@ -16,7 +16,7 @@ def index(request):
         json_data = json.loads(data.decode("utf8"))
 
         # Validate data
-        validator.validate(json_data, "quizzes")
+        validator.validate(json_data)
 
         # Do something else
         print("Valid question :", json_data)

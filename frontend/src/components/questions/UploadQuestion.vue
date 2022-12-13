@@ -123,13 +123,14 @@ function onFileDrop(event: DragEvent) {
     display: flex;
     flex-direction: column;
     gap: 20px;
-    margin-block: 50px;
+    margin-bottom: 25px;
+    width: 75%;
 }
 
 .upload-question-container > * {
     margin-inline: 50%;
     transform: translateX(-50%);
-    width: 70%;
+    width: 100%;
 }
 
 .allowed-info {
@@ -202,6 +203,16 @@ function onFileDrop(event: DragEvent) {
 }
 
 @media only screen and (max-width: 600px) {
+    .upload-question-container {
+        width: 100%;
+    }
+
+    .allowed-info {
+        flex-direction: column;
+        text-align: left;
+        padding-left: 60px;
+    }
+
     .drag-drop-outer {
         width: 90%;
     }
