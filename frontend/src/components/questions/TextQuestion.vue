@@ -14,9 +14,6 @@ const placeholder = computed(
 <template>
     <div class="text-question">
         <input :placeholder="placeholder" v-model="answer" />
-        Owner YacineSteeve Souldn't you add the attribute minlength=1 or
-        required ? Also, don't we need here a textarea instead of input ?
-        Reply... Resolve conversation
     </div>
 </template>
 
