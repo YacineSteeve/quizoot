@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand
 from argparse import ArgumentParser
 
-from api.client import client
+from backend.api.client import client
 
 # USAGE :
 #   python manage.py seed --mode=(refresh | clear)
@@ -14,7 +14,9 @@ class Command(BaseCommand):
     help = "seed database for testing and development."
 
     def add_arguments(self, parser: ArgumentParser):
-        parser.add_argument("--mode", help="Specify the mode (clear | refresh)")
+        parser.add_argument(
+            "--mode", help=f"Specify the mode ({MODE_CLEAR} | {MODE_REFRESH})"
+        )
 
     def handle(self, *args, **options):
         if options.get("mode") == MODE_CLEAR:
