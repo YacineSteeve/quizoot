@@ -8,7 +8,7 @@ export declare namespace Quizoot {
         /**
          * Id of the question
          * 
-         * @pattern [a-z0-9]{12}
+         * @pattern [a-z0-9]{24}
          */
         id: string;
         /**
@@ -199,7 +199,7 @@ export declare namespace Quizoot {
         /**
          * Id of the quiz.
          *
-         * @pattern [a-z0-9]{12}
+         * @pattern [a-z0-9]{24}
          */
         id: string;
         /**
@@ -238,7 +238,7 @@ export declare namespace Quizoot {
         /**
          * Id of a question referenced in the quiz.
          *
-         * @pattern [a-z0-9]{12}
+         * @pattern [a-z0-9]{24}
          */
         question_id: string;
         /**

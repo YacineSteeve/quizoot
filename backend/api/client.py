@@ -1,22 +1,29 @@
-from typing import Literal
+from typing import List, Literal
 
-import pymongo
 import environ
+import pymongo
+from pymongo.database import Database, Collection
 
 from .exceptions import InvalidCollection
 
 env = environ.Env()
 environ.Env.read_env()
 
+CollectionName = Literal["quizzes", "questions"]
+
 
 class ApiClient(pymongo.MongoClient):
+    # Database info from .env
     DATABASE_URL = env("DATABASE_URL")
     DATABASE_NAME = env("DATABASE_NAME")
+
+    # Valid collections
+    _collections: List[CollectionName] = ["quizzes", "questions"]
 
     def __init__(self):
         super().__init__(self.DATABASE_URL)
 
-        for collection in ["quizzes", "questions"]:
+        for collection in self._collections:
             if collection not in self._database.list_collection_names():
                 _ = self._database[collection]
 
@@ -25,10 +32,10 @@ class ApiClient(pymongo.MongoClient):
             )
 
     @property
-    def _database(self):
-        return self[self.DATABASE_NAME]
+    def _database(self) -> Database:
+        return Database(self, self.DATABASE_NAME)
 
-    def collection(self, name: Literal["quizzes", "questions"]):
+    def collection(self, name: CollectionName) -> Collection:
         if name in self._database.list_collection_names():
             return self._database[name]
         else:
