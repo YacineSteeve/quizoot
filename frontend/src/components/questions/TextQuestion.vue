@@ -13,7 +13,12 @@ const placeholder = computed(
 
 <template>
     <div class="text-question">
-        <input :placeholder="placeholder" v-model="answer" />
+        <!-- TODO: add rows in spec as optional field -->
+        <textarea
+            :placeholder="placeholder"
+            rows="8"
+            v-model="answer"
+        ></textarea>
     </div>
 </template>
 
@@ -22,9 +27,8 @@ const placeholder = computed(
     width: 80%;
     text-align: center;
 }
-input {
-    min-height: 30px;
-    width: 90%;
+textarea {
+    width: 100%;
     border-radius: 5px;
     border: 2px solid var(--palette-mobster);
     padding: 5px;

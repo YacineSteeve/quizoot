@@ -3,7 +3,7 @@
     "version": "0.1.0",
     "private": true,
     "scripts": {
-        "dev": "vite --host localhost --port 5000",
+        "dev": "vite --host localhost --port 5005",
         "dev2": "vite --host --port 5000",
         "build": "run-p type-check build-only",
         "preview": "vite preview --host localhost --port 5000",
