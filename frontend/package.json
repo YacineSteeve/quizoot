@@ -4,9 +4,9 @@
     "private": true,
     "scripts": {
         "dev": "vite --host localhost --port 5005",
-        "dev2": "vite --host --port 5000",
+        "dev2": "vite --host --port 5005",
         "build": "run-p type-check build-only",
-        "preview": "vite preview --host localhost --port 5000",
+        "preview": "vite preview --host localhost --port 5005",
         "test": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' yarn mocha --require ts-node/register src/**/*.test.ts",
         "build-only": "vite build",
         "type-check": "vue-tsc --noEmit",
