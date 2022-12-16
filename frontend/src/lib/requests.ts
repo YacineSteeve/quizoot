@@ -8,7 +8,7 @@ const quizootApi = axios.create({
     timeout: 1000,
     maxBodyLength: 2000,
     xsrfHeaderName: 'X-CSRFTOKEN',
-    xsrfCookieName: 'csrftoken'
+    xsrfCookieName: 'csrftoken',
 });
 
 export type ApiResponse =
