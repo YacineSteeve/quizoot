@@ -1,14 +1,12 @@
 import json
 
 from django.http import HttpResponse
-from django.views.decorators.csrf import csrf_exempt
 
 from ..validators import SchemaValidator
 
 validator = SchemaValidator("quizzes")
 
 
-@csrf_exempt
 def index(request):
     if request.method == "POST":
         # Get data from request body and parse it as json
