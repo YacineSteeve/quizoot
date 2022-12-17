@@ -23,9 +23,6 @@ export async function makeRequest<TData extends ApiResponse>(
     requestConfig: AxiosRequestConfig
 ): Promise<TData> {
     try {
-        if (requestConfig.method != 'GET') {
-            requestConfig.url += '/';
-        }
         const response = await quizootApi(requestConfig);
         return response.data;
     } catch (err) {
