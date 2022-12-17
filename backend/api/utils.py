@@ -1,12 +1,14 @@
 import json
-import bson
+import string
+import uuid
+from bson import json_util
 from typing import Any
 
+import nanoid
 import pymongo
 
 from pymongo.collection import Collection
 from rest_framework.response import Response
-from rest_framework.request import Request
 
 from django.http.request import QueryDict
 
@@ -22,7 +24,7 @@ SORT_ORDER = {
 
 
 def _to_python_object(obj: Any) -> Any:
-    return json.loads(bson.json_util.dumps(obj))
+    return json.loads(json_util.dumps(obj))
 
 
 class JsonResponse(Response):
@@ -42,4 +44,9 @@ def get_sort_order(query_params: QueryDict, collection: Collection):
 
 
 def get_new_id() -> str:
-    return str(bson.ObjectId())
+    version = 1
+    if version == 1:
+        alphabet = string.ascii_lowercase + string.digits
+        return nanoid.generate(alphabet, size=24)
+    else:
+        return str(uuid.uuid4().hex)
