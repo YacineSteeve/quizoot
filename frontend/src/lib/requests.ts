@@ -7,6 +7,8 @@ const quizootApi = axios.create({
     baseURL: API_BASE_URL,
     timeout: 1000,
     maxBodyLength: 2000,
+    xsrfHeaderName: 'X-CSRFTOKEN',
+    xsrfCookieName: 'csrftoken',
 });
 
 export type ApiResponse =
@@ -18,17 +20,17 @@ export type ApiResponse =
     | { [x: string]: ApiResponse };
 
 export async function makeRequest<TData extends ApiResponse>(
-    config: AxiosRequestConfig
+    requestConfig: AxiosRequestConfig
 ): Promise<TData> {
     try {
-        const response = await quizootApi(config);
+        const response = await quizootApi(requestConfig);
         return response.data;
     } catch (err) {
         if (axios.isAxiosError(err)) {
             // TODO: display
         }
-        const method = config.method ?? 'GET';
-        log(`Could not ${method} to ${config.url}:\n`, err);
-        throw new Error(`Could not ${method} to ${config.url}`);
+        const method = requestConfig.method ?? 'GET';
+        log(`Could not ${method} to ${requestConfig.url}:\n`, err);
+        throw new Error(`Could not ${method} to ${requestConfig.url}`);
     }
 }
