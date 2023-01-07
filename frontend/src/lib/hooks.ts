@@ -5,31 +5,31 @@ import { makeRequest } from '@/lib/requests';
 import type { ApiResponse } from '@/lib/requests';
 
 export interface UseFetchReturn<T> {
-    data: Ref<ApiResponse | null>;
+    data: Ref<T | null>;
     error: Ref;
     isFetching: Ref<boolean>;
 }
 
 type UseFetchOptions = Omit<AxiosRequestConfig, 'url'>;
 
-export async function useFetch<T>(
+export async function useFetch<TData extends ApiResponse>(
     url: string,
     options?: UseFetchOptions
-): Promise<UseFetchReturn<T>> {
+): Promise<UseFetchReturn<TData>> {
 
-    const state: UseFetchReturn<T> = {
+    const state: UseFetchReturn<TData> = {
         data: ref(null),
         error: ref(null),
         isFetching: ref(true),
-    }
+    };
 
     async function fetchData() {
         try {
-            state.data.value = await makeRequest<ApiResponse>({
+            state.data.value = await makeRequest<TData>({
                 url,
-                ...options
+                ...options,
             });
-        } catch(error) {
+        } catch (error) {
             state.error.value = error;
         } finally {
             state.isFetching.value = false;
@@ -38,5 +38,5 @@ export async function useFetch<T>(
 
     await fetchData();
 
-    return state
+    return state;
 }
