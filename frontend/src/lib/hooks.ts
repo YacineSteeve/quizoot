@@ -1,6 +1,7 @@
 import { ref } from 'vue';
 import type { Ref } from 'vue';
 import type { AxiosRequestConfig } from 'axios';
+
 import { makeRequest } from '@/lib/requests';
 import type { ApiResponse } from '@/lib/requests';
 
@@ -16,7 +17,6 @@ export async function useFetch<TData extends ApiResponse>(
     url: string,
     options?: UseFetchOptions
 ): Promise<UseFetchReturn<TData>> {
-
     const state: UseFetchReturn<TData> = {
         data: ref(null),
         error: ref(null),
