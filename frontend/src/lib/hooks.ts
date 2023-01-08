@@ -17,7 +17,6 @@ export async function useFetch<TData extends ApiResponse>(
     url: string,
     options?: Options
 ): Promise<FetchResponse<TData>> {
-
     const state: FetchResponse<TData> = {
         data: ref(null),
         error: ref(null),
