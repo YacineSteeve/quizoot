@@ -5,19 +5,20 @@ import type { AxiosRequestConfig } from 'axios';
 import { makeRequest } from '@/lib/requests';
 import type { ApiResponse } from '@/lib/requests';
 
-export interface UseFetchReturn<T> {
+export interface FetchResponse<T> {
     data: Ref<T | null>;
     error: Ref;
     isFetching: Ref<boolean>;
 }
 
-type UseFetchOptions = Omit<AxiosRequestConfig, 'url'>;
+type Options = Omit<AxiosRequestConfig, 'url'>;
 
 export async function useFetch<TData extends ApiResponse>(
     url: string,
-    options?: UseFetchOptions
-): Promise<UseFetchReturn<TData>> {
-    const state: UseFetchReturn<TData> = {
+    options?: Options
+): Promise<FetchResponse<TData>> {
+
+    const state: FetchResponse<TData> = {
         data: ref(null),
         error: ref(null),
         isFetching: ref(true),
