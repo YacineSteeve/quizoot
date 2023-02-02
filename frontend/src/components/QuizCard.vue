@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
+import type { Ref } from 'vue';
 import type { Quizoot } from '@interfaces/quizoot';
 
 interface QuizCardProps {
@@ -9,9 +10,9 @@ interface QuizCardProps {
 
 const props = defineProps<QuizCardProps>();
 
-const status = ref(true);
+const status: Ref<boolean> = ref(true);
 
-const bgColor = computed(() => (status ? '#008000' : '#dfe2ec'));
+const bgColor = computed(() => (status.value ? '#008000' : '#dfe2ec'));
 </script>
 
 <template>
