@@ -6,6 +6,8 @@ import {
     faChevronRight,
     faQuestion,
     faFileArrowUp,
+    faSpinner,
+    faTriangleExclamation,
 } from '@fortawesome/free-solid-svg-icons';
 import {
     faFacebookF,
@@ -28,4 +30,6 @@ library.add({
     faLinkedinIn,
     faQuestion,
     faFileArrowUp,
+    faSpinner,
+    faTriangleExclamation,
 });

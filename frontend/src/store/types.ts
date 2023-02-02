@@ -1,3 +1,4 @@
 export enum MutationTypes {
     UPDATE_QUIZZES = 'UPDATE_QUIZZES',
+    UPDATE_CURRENT_QUIZ = 'UPDATE_CURRENT_QUIZ',
 }
