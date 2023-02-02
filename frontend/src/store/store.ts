@@ -14,14 +14,13 @@ export const store = createStore({
 
 export const key: InjectionKey<BaseStore<State>> = Symbol();
 
-export type Store = Omit<BaseStore<State>, 'getters' | 'commit'>
-    & {
+export type Store = Omit<BaseStore<State>, 'getters' | 'commit'> & {
     commit<K extends keyof Mutations, P extends Parameters<Mutations[K]>[1]>(
         key: K,
         payload: P,
         options?: CommitOptions
-    ): ReturnType<Mutations[K]>
-}
+    ): ReturnType<Mutations[K]>;
+};
 
 export function useStore() {
     return baseUseStore(key);

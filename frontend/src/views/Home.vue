@@ -14,14 +14,14 @@ const store = useStore();
 
 if (!store.state.quizzes) {
     useFetch<Quiz[]>('/api/quizzes')
-        .then(response => {
+        .then((response) => {
             if (response.error.value) {
                 log(response.error.value);
             }
 
             store.commit(MutationTypes.UPDATE_QUIZZES, response.data.value);
         })
-        .catch(error => log(error))
+        .catch((error) => log(error));
 }
 
 const quizzes: ComputedRef<Quiz[] | null> = computed(() => store.state.quizzes);
@@ -41,7 +41,6 @@ function goToQuiz(quizId: number) {
         <div v-for="quiz in quizzes" :key="quiz">
             <QuizCard @click="goToQuiz(quiz.id)" />
         </div>
-
     </div>
 </template>
 
