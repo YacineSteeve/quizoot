@@ -39,7 +39,11 @@ function goToQuiz(quizId: number) {
         <!-- Quiz details will be inserted as attributes to QuizCard components
             for each quiz in quizzes list -->
         <div v-for="quiz in quizzes" :key="quiz">
-            <QuizCard @click="goToQuiz(quiz.id)" />
+            <QuizCard
+                :title="quiz.title"
+                :description="quiz.description"
+                @click="goToQuiz(quiz.id)"
+            />
         </div>
     </div>
 </template>
@@ -49,8 +53,8 @@ function goToQuiz(quizId: number) {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    align-items: center;
     width: 100%;
+    min-height: 100vh;
     padding-bottom: 30px;
 }
 </style>

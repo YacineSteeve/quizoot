@@ -139,7 +139,7 @@ function goTo(s: 'next' | 'previous') {
             >
                 Previous
             </navigation-button>
-
+            <div class="button-separator"></div>
             <navigation-button
                 v-if="!props.questionsFlow.isLastQuestion"
                 @click="goTo('next')"
@@ -247,7 +247,16 @@ function goTo(s: 'next' | 'previous') {
     display: flex;
     width: 80%;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
+}
+
+.button-separator {
+    width: 1px;
+    height: 100%;
+}
+
+.navigation-button-group .button {
+    min-width: 150px;
 }
 
 @media only screen and (max-width: 600px) {
@@ -263,21 +272,5 @@ function goTo(s: 'next' | 'previous') {
     .navigation-button-group {
         width: 100%;
     }
-}
-
-.navigation-button-group .button {
-    min-width: 150px;
-}
-
-.navigation-button-group:has(.button:nth-child(2)) {
-    justify-content: space-between;
-}
-
-.navigation-button-group:has(.previous-button) {
-    justify-content: flex-start;
-}
-
-.navigation-button-group:has(.next-button) {
-    justify-content: flex-end;
 }
 </style>

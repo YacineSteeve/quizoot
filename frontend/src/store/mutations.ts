@@ -7,10 +7,17 @@ export type Mutations<S = State> = {
         state: S,
         quizzesList: State['quizzes']
     ): void;
+    [MutationTypes.UPDATE_CURRENT_QUIZ](
+        state: S,
+        quiz: State['currentQuiz']
+    ): void;
 };
 
 export const mutations: MutationTree<State> & Mutations = {
     [MutationTypes.UPDATE_QUIZZES](state, quizzesList: State['quizzes']) {
         state.quizzes = quizzesList;
+    },
+    [MutationTypes.UPDATE_CURRENT_QUIZ](state, quiz: State['currentQuiz']) {
+        state.currentQuiz = quiz;
     },
 };

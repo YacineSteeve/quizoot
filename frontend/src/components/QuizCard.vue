@@ -1,34 +1,37 @@
 <script setup lang="ts">
-import { useAttrs, reactive, computed } from 'vue';
+import { ref, computed } from 'vue';
+import type { Ref } from 'vue';
+import type { Quizoot } from '@interfaces/quizoot';
 
-const attrs = useAttrs();
+interface QuizCardProps {
+    title: Quizoot.Quiz['title'];
+    description: Quizoot.Quiz['description'];
+}
 
-const quiz = reactive({
-    title: 'Basic Data Types ' + attrs['key'],
-    description: 'Here we are going to exercise on Python basic data types.',
-    status: [true, false][Math.floor(Math.random() * 2)],
-});
+const props = defineProps<QuizCardProps>();
 
-const bgColor = computed(() => (quiz.status ? '#008000' : '#dfe2ec'));
+const status: Ref<boolean> = ref(true);
+
+const bgColor = computed(() => (status.value ? '#008000' : '#dfe2ec'));
 </script>
 
 <template>
     <div class="quiz-preview-container">
         <div class="quiz-status-container">
-            <div class="quiz-status" v-on:click="quiz.status = !quiz.status">
+            <div class="quiz-status" v-on:click="status = !status">
                 <font-awesome-icon
                     icon="fa-solid fa-check"
                     color="#ffffff"
-                    v-if="quiz.status"
+                    v-if="status"
                 />
             </div>
         </div>
         <div class="quiz-details">
             <div class="quiz-title">
-                <h2>{{ quiz.title }}</h2>
+                <h2>{{ props.title }}</h2>
             </div>
             <div class="quiz-description">
-                <p>{{ quiz.description }}</p>
+                <p>{{ props.description }}</p>
             </div>
         </div>
         <div class="quiz-details-expand-icon-container">
@@ -42,12 +45,12 @@ const bgColor = computed(() => (quiz.status ? '#008000' : '#dfe2ec'));
 <style scoped>
 .quiz-preview-container {
     display: flex;
-    align-items: start;
     width: 75%;
     min-width: 600px;
     height: 16vh;
     min-height: 110px;
     margin-block: 3vh;
+    margin-inline: auto;
     border-radius: 10px;
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
     background-color: #ffffff;
@@ -59,8 +62,8 @@ const bgColor = computed(() => (quiz.status ? '#008000' : '#dfe2ec'));
     cursor: pointer;
 }
 
-.quiz-preview-container .quiz-status-container,
-.quiz-preview-container .quiz-details-expand-icon-container {
+.quiz-status-container,
+.quiz-details-expand-icon-container {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -68,8 +71,8 @@ const bgColor = computed(() => (quiz.status ? '#008000' : '#dfe2ec'));
     height: 100%;
 }
 
-.quiz-preview-container .quiz-status,
-.quiz-preview-container .quiz-details-expand-icon {
+.quiz-status,
+.quiz-details-expand-icon {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -78,16 +81,16 @@ const bgColor = computed(() => (quiz.status ? '#008000' : '#dfe2ec'));
     transform: scale(1);
 }
 
-.quiz-preview-container .quiz-status {
+.quiz-status {
     border-radius: 50%;
     background-color: v-bind(bgColor);
 }
 
-.quiz-preview-container .quiz-status > * {
+.quiz-status > * {
     width: 80%;
 }
 
-.quiz-preview-container .quiz-details {
+.quiz-details {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -105,17 +108,17 @@ const bgColor = computed(() => (quiz.status ? '#008000' : '#dfe2ec'));
         margin-block: 2vh;
     }
 
-    .quiz-preview-container .quiz-status-container,
-    .quiz-preview-container .quiz-details-expand-icon-container {
+    .quiz-status-container,
+    .quiz-details-expand-icon-container {
         width: 14%;
     }
 
-    .quiz-preview-container .quiz-details {
+    .quiz-details {
         width: 72%;
     }
 }
 
-.quiz-preview-container .quiz-details > * {
+.quiz-details > * {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -123,7 +126,7 @@ const bgColor = computed(() => (quiz.status ? '#008000' : '#dfe2ec'));
     height: 35%;
 }
 
-.quiz-preview-container .quiz-details > * > * {
+.quiz-details > * > * {
     width: 100%;
     height: fit-content;
     margin: 0;

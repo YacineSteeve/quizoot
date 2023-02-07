@@ -1,18 +1,43 @@
 <script setup lang="ts">
-import { withDefaults, ref, computed } from 'vue';
+import { ref, computed, onBeforeMount } from 'vue';
 import type { Ref, ComputedRef } from 'vue';
-import type { Quizoot } from '@interfaces/quizoot';
+import { useRoute } from 'vue-router';
+import { useStore } from '@/store/store';
+import { useFetch } from '@/lib/hooks';
+import type { Quiz } from '@interfaces/quizoot.indexed';
 import QuizPreview from '@/components/QuizPreview.vue';
 import Question from '@/components/Question.vue';
-import quiz from '@/data/quiz-data-types.json';
+import { log } from '@/lib';
+import { MutationTypes } from '@/store/types';
 
-interface QuizProps {
-    data: Quizoot.Quiz;
-}
+const route = useRoute();
+const store = useStore();
 
-const props = withDefaults(defineProps<QuizProps>(), {
-    data: () => quiz as Quizoot.Quiz,
+const errorOccurred: Ref<boolean> = ref(false);
+const isFetchingQuiz: ComputedRef<boolean> = computed(
+    () => store.state.currentQuiz === null
+);
+
+onBeforeMount(() => {
+    useFetch<Quiz>(`/api/quizzes/${route.params.id}`)
+        .then((response) => {
+            if (response.error.value) {
+                errorOccurred.value = true;
+                console.log(response.error.value);
+            } else {
+                store.commit(
+                    MutationTypes.UPDATE_CURRENT_QUIZ,
+                    response.data.value
+                );
+            }
+        })
+        .catch((error) => {
+            errorOccurred.value = true;
+            log(error);
+        });
 });
+
+const quiz = computed(() => store.state.currentQuiz);
 
 const currentQuestionIndex: Ref<number | null> = ref(null);
 
@@ -24,7 +49,7 @@ const questionsFlow: ComputedRef = computed(() => {
                 : currentQuestionIndex.value + 1,
         isFirstQuestion: currentQuestionIndex.value == 0,
         isLastQuestion:
-            currentQuestionIndex.value == props.data.questions.length - 1,
+            currentQuestionIndex.value == quiz.value?.questions.length - 1,
     };
 });
 
@@ -39,7 +64,7 @@ function quitQuiz() {
 function goToNextQuestion() {
     if (
         currentQuestionIndex.value != null &&
-        currentQuestionIndex.value < props.data.questions.length - 1
+        currentQuestionIndex.value < quiz.value?.questions.length - 1
     ) {
         currentQuestionIndex.value++;
     }
@@ -53,7 +78,26 @@ function goToPreviousQuestion() {
 </script>
 
 <template>
-    <div class="quiz-container">
+    <div v-if="errorOccurred" class="quiz-fetch-error">
+        <font-awesome-icon
+            icon="fa-solid fa-triangle-exclamation"
+            size="2xl"
+            color="var(--main-purple-lightened)"
+            class="warning-icon"
+        />
+        <br />
+        <p>Sorry, something went wrong...</p>
+    </div>
+    <div v-else-if="isFetchingQuiz">
+        <font-awesome-icon
+            icon="fa-solid fa-spinner"
+            size="2xl"
+            color="var(--main-purple-lightened)"
+            class="spinner"
+        />
+        <p>Loading...</p>
+    </div>
+    <div v-else class="quiz-container">
         <h1 class="quiz-title">
             <span
                 v-if="currentQuestionIndex != null"
@@ -64,20 +108,20 @@ function goToPreviousQuestion() {
                     icon="fa-solid fa-chevron-left"
                 />
             </span>
-            {{ data.title }}
+            {{ quiz.title }}
         </h1>
         <br />
         <QuizPreview
             v-if="currentQuestionIndex == null"
-            :questionsCount="data.questions.length"
-            :description="data.description"
-            :authors="data.authors"
+            :questionsCount="quiz.questions.length"
+            :description="quiz.description"
+            :authors="quiz.authors"
             :onStart="startQuiz"
         />
         <question
             v-else
-            :question="props.data.questions[currentQuestionIndex]"
-            :questionsCount="props.data.questions.length"
+            :question="quiz.questions[currentQuestionIndex]"
+            :questionsCount="quiz.questions.length"
             :questionsFlow="questionsFlow"
             :goToNextQuestion="goToNextQuestion"
             :goToPreviousQuestion="goToPreviousQuestion"
@@ -87,6 +131,14 @@ function goToPreviousQuestion() {
 </template>
 
 <style scoped>
+.quiz-fetch-error .warning-icon {
+    font-size: 4em;
+}
+
+.quiz-fetch-error p {
+    font-style: italic;
+}
+
 .quiz-container {
     display: flex;
     flex-direction: column;
@@ -94,6 +146,20 @@ function goToPreviousQuestion() {
     align-items: center;
     width: 80%;
     margin: 0;
+}
+
+.spinner {
+    animation: spin 1.65s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 .quiz-container .quiz-title {
