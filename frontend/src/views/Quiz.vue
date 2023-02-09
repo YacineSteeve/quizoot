@@ -3,7 +3,10 @@ import { ref, computed, onBeforeMount } from 'vue';
 import type { Ref, ComputedRef } from 'vue';
 import { useRoute } from 'vue-router';
 import type { Quizoot } from '@interfaces/quizoot';
-import type { Quiz, Question as QuizQuestion } from '@interfaces/quizoot.indexed';
+import type {
+    Quiz,
+    Question as QuizQuestion,
+} from '@interfaces/quizoot.indexed';
 import { useStore } from '@/store/store';
 import { MutationTypes } from '@/store/types';
 import { log } from '@/lib';
@@ -32,19 +35,23 @@ onBeforeMount(() => {
                     response.data.value
                 );
 
-                for (const question of response.data.value?.questions) {
-                    useFetch<QuizQuestion>(`/api/questions/${question.question_id}`)
+                for (const question of response.data.value?.questions || []) {
+                    useFetch<QuizQuestion>(
+                        `/api/questions/${question.question_id}`
+                    )
                         .then((response) => {
                             if (response.error.value) {
                                 log(response.error.value);
                             }
                             if (response.data.value) {
-                                quizQuestions.value.push(response.data.value as QuizQuestion);
+                                quizQuestions.value.push(
+                                    response.data.value as QuizQuestion
+                                );
                             }
                         })
                         .catch((error) => {
                             log(error);
-                        })
+                        });
                 }
             }
         })
@@ -79,7 +86,7 @@ function getQuizQuestionOfId(id: Quizoot.Question['id']) {
 }
 
 function getFirstQuestionItem() {
-    for (const question of quiz.value?.questions) {
+    for (const question of quiz.value?.questions || []) {
         if (question.prev_question_id == null) {
             return question;
         }
@@ -90,7 +97,9 @@ function getFirstQuestionItem() {
 function startQuiz() {
     currentQuestionItem.value = getFirstQuestionItem();
     if (currentQuestionItem.value) {
-        currentQuestion.value = getQuizQuestionOfId(currentQuestionItem.value.question_id);
+        currentQuestion.value = getQuizQuestionOfId(
+            currentQuestionItem.value.question_id
+        );
     }
     currentQuestionNumber.value = 1;
 }
@@ -102,12 +111,16 @@ function quitQuiz() {
 
 function goToNextQuestion() {
     if (currentQuestionItem.value?.next_question_id) {
-        for (const question of quiz.value?.questions) {
+        for (const question of quiz.value?.questions || []) {
             if (
-                question.question_id === currentQuestionItem.value?.next_question_id
+                question.question_id ===
+                    currentQuestionItem.value?.next_question_id ||
+                []
             ) {
                 currentQuestionItem.value = question;
-                currentQuestion.value = getQuizQuestionOfId(question.question_id)
+                currentQuestion.value = getQuizQuestionOfId(
+                    question.question_id
+                );
                 currentQuestionNumber.value++;
                 return;
             }
@@ -118,12 +131,16 @@ function goToNextQuestion() {
 
 function goToPreviousQuestion() {
     if (currentQuestionItem.value?.prev_question_id) {
-        for (const question of quiz.value?.questions) {
+        for (const question of quiz.value?.questions || []) {
             if (
-                question.question_id === currentQuestionItem.value?.prev_question_id
+                question.question_id ===
+                    currentQuestionItem.value?.prev_question_id ||
+                []
             ) {
                 currentQuestionItem.value = question;
-                currentQuestion.value = getQuizQuestionOfId(question.question_id)
+                currentQuestion.value = getQuizQuestionOfId(
+                    question.question_id
+                );
                 currentQuestionNumber.value--;
                 return;
             }
@@ -174,12 +191,12 @@ function goToPreviousQuestion() {
             :onStart="startQuiz"
         />
         <question
-                v-else
-                :question="currentQuestion"
-                :questionsCount="quizQuestions.length"
-                :questionsFlow="questionsFlow"
-                :goToNextQuestion="goToNextQuestion"
-                :goToPreviousQuestion="goToPreviousQuestion"
+            v-else
+            :question="currentQuestion"
+            :questionsCount="quizQuestions.length"
+            :questionsFlow="questionsFlow"
+            :goToNextQuestion="goToNextQuestion"
+            :goToPreviousQuestion="goToPreviousQuestion"
         >
         </question>
     </div>
