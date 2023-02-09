@@ -63,11 +63,17 @@
         },
         "next_question_id": {
           "description": "Id of the next question in the quiz chronology. Is null if it is the last question.",
-          "type": "string"
+          "type": [
+            "string",
+            "null"
+          ]
         },
         "prev_question_id": {
           "description": "Id of the previous question in the quiz chronology. Is null if it is the first question.",
-          "type": "string"
+          "type": [
+            "string",
+            "null"
+          ]
         }
       },
       "required": [
@@ -89,7 +95,10 @@
         },
         "pseudo": {
           "description": "A pseudo for the quiz author.",
-          "type": "string"
+          "type": [
+            "string",
+            "null"
+          ]
         },
         "email": {
           "description": "The quiz author\u0027s email.",

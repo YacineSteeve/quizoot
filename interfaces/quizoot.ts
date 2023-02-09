@@ -243,12 +243,14 @@ export declare namespace Quizoot {
         question_id: string;
         /**
          * Id of the next question in the quiz chronology. Is null if it is the last question.
+         * @nullable
          */
-        next_question_id: string | null;
+        next_question_id: string;
         /**
          * Id of the previous question in the quiz chronology. Is null if it is the first question.
+         * @nullable
          */
-        prev_question_id: string | null;
+        prev_question_id: string;
     }
 
     interface Author {
@@ -262,8 +264,9 @@ export declare namespace Quizoot {
         surname?: string;
         /**
          * A pseudo for the quiz author.
+         * @nullable
          */
-        pseudo?: string | null;
+        pseudo?: string;
         /**
          * The quiz author's email.
          *
