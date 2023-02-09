@@ -223,7 +223,7 @@ export declare namespace Quizoot {
         /**
          * All the questions the quiz is made of.
          */
-        questions: Question[]
+        questions: QuestionItem[]
         /**
          * List of optional authors or contributors of the quiz. See {@link Author}.
          */
