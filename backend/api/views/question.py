@@ -1,10 +1,10 @@
-from rest_framework.decorators import api_view
+from .views import ListView, DetailView
 
-from ..client import client
-from ..utils import JsonResponse
+class QuestionList(ListView):
+    def __init__(self):
+        super().__init__('questions')
 
 
-@api_view(["GET"])
-def question_list(request):
-    if request.method == "GET":
-        return JsonResponse(data=client.collection("questions").find())
+class QuestionDetail(DetailView):
+    def __init__(self):
+        super().__init__('questions')
