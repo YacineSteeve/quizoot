@@ -199,7 +199,7 @@
           "description": "File type enum. Can be `.txt`, `.csv`, `.pdf`, etc. See {@link FileType}."
         },
         "content": {
-          "description": "Encoded `base64` string of the file\u0027s content.",
+          "description": "Encoded `base64` string of the file's content.",
           "type": "string"
         }
       },
