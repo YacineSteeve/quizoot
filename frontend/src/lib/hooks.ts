@@ -1,4 +1,4 @@
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import type { Ref } from 'vue';
 import type { AxiosRequestConfig } from 'axios';
 
@@ -37,6 +37,8 @@ export async function useFetch<TData extends ApiResponse>(
     }
 
     await fetchData();
+
+    watch(() => url, fetchData);
 
     return state;
 }
