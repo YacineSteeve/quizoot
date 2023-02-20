@@ -50,7 +50,6 @@ import Footer from '@/components/Footer.vue';
 
 .main {
     display: flex;
-    justify-content: center;
     flex-direction: column;
     align-items: center;
     min-height: calc(100vh - 3.5em);
