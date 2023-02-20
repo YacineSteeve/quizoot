@@ -29,7 +29,7 @@ SCHEMAS_TO_GENERATE.forEach((schema) => {
     
     try {
         const filepath = path.join(SCHEMAS_DIR, `./${schema.name}.json`)
-        fs.writeFileSync(filepath, JSON.stringify(definition));
+        fs.writeFileSync(filepath, JSON.stringify(definition, null, 2) + '\n');
     } catch (err) {
         console.error(err);
     }

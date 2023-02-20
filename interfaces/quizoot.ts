@@ -223,7 +223,7 @@ export declare namespace Quizoot {
         /**
          * All the questions the quiz is made of.
          */
-        questions: Question[]
+        questions: QuestionItem[]
         /**
          * List of optional authors or contributors of the quiz. See {@link Author}.
          */
@@ -243,10 +243,12 @@ export declare namespace Quizoot {
         question_id: string;
         /**
          * Id of the next question in the quiz chronology. Is null if it is the last question.
+         * @nullable
          */
         next_question_id: string | null;
         /**
          * Id of the previous question in the quiz chronology. Is null if it is the first question.
+         * @nullable
          */
         prev_question_id: string | null;
     }
@@ -263,7 +265,7 @@ export declare namespace Quizoot {
         /**
          * A pseudo for the quiz author.
          */
-        pseudo?: string | null;
+        pseudo?: string;
         /**
          * The quiz author's email.
          *
