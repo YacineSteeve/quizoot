@@ -34,14 +34,14 @@ useFetch<Quiz>(`/api/quizzes/${route.params.id}`)
         log(error);
     });
 
-
 const questionItems: ComputedRef<
     Record<Quizoot.QuestionItem['question_id'], Quizoot.QuestionItem>
 > = computed(() => {
     const questionItems: Record<
-        Quizoot.QuestionItem['question_id'], Quizoot.QuestionItem
+        Quizoot.QuestionItem['question_id'],
+        Quizoot.QuestionItem
     > = {};
-    for (const questionItem of quiz.value?.questions) {
+    for (const questionItem of quiz.value?.questions || []) {
         questionItems[questionItem.question_id] = questionItem;
     }
     return questionItems;
@@ -49,7 +49,6 @@ const questionItems: ComputedRef<
 
 const currentQuestionItem: Ref<Quizoot.QuestionItem | null> = ref(null);
 const currentQuestionNumber: Ref<number> = ref(0);
-
 
 function getFirstQuestionItem() {
     for (const question of quiz.value?.questions || []) {
@@ -72,18 +71,16 @@ function quitQuiz() {
 
 function goToNextQuestion() {
     if (currentQuestionItem.value?.next_question_id) {
-        currentQuestionItem.value = questionItems.value[
-            currentQuestionItem.value.next_question_id
-        ];
+        currentQuestionItem.value =
+            questionItems.value[currentQuestionItem.value.next_question_id];
         currentQuestionNumber.value++;
     }
 }
 
 function goToPreviousQuestion() {
     if (currentQuestionItem.value?.prev_question_id) {
-        currentQuestionItem.value = questionItems.value[
-            currentQuestionItem.value.prev_question_id
-        ];
+        currentQuestionItem.value =
+            questionItems.value[currentQuestionItem.value.prev_question_id];
         currentQuestionNumber.value--;
     }
 }
@@ -92,8 +89,7 @@ function goToPreviousQuestion() {
 <template>
     <FetchError v-if="errorOccurred" />
     <Loader v-else-if="isFetchingQuiz" />
-    <div v-else
-         class="quiz-container">
+    <div v-else class="quiz-container">
         <h1 class="quiz-title">
             <span
                 v-if="currentQuestionItem != null"
@@ -125,11 +121,12 @@ function goToPreviousQuestion() {
             </question>
         </Suspense>
         <QuestionsNavigation
-                v-if="currentQuestionItem != null"
-                :isFirstQuestion="currentQuestionNumber === 1"
-                :isLastQuestion="currentQuestionNumber === quiz.questions.length"
-                :goToNextQuestion="goToNextQuestion"
-                :goToPreviousQuestion="goToPreviousQuestion" />
+            v-if="currentQuestionItem != null"
+            :isFirstQuestion="currentQuestionNumber === 1"
+            :isLastQuestion="currentQuestionNumber === quiz.questions.length"
+            :goToNextQuestion="goToNextQuestion"
+            :goToPreviousQuestion="goToPreviousQuestion"
+        />
     </div>
 </template>
 

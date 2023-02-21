@@ -8,7 +8,6 @@ import { pascalToSnake } from '@/lib/string-utils';
 import FetchError from '@/components/FetchError.vue';
 import Loader from '@/components/Loader.vue';
 
-
 interface QuestionWrapperProps {
     questionId: Quizoot.Question['id'];
     questionNumber: number;
@@ -42,8 +41,8 @@ const props = defineProps<QuestionWrapperProps>();
 const {
     data: question,
     error: errorOccurred,
-    isFetching: isFetchingQuestion
-} = await useFetch<Question>(`/api/questions/${props.questionId}`)
+    isFetching: isFetchingQuestion,
+} = await useFetch<Question>(`/api/questions/${props.questionId}`);
 
 const QuestionSpec: ComputedRef<Component> = computed(() => {
     if (question.value?.kind in components) {
@@ -83,13 +82,9 @@ function toggleHint() {
         </div>
 
         <div class="question-props">
-            <span id="difficulty">{{
-                question.difficulty.toUpperCase()
-            }}</span>
+            <span id="difficulty">{{ question.difficulty.toUpperCase() }}</span>
             <span>&#8226; </span>
-            <span id="grading"
-                >{{ question.grading.point_value }} pts</span
-            >
+            <span id="grading">{{ question.grading.point_value }} pts</span>
         </div>
 
         <div class="question">
