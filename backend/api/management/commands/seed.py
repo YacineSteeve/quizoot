@@ -1,10 +1,11 @@
-from django.core.management.base import BaseCommand
-from argparse import ArgumentParser
-from django.conf import settings
-
-from backend.api.client import client, CollectionName
 import json
+from argparse import ArgumentParser
+from pathlib import PosixPath
 
+from django.conf import settings
+from django.core.management.base import BaseCommand
+
+from backend.api.client import CollectionName, client
 
 # USAGE :
 #   python manage.py seed --mode=(refresh | clear)
@@ -12,7 +13,6 @@ import json
 MODE_CLEAR = "clear"
 MODE_REFRESH = "refresh"
 
-from pathlib import PosixPath
 
 DATA_DIR: PosixPath = settings.BASE_DIR / "data"
 
