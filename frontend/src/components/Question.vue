@@ -2,29 +2,24 @@
 import { computed, defineAsyncComponent, ref } from 'vue';
 import type { ComputedRef, Ref } from 'vue';
 import type { Quizoot } from '@interfaces/quizoot';
-import NavigationButton from '@/components/NavigationButton.vue';
+import type { Question } from '@interfaces/quizoot.indexed';
+import { useFetch } from '@/lib/hooks';
 import { pascalToSnake } from '@/lib/string-utils';
-
-interface QuestionsFlow {
-    questionNumber: number;
-    isFirstQuestion: boolean;
-    isLastQuestion: boolean;
-}
+import FetchError from '@/components/FetchError.vue';
+import Loader from '@/components/Loader.vue';
 
 interface QuestionWrapperProps {
-    question: Quizoot.Question;
-    questionsFlow: QuestionsFlow;
-    questionsCount: number;
-    goToPreviousQuestion: () => void;
-    goToNextQuestion: () => void;
+    id: Quizoot.Question['id'];
+    rank: number;
+    totalQuestions: number;
 }
 
-type Components = Promise<any>;
-type ComponentsMap = Record<Quizoot.QuestionKind, Components>;
+type Component = Promise<object>;
+type ComponentsMap = Record<Quizoot.QuestionKind, Component>;
 
 function getComponents() {
     const files = import.meta.glob('@/components/questions/*.vue');
-    const components: Record<string, Components> = {};
+    const components: Record<string, Component> = {};
 
     for (const filepath in files) {
         const filename = filepath.match(/.*\/(.+)\.vue$/)?.[1];
@@ -43,11 +38,17 @@ const components = getComponents();
 
 const props = defineProps<QuestionWrapperProps>();
 
-const QuestionSpec: ComputedRef = computed(() => {
-    if (props.question.kind in components) {
-        return components[props.question.kind];
+const {
+    data: question,
+    error: errorOccurred,
+    isFetching: isFetchingQuestion,
+} = await useFetch<Question>(`/api/questions/${props.id}`);
+
+const QuestionSpec: ComputedRef<Component> = computed(() => {
+    if (question.value?.kind in components) {
+        return components[question.value?.kind as Quizoot.QuestionKind];
     } else {
-        throw Error(`Unknown QuestionKind "${props.question.kind}"`);
+        throw Error(`Unknown QuestionKind "${question.value?.kind}"`);
     }
 });
 
@@ -58,7 +59,7 @@ const DIFFICULTY_COLOR_MAP: Record<Quizoot.Difficulty, string> = {
 };
 
 const difficultyColor: ComputedRef = computed(
-    () => DIFFICULTY_COLOR_MAP[props.question.difficulty]
+    () => DIFFICULTY_COLOR_MAP[question.value?.difficulty as Quizoot.Difficulty]
 );
 
 const displayHint: Ref<boolean> = ref(false);
@@ -66,51 +67,35 @@ const displayHint: Ref<boolean> = ref(false);
 function toggleHint() {
     displayHint.value = !displayHint.value;
 }
-
-function goTo(s: 'next' | 'previous') {
-    displayHint.value = false;
-    switch (s) {
-        case 'next':
-            props.goToNextQuestion();
-            break;
-        case 'previous':
-            props.goToPreviousQuestion();
-            break;
-        default:
-            break;
-    }
-}
 </script>
 
 <template>
     <div class="progress-bar"></div>
-    <div class="question-wrapper">
+    <FetchError v-if="errorOccurred" />
+    <Loader v-else-if="isFetchingQuestion" />
+    <div v-else class="question-wrapper">
         <div class="question-number">
             <h1>
-                Question {{ props.questionsFlow.questionNumber }}
-                <span> / {{ props.questionsCount }}</span>
+                Question {{ props.rank }}
+                <span> / {{ props.totalQuestions }}</span>
             </h1>
         </div>
 
         <div class="question-props">
-            <span id="difficulty">{{
-                props.question.difficulty.toUpperCase()
-            }}</span>
+            <span id="difficulty">{{ question.difficulty.toUpperCase() }}</span>
             <span>&#8226; </span>
-            <span id="grading"
-                >{{ props.question.grading.point_value }} pts</span
-            >
+            <span id="grading">{{ question.grading.point_value }} pts</span>
         </div>
 
         <div class="question">
-            <p>{{ props.question.question }}</p>
+            <p>{{ question.question }}</p>
         </div>
 
         <keep-alive>
-            <QuestionSpec :spec="props.question.spec" />
+            <QuestionSpec :spec="question.spec" />
         </keep-alive>
 
-        <div v-if="props.question.hint" class="question-hint">
+        <div v-if="question.hint" class="question-hint">
             <div @click="toggleHint" class="hint-toggler">
                 <font-awesome-icon
                     v-if="displayHint"
@@ -125,30 +110,8 @@ function goTo(s: 'next' | 'previous') {
                 <p>Hint</p>
             </div>
             <div class="hint" :class="{ display: displayHint }">
-                {{ props.question.hint }}
+                {{ question.hint }}
             </div>
-        </div>
-
-        <div class="navigation-button-group">
-            <navigation-button
-                v-if="!props.questionsFlow.isFirstQuestion"
-                @click="goTo('previous')"
-                backgroundColor="var(--palette-mobster)"
-                chevronLeft
-                class="previous-button button"
-            >
-                Previous
-            </navigation-button>
-            <div class="button-separator"></div>
-            <navigation-button
-                v-if="!props.questionsFlow.isLastQuestion"
-                @click="goTo('next')"
-                backgroundColor="var(--main-purple-lightened)"
-                chevronRight
-                class="next-button button"
-            >
-                Next
-            </navigation-button>
         </div>
     </div>
 </template>
@@ -234,29 +197,12 @@ function goTo(s: 'next' | 'previous') {
     text-align: left;
     color: black;
     padding: 10px;
-    /* margin-bottom: 50px; */
     border: 2px solid var(--main-purple-lightened);
     border-radius: 4px;
 }
 
 .display {
     display: block;
-}
-
-.navigation-button-group {
-    display: flex;
-    width: 80%;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.button-separator {
-    width: 1px;
-    height: 100%;
-}
-
-.navigation-button-group .button {
-    min-width: 150px;
 }
 
 @media only screen and (max-width: 600px) {
@@ -267,10 +213,6 @@ function goTo(s: 'next' | 'previous') {
     .question-hint {
         flex-direction: column;
         width: 90%;
-    }
-
-    .navigation-button-group {
-        width: 100%;
     }
 }
 </style>

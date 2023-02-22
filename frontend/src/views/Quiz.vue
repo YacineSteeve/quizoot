@@ -1,93 +1,58 @@
 <script setup lang="ts">
-import { ref, computed, onBeforeMount } from 'vue';
+import { ref, computed } from 'vue';
 import type { Ref, ComputedRef } from 'vue';
 import { useRoute } from 'vue-router';
 import type { Quizoot } from '@interfaces/quizoot';
-import type {
-    Quiz,
-    Question as QuizQuestion,
-} from '@interfaces/quizoot.indexed';
-import { useStore } from '@/store/store';
-import { MutationTypes } from '@/store/types';
+import type { Quiz } from '@interfaces/quizoot.indexed';
 import { log } from '@/lib';
 import { useFetch } from '@/lib/hooks';
 import QuizPreview from '@/components/QuizPreview.vue';
 import Question from '@/components/Question.vue';
+import QuestionsNavigation from '@/components/QuestionsNavigation.vue';
+import FetchError from '@/components/FetchError.vue';
+import Loader from '@/components/Loader.vue';
 
 const route = useRoute();
-const store = useStore();
 
-const quizQuestions: Ref<QuizQuestion[]> = ref([]);
+const quiz: Ref<Quiz | null> = ref(null);
 const errorOccurred: Ref<boolean> = ref(false);
-const isFetchingQuiz: ComputedRef<boolean> = computed(
-    () => store.state.currentQuiz === null
-);
+const isFetchingQuiz: Ref<boolean> = ref(true);
 
-onBeforeMount(() => {
-    useFetch<Quiz>(`/api/quizzes/${route.params.id}`)
-        .then((response) => {
-            if (response.error.value) {
-                errorOccurred.value = true;
-                log(response.error.value);
-            } else {
-                store.commit(
-                    MutationTypes.UPDATE_CURRENT_QUIZ,
-                    response.data.value
-                );
-
-                for (const question of response.data.value?.questions || []) {
-                    useFetch<QuizQuestion>(
-                        `/api/questions/${question.question_id}`
-                    )
-                        .then((response) => {
-                            if (response.error.value) {
-                                log(response.error.value);
-                            }
-                            if (response.data.value) {
-                                quizQuestions.value.push(
-                                    response.data.value as QuizQuestion
-                                );
-                            }
-                        })
-                        .catch((error) => {
-                            log(error);
-                        });
-                }
-            }
-        })
-        .catch((error) => {
+useFetch<Quiz>(`/api/quizzes/${route.params.id}`)
+    .then((response) => {
+        if (response.error.value) {
             errorOccurred.value = true;
-            log(error);
-        });
-});
-
-const quiz: ComputedRef<Quiz | null> = computed(() => store.state.currentQuiz);
-
-const currentQuestion: Ref<QuizQuestion | null> = ref(null);
-const currentQuestionItem: Ref<Quizoot.QuestionItem | null> = ref(null);
-const currentQuestionNumber: Ref<number> = ref(0);
-
-const questionsFlow: ComputedRef = computed(() => {
-    return {
-        questionNumber:
-            currentQuestionItem.value == null ? 0 : currentQuestionNumber.value,
-        isFirstQuestion: currentQuestionItem.value?.prev_question_id == null,
-        isLastQuestion: currentQuestionItem.value?.next_question_id == null,
-    };
-});
-
-function getQuizQuestionOfId(id: Quizoot.Question['id']) {
-    for (const question of quizQuestions.value) {
-        if (question.id === id) {
-            return question;
+            log(response.error.value);
+        } else {
+            quiz.value = response.data.value;
         }
+        isFetchingQuiz.value = false;
+    })
+    .catch((error) => {
+        errorOccurred.value = true;
+        isFetchingQuiz.value = false;
+        log(error);
+    });
+
+const questionItems: ComputedRef<
+    Record<Quizoot.QuestionItem['question_id'], Quizoot.QuestionItem>
+> = computed(() => {
+    const questionItems: Record<
+        Quizoot.QuestionItem['question_id'],
+        Quizoot.QuestionItem
+    > = {};
+    for (const questionItem of quiz.value?.questions || []) {
+        questionItems[questionItem.question_id] = questionItem;
     }
-    return null;
-}
+    return questionItems;
+});
+
+const currentQuestionItem: Ref<Quizoot.QuestionItem | null> = ref(null);
+const currentQuestionRank: Ref<number> = ref(0);
 
 function getFirstQuestionItem() {
     for (const question of quiz.value?.questions || []) {
-        if (question.prev_question_id == null) {
+        if (question.prev_question_id === null) {
             return question;
         }
     }
@@ -96,83 +61,38 @@ function getFirstQuestionItem() {
 
 function startQuiz() {
     currentQuestionItem.value = getFirstQuestionItem();
-    if (currentQuestionItem.value) {
-        currentQuestion.value = getQuizQuestionOfId(
-            currentQuestionItem.value.question_id
-        );
-    }
-    currentQuestionNumber.value = 1;
+    currentQuestionRank.value = 1;
 }
 
 function quitQuiz() {
     currentQuestionItem.value = null;
-    currentQuestion.value = null;
+    currentQuestionRank.value = 0;
 }
 
 function goToNextQuestion() {
     if (currentQuestionItem.value?.next_question_id) {
-        for (const question of quiz.value?.questions || []) {
-            if (
-                question.question_id ===
-                    currentQuestionItem.value?.next_question_id ||
-                []
-            ) {
-                currentQuestionItem.value = question;
-                currentQuestion.value = getQuizQuestionOfId(
-                    question.question_id
-                );
-                currentQuestionNumber.value++;
-                return;
-            }
-        }
+        currentQuestionItem.value =
+            questionItems.value[currentQuestionItem.value.next_question_id];
+        currentQuestionRank.value++;
     }
-    console.log(currentQuestion.value);
 }
 
 function goToPreviousQuestion() {
     if (currentQuestionItem.value?.prev_question_id) {
-        for (const question of quiz.value?.questions || []) {
-            if (
-                question.question_id ===
-                    currentQuestionItem.value?.prev_question_id ||
-                []
-            ) {
-                currentQuestionItem.value = question;
-                currentQuestion.value = getQuizQuestionOfId(
-                    question.question_id
-                );
-                currentQuestionNumber.value--;
-                return;
-            }
-        }
+        currentQuestionItem.value =
+            questionItems.value[currentQuestionItem.value.prev_question_id];
+        currentQuestionRank.value--;
     }
 }
 </script>
 
 <template>
-    <div v-if="errorOccurred" class="quiz-fetch-error">
-        <font-awesome-icon
-            icon="fa-solid fa-triangle-exclamation"
-            size="2xl"
-            color="var(--main-purple-lightened)"
-            class="warning-icon"
-        />
-        <br />
-        <p>Sorry, something went wrong...</p>
-    </div>
-    <div v-else-if="isFetchingQuiz">
-        <font-awesome-icon
-            icon="fa-solid fa-spinner"
-            size="2xl"
-            color="var(--main-purple-lightened)"
-            class="spinner"
-        />
-        <p>Loading...</p>
-    </div>
+    <FetchError v-if="errorOccurred" />
+    <Loader v-else-if="isFetchingQuiz" />
     <div v-else class="quiz-container">
         <h1 class="quiz-title">
             <span
-                v-if="currentQuestion != null"
+                v-if="currentQuestionItem != null"
                 class="back-to-quiz-preview-icon"
             >
                 <font-awesome-icon
@@ -184,54 +104,39 @@ function goToPreviousQuestion() {
         </h1>
         <br />
         <QuizPreview
-            v-if="currentQuestion == null"
-            :questionsCount="quizQuestions.length"
+            v-if="currentQuestionItem === null"
+            :questionsCount="quiz.questions.length"
             :description="quiz.description"
             :authors="quiz.authors"
             :onStart="startQuiz"
         />
-        <question
-            v-else
-            :question="currentQuestion"
-            :questionsCount="quizQuestions.length"
-            :questionsFlow="questionsFlow"
+        <Suspense>
+            <question
+                v-if="currentQuestionItem != null"
+                :id="currentQuestionItem.question_id"
+                :totalQuestions="quiz.questions.length"
+                :rank="currentQuestionRank"
+                :key="currentQuestionItem.question_id"
+            >
+            </question>
+        </Suspense>
+        <QuestionsNavigation
+            v-if="currentQuestionItem != null"
+            :isFirstQuestion="currentQuestionRank === 1"
+            :isLastQuestion="currentQuestionRank === quiz.questions.length"
             :goToNextQuestion="goToNextQuestion"
             :goToPreviousQuestion="goToPreviousQuestion"
-        >
-        </question>
+        />
     </div>
 </template>
 
 <style scoped>
-.quiz-fetch-error .warning-icon {
-    font-size: 4em;
-}
-
-.quiz-fetch-error p {
-    font-style: italic;
-}
-
 .quiz-container {
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
     width: 80%;
     margin: 0;
-}
-
-.spinner {
-    animation: spin 1.65s linear infinite;
-}
-
-@keyframes spin {
-    from {
-        transform: rotate(0deg);
-    }
-
-    to {
-        transform: rotate(360deg);
-    }
 }
 
 .quiz-container .quiz-title {
@@ -280,8 +185,15 @@ function goToPreviousQuestion() {
         margin-inline: 5%;
     }
 
+    .quiz-container .quiz-title {
+        position: relative;
+        text-align: center;
+    }
+
     .quiz-container .quiz-title .back-to-quiz-preview-icon {
-        width: 1.25em;
+        position: absolute;
+        left: -1em;
+        width: 1em;
     }
 }
 </style>
