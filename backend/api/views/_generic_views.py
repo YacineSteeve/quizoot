@@ -8,15 +8,15 @@ from rest_framework.views import APIView
 
 from ..client import client
 from ..exceptions import InvalidData
-from ..utils import JsonResponse, get_new_id, get_sort_order
-from ..validators import SchemaValidator
+from ..utils import JsonResponse, get_new_id, get_sort_order, StringUtils
+from ..schemas import SchemaValidator
 
 
 class GenericApiView(APIView):
     def __init__(self, collection_name: Literal["quizzes", "questions"]):
         super().__init__()
         self._collection = client.collection(collection_name)
-        self._validator = SchemaValidator(collection_name)
+        self._validator = SchemaValidator(StringUtils.singularize(collection_name))
 
 
 class ListView(GenericApiView):
