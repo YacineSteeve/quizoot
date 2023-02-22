@@ -38,7 +38,7 @@ function goToQuiz(quizId: number) {
         </div>
         <!-- Quiz details will be inserted as attributes to QuizCard components
             for each quiz in quizzes list -->
-        <div v-for="quiz in quizzes" :key="quiz">
+        <div v-for="quiz in quizzes" :key="quiz.id">
             <QuizCard
                 :title="quiz.title"
                 :description="quiz.description"

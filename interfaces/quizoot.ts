@@ -114,6 +114,10 @@ export declare namespace Quizoot {
 		? CodeQuestionSpec
 		: never;
 
+	type ChoiceQuestionSpec =
+		| SingleChoiceQuestionSpec
+		| MultipleChoicesQuestionSpec;
+
 	/**
 	 * Question spec. It depends on the question kind.
 	 */

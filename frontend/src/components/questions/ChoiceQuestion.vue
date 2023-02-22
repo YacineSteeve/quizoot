@@ -4,14 +4,14 @@ import type { Ref } from 'vue';
 import type { Quizoot } from '@interfaces/quizoot';
 
 interface ChoiceQuestionProps {
-    spec: Quizoot.ChoiceQuestion;
+    spec: Quizoot.ChoiceQuestionSpec;
 }
 
 const props = defineProps<ChoiceQuestionProps>();
 
 const isSingleChoiceQuestion = (
-    spec: Quizoot.ChoiceQuestion
-): spec is Quizoot.SingleChoiceQuestion => {
+    spec: Quizoot.ChoiceQuestionSpec
+): spec is Quizoot.SingleChoiceQuestionSpec => {
     return 'answer_id' in spec;
 };
 
