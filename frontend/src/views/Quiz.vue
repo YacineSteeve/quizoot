@@ -185,8 +185,15 @@ function goToPreviousQuestion() {
         margin-inline: 5%;
     }
 
+    .quiz-container .quiz-title {
+        position: relative;
+        text-align: center;
+    }
+
     .quiz-container .quiz-title .back-to-quiz-preview-icon {
-        width: 1.25em;
+        position: absolute;
+        left: -1em;
+        width: 1em;
     }
 }
 </style>
