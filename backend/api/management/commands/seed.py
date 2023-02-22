@@ -8,7 +8,7 @@ from django.core.management.base import BaseCommand
 from backend.api.client import CollectionName, client
 
 # USAGE :
-#   python manage.py seed --mode=(refresh | clear)
+#   python manage.py seed
 
 MODE_CLEAR = "clear"
 MODE_REFRESH = "refresh"
@@ -21,36 +21,29 @@ DATA_DIR: PosixPath = settings.BASE_DIR / "data"
 class Command(BaseCommand):
     help = "seed database for testing and development."
 
-    def add_arguments(self, parser: ArgumentParser):
-        parser.add_argument(
-            "--mode", help=f"Specify the mode ({MODE_CLEAR} | {MODE_REFRESH})"
-        )
-
     def handle(self, *args, **options):
-        mode = options.get("mode")
         # Always clear data
         self.clear_data()
-        if mode == MODE_REFRESH:
-            for filepath in DATA_DIR.glob("*.json"):
-                collection_name = filepath.name[:-5]
-                self.seed_data(collection_name)
+        for filepath in DATA_DIR.glob("*.json"):
+            collection_name = filepath.name[:-5]
+            self.seed_data(collection_name)
 
     def clear_data(self):
         self.stdout.write("[INFO] Deleting all collections...")
         for name in client._collections:
             result = client.collection(name).delete_many({})
             self.stdout.write(
-                "[INFO] Deleted %s documents from %s" % (result.deleted_count, name)
+                '[INFO] Deleted %s documents from "%s"' % (result.deleted_count, name)
             )
 
     def seed_data(self, collection_name: CollectionName):
-        self.stdout.write('[INFO] seeding data in "%s" collection' % collection_name)
+        self.stdout.write('[INFO] seeding data in collection "%s"' % collection_name)
         data = self._read_json_data(collection_name)
         collection = client.collection(collection_name)
         try:
             collection.insert_many(data)
             self.stdout.write(
-                "[INFO] %s documents inserted" % collection.count_documents({})
+                "[INFO] \t --> %s documents inserted" % collection.count_documents({})
             )
         except Exception as err:
             self.stderr.write(
