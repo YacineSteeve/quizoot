@@ -9,12 +9,12 @@ import FetchError from '@/components/FetchError.vue';
 import Loader from '@/components/Loader.vue';
 
 interface QuestionWrapperProps {
-    questionId: Quizoot.Question['id'];
-    questionNumber: number;
-    questionsCount: number;
+    id: Quizoot.Question['id'];
+    rank: number;
+    totalQuestions: number;
 }
 
-type Component = Promise<any>;
+type Component = Promise<object>;
 type ComponentsMap = Record<Quizoot.QuestionKind, Component>;
 
 function getComponents() {
@@ -42,7 +42,7 @@ const {
     data: question,
     error: errorOccurred,
     isFetching: isFetchingQuestion,
-} = await useFetch<Question>(`/api/questions/${props.questionId}`);
+} = await useFetch<Question>(`/api/questions/${props.id}`);
 
 const QuestionSpec: ComputedRef<Component> = computed(() => {
     if (question.value?.kind in components) {
@@ -76,8 +76,8 @@ function toggleHint() {
     <div v-else class="question-wrapper">
         <div class="question-number">
             <h1>
-                Question {{ props.questionNumber }}
-                <span> / {{ props.questionsCount }}</span>
+                Question {{ props.rank }}
+                <span> / {{ props.totalQuestions }}</span>
             </h1>
         </div>
 

@@ -48,7 +48,7 @@ const questionItems: ComputedRef<
 });
 
 const currentQuestionItem: Ref<Quizoot.QuestionItem | null> = ref(null);
-const currentQuestionNumber: Ref<number> = ref(0);
+const currentQuestionRank: Ref<number> = ref(0);
 
 function getFirstQuestionItem() {
     for (const question of quiz.value?.questions || []) {
@@ -61,19 +61,19 @@ function getFirstQuestionItem() {
 
 function startQuiz() {
     currentQuestionItem.value = getFirstQuestionItem();
-    currentQuestionNumber.value = 1;
+    currentQuestionRank.value = 1;
 }
 
 function quitQuiz() {
     currentQuestionItem.value = null;
-    currentQuestionNumber.value = 0;
+    currentQuestionRank.value = 0;
 }
 
 function goToNextQuestion() {
     if (currentQuestionItem.value?.next_question_id) {
         currentQuestionItem.value =
             questionItems.value[currentQuestionItem.value.next_question_id];
-        currentQuestionNumber.value++;
+        currentQuestionRank.value++;
     }
 }
 
@@ -81,7 +81,7 @@ function goToPreviousQuestion() {
     if (currentQuestionItem.value?.prev_question_id) {
         currentQuestionItem.value =
             questionItems.value[currentQuestionItem.value.prev_question_id];
-        currentQuestionNumber.value--;
+        currentQuestionRank.value--;
     }
 }
 </script>
@@ -113,17 +113,17 @@ function goToPreviousQuestion() {
         <Suspense>
             <question
                 v-if="currentQuestionItem != null"
-                :questionId="currentQuestionItem.question_id"
-                :questionsCount="quiz.questions.length"
-                :questionNumber="currentQuestionNumber"
+                :id="currentQuestionItem.question_id"
+                :totalQuestions="quiz.questions.length"
+                :rank="currentQuestionRank"
                 :key="currentQuestionItem.question_id"
             >
             </question>
         </Suspense>
         <QuestionsNavigation
             v-if="currentQuestionItem != null"
-            :isFirstQuestion="currentQuestionNumber === 1"
-            :isLastQuestion="currentQuestionNumber === quiz.questions.length"
+            :isFirstQuestion="currentQuestionRank === 1"
+            :isLastQuestion="currentQuestionRank === quiz.questions.length"
             :goToNextQuestion="goToNextQuestion"
             :goToPreviousQuestion="goToPreviousQuestion"
         />
