@@ -17,32 +17,39 @@ const author = computed(() => props.authors?.[0]);
 </script>
 
 <template>
-    <div class="quiz-subtitle">
-        <p v-if="author">by {{ author.name }} {{ author.surname }}</p>
-        <span class="question-count">{{ props.questionsCount }}</span>
-        Questions
-    </div>
-    <br />
-    <div class="quiz-content">
-        <p>{{ props.description }}</p>
-    </div>
-    <br />
-    <div class="quiz-footer">
-        <div class="btn-group">
-            <navigation-button
-                @click="onStart"
-                backgroundColor="var(--palette-cutty-sark)"
-                chevronRight
-            >
-                Start the quiz
-            </navigation-button>
+    <div class="quiz-preview">
+        <div class="quiz-subtitle">
+            <p v-if="author">by {{ author.name }} {{ author.surname }}</p>
+            <span class="question-count">{{ props.questionsCount }}</span>
+            Questions
+        </div>
+        <br />
+        <div class="quiz-content">
+            <p>{{ props.description }}</p>
+        </div>
+        <br />
+        <div class="quiz-footer">
+            <div class="btn-group">
+                <navigation-button
+                    @click="onStart"
+                    backgroundColor="var(--palette-cutty-sark)"
+                    chevronRight
+                >
+                    Start the quiz
+                </navigation-button>
+            </div>
         </div>
     </div>
 </template>
 
 <style>
-.quiz-subtitle {
-    margin-top: 5px;
+.quiz-preview {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 5vh;
 }
 
 .quiz-subtitle p {
@@ -67,5 +74,12 @@ const author = computed(() => props.authors?.[0]);
 
 .quiz-footer {
     width: 90%;
+}
+
+.btn-group {
+    display: flex;
+    width: 100%;
+    justify-content: flex-end;
+    align-items: center;
 }
 </style>
