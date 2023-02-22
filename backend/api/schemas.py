@@ -21,7 +21,8 @@ class SchemaLoader:
             schema_name += ".json"
         if schema_name not in self._schemas:
             raise Exception(
-                "'%s' does not exists in folder '%s'. Consider reloading your %s instance using the .reload() method"
+                "'%s' does not exists in folder '%s'. Consider reloading your "
+                "%s instance using the .reload() method"
                 % (schema_name, self._schema_dir, self.__class__.__name__)
             )
         if schema_name not in self._cache:
