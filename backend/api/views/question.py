@@ -1,4 +1,4 @@
-from .views import ListView, DetailView
+from ._generic_views import ListView, DetailView
 
 
 class QuestionList(ListView):

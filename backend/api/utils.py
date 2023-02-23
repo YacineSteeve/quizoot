@@ -1,14 +1,12 @@
 import json
-from bson import json_util, ObjectId
 from typing import Any
+from inflector import Inflector
 
 import pymongo
-
+from bson import ObjectId, json_util
+from django.http.request import QueryDict
 from pymongo.collection import Collection
 from rest_framework.response import Response
-
-from django.http.request import QueryDict
-
 
 DEFAULT_SORT_KEY = "id"
 
@@ -18,6 +16,18 @@ SORT_ORDER = {
     "ascending": pymongo.ASCENDING,
     "descending": pymongo.DESCENDING,
 }
+
+
+class StringUtils:
+    _inflector = Inflector()
+
+    @classmethod
+    def singularize(cls, word: str) -> str:
+        return cls._inflector.singularize(word)
+
+    @classmethod
+    def pluralize(cls, word: str) -> str:
+        return cls._inflector.pluralize(word)
 
 
 def _to_python_object(obj: Any) -> Any:
