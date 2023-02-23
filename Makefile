@@ -12,7 +12,7 @@ VENV_NAME   := venv
 VENV_PYTHON := ${VENV_NAME}/bin/${PYTHON}
 
 
-.PHONY: echo-cyan, echo-purple, echo-green, json-schemas, requirements, migrations, serve-back, lint, format, clean
+.PHONY: echo-cyan, echo-purple, echo-green, json-schemas, seed, requirements, migrations, serve-back, lint, format, clean
 
 
 ## Create virtualenv
@@ -36,6 +36,9 @@ requirements: venv
 
 json-schemas:
 	@yarn --cwd ./interfaces/ run gen-schemas
+
+seed:
+	@$(VENV_PYTHON) manage.py seed
 
 migrations:
 	@$(VENV_PYTHON) manage.py makemigrations
