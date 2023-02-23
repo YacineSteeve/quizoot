@@ -1,0 +1,141 @@
+{
+    "type": "object",
+    "properties": {
+        "id": {
+            "description": "Id of the question",
+            "pattern": "[a-z0-9]{24}",
+            "type": "string"
+        },
+        "question": {
+            "description": "The actual question as a human-readable string.",
+            "type": "string"
+        },
+        "kind": {
+            "description": "The question kind. Please refer to {@link QuestionKind}.",
+            "type": "string",
+            "enum": [
+                "MULTIPLE_CHOICES_QUESTION"
+            ]
+        },
+        "spec": {
+            "$ref": "#/definitions/Quizoot.MultipleChoicesQuestionSpec",
+            "description": "Spec of the question. It specifies what the attributes of the question are. Attributes depends on {@link QuestionKind}.\n\nSee {@link QuestionSpec} for more information about the spec attributes for each question kind."
+        },
+        "grading": {
+            "$ref": "#/definitions/Quizoot.Grading",
+            "description": "The grading object specifies how to grade for the current question. See {@link Grading}."
+        },
+        "difficulty": {
+            "$ref": "#/definitions/Quizoot.Difficulty",
+            "description": "Rate how difficult the question is. See {@link Difficulty}."
+        },
+        "tags": {
+            "description": "List of optional tags associated with the question.",
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        },
+        "hint": {
+            "description": "Hint given to help answering the question",
+            "type": "string"
+        }
+    },
+    "required": [
+        "difficulty",
+        "grading",
+        "id",
+        "kind",
+        "question",
+        "spec"
+    ],
+    "definitions": {
+        "Quizoot.MultipleChoicesQuestionSpec": {
+            "type": "object",
+            "properties": {
+                "options": {
+                    "description": "Question options. See {@link QuestionOption}.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Quizoot.QuestionOption"
+                    }
+                },
+                "answers_id": {
+                    "description": "Id of the correct answers to the question.",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "required": [
+                "answers_id",
+                "options"
+            ]
+        },
+        "Quizoot.QuestionOption": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "Id of the option.",
+                    "type": "string"
+                },
+                "display": {
+                    "description": "The actual display of the option as a human-readable string.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "display",
+                "id"
+            ]
+        },
+        "Quizoot.Grading": {
+            "type": "object",
+            "properties": {
+                "point_value": {
+                    "description": "Specifies how much a correct answer count for in the total score.",
+                    "type": "number"
+                },
+                "feedback": {
+                    "$ref": "#/definitions/Quizoot.Feedback",
+                    "description": "Feedback given after answering the question."
+                }
+            },
+            "required": [
+                "feedback",
+                "point_value"
+            ]
+        },
+        "Quizoot.Feedback": {
+            "type": "object",
+            "properties": {
+                "explanation": {
+                    "description": "General feedback/explanation displayed whether the answer is wrong or correct.",
+                    "type": "string"
+                },
+                "when_wrong": {
+                    "description": "Feedback when answer is wrong.",
+                    "type": "string"
+                },
+                "when_right": {
+                    "description": "Feedback when answer is right.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "explanation"
+            ]
+        },
+        "Quizoot.Difficulty": {
+            "description": "Question difficulty: easy, medium or hard.",
+            "enum": [
+                "EASY",
+                "HARD",
+                "MEDIUM"
+            ],
+            "type": "string"
+        }
+    },
+    "$schema": "http://json-schema.org/draft-07/schema#"
+}

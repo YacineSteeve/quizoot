@@ -1,0 +1,161 @@
+{
+    "type": "object",
+    "properties": {
+        "id": {
+            "description": "Id of the question",
+            "pattern": "[a-z0-9]{24}",
+            "type": "string"
+        },
+        "question": {
+            "description": "The actual question as a human-readable string.",
+            "type": "string"
+        },
+        "kind": {
+            "description": "The question kind. Please refer to {@link QuestionKind}.",
+            "type": "string",
+            "enum": [
+                "UPLOAD_QUESTION"
+            ]
+        },
+        "spec": {
+            "$ref": "#/definitions/Quizoot.UploadQuestionSpec",
+            "description": "Spec of the question. It specifies what the attributes of the question are. Attributes depends on {@link QuestionKind}.\n\nSee {@link QuestionSpec} for more information about the spec attributes for each question kind."
+        },
+        "grading": {
+            "$ref": "#/definitions/Quizoot.Grading",
+            "description": "The grading object specifies how to grade for the current question. See {@link Grading}."
+        },
+        "difficulty": {
+            "$ref": "#/definitions/Quizoot.Difficulty",
+            "description": "Rate how difficult the question is. See {@link Difficulty}."
+        },
+        "tags": {
+            "description": "List of optional tags associated with the question.",
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        },
+        "hint": {
+            "description": "Hint given to help answering the question",
+            "type": "string"
+        }
+    },
+    "required": [
+        "difficulty",
+        "grading",
+        "id",
+        "kind",
+        "question",
+        "spec"
+    ],
+    "definitions": {
+        "Quizoot.UploadQuestionSpec": {
+            "type": "object",
+            "properties": {
+                "files": {
+                    "description": "List of files to upload.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Quizoot.File"
+                    }
+                },
+                "max_size": {
+                    "description": "Maximum size of each files. Can be expressed in bytes, megabytes (MB), etc. See TODO for valid units.",
+                    "examples": [
+                        "10MB"
+                    ],
+                    "type": "string"
+                },
+                "max_files": {
+                    "description": "Maximum number of files to upload.",
+                    "default": 1,
+                    "minimum": 1,
+                    "type": "number"
+                }
+            },
+            "required": [
+                "files",
+                "max_files",
+                "max_size"
+            ]
+        },
+        "Quizoot.File": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "$ref": "#/definitions/Quizoot.FileType",
+                    "description": "File type enum. Can be `.txt`, `.csv`, `.pdf`, etc. See {@link FileType}."
+                },
+                "content": {
+                    "description": "Encoded `base64` string of the file's content.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "content",
+                "type"
+            ]
+        },
+        "Quizoot.FileType": {
+            "description": "Enum of supported file extensions.",
+            "enum": [
+                ".csv",
+                ".img",
+                ".jpeg",
+                ".jpg",
+                ".pdf",
+                ".png",
+                ".txt"
+            ],
+            "type": "string"
+        },
+        "Quizoot.Grading": {
+            "type": "object",
+            "properties": {
+                "point_value": {
+                    "description": "Specifies how much a correct answer count for in the total score.",
+                    "type": "number"
+                },
+                "feedback": {
+                    "$ref": "#/definitions/Quizoot.Feedback",
+                    "description": "Feedback given after answering the question."
+                }
+            },
+            "required": [
+                "feedback",
+                "point_value"
+            ]
+        },
+        "Quizoot.Feedback": {
+            "type": "object",
+            "properties": {
+                "explanation": {
+                    "description": "General feedback/explanation displayed whether the answer is wrong or correct.",
+                    "type": "string"
+                },
+                "when_wrong": {
+                    "description": "Feedback when answer is wrong.",
+                    "type": "string"
+                },
+                "when_right": {
+                    "description": "Feedback when answer is right.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "explanation"
+            ]
+        },
+        "Quizoot.Difficulty": {
+            "description": "Question difficulty: easy, medium or hard.",
+            "enum": [
+                "EASY",
+                "HARD",
+                "MEDIUM"
+            ],
+            "type": "string"
+        }
+    },
+    "$schema": "http://json-schema.org/draft-07/schema#"
+}
