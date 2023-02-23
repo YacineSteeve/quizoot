@@ -1,10 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import type { Ref, ComputedRef } from 'vue';
 import { useRoute } from 'vue-router';
 import type { Quizoot } from '@interfaces/quizoot';
-import type { Quiz } from '@interfaces/quizoot.indexed';
-import { log } from '@/lib';
 import { useFetch } from '@/lib/hooks';
 import QuizPreview from '@/components/QuizPreview.vue';
 import Question from '@/components/Question.vue';
@@ -14,85 +11,49 @@ import Loader from '@/components/Loader.vue';
 
 const route = useRoute();
 
-const quiz: Ref<Quiz | null> = ref(null);
-const errorOccurred: Ref<boolean> = ref(false);
-const isFetchingQuiz: Ref<boolean> = ref(true);
+const {
+    data: quiz,
+    isFetching,
+    error,
+} = useFetch<Quizoot.Quiz>(`/api/quizzes/${route.params.id}`);
 
-useFetch<Quiz>(`/api/quizzes/${route.params.id}`)
-    .then((response) => {
-        if (response.error.value) {
-            errorOccurred.value = true;
-            log(response.error.value);
-        } else {
-            quiz.value = response.data.value;
-        }
-        isFetchingQuiz.value = false;
-    })
-    .catch((error) => {
-        errorOccurred.value = true;
-        isFetchingQuiz.value = false;
-        log(error);
-    });
-
-const questionItems: ComputedRef<
-    Record<Quizoot.QuestionItem['question_id'], Quizoot.QuestionItem>
-> = computed(() => {
-    const questionItems: Record<
-        Quizoot.QuestionItem['question_id'],
-        Quizoot.QuestionItem
-    > = {};
-    for (const questionItem of quiz.value?.questions || []) {
-        questionItems[questionItem.question_id] = questionItem;
-    }
-    return questionItems;
+const questions = computed(() => {
+    return quiz.value?.questions ?? [];
 });
 
-const currentQuestionItem: Ref<Quizoot.QuestionItem | null> = ref(null);
-const currentQuestionRank: Ref<number> = ref(0);
+const currentQuestion = ref(-1);
 
-function getFirstQuestionItem() {
-    for (const question of quiz.value?.questions || []) {
-        if (question.prev_question_id === null) {
-            return question;
-        }
-    }
-    return null;
+function getCurrentQuestion() {
+    return questions.value[currentQuestion.value];
 }
 
 function startQuiz() {
-    currentQuestionItem.value = getFirstQuestionItem();
-    currentQuestionRank.value = 1;
+    currentQuestion.value = 0;
 }
 
 function quitQuiz() {
-    currentQuestionItem.value = null;
-    currentQuestionRank.value = 0;
+    currentQuestion.value = -1;
 }
 
 function goToNextQuestion() {
-    if (currentQuestionItem.value?.next_question_id) {
-        currentQuestionItem.value =
-            questionItems.value[currentQuestionItem.value.next_question_id];
-        currentQuestionRank.value++;
-    }
+    currentQuestion.value = Math.min(
+        currentQuestion.value + 1,
+        questions.value.length
+    );
 }
 
 function goToPreviousQuestion() {
-    if (currentQuestionItem.value?.prev_question_id) {
-        currentQuestionItem.value =
-            questionItems.value[currentQuestionItem.value.prev_question_id];
-        currentQuestionRank.value--;
-    }
+    currentQuestion.value = Math.max(0, currentQuestion.value - 1);
 }
 </script>
 
 <template>
-    <FetchError v-if="errorOccurred" />
-    <Loader v-else-if="isFetchingQuiz" />
+    <FetchError v-if="error" />
+    <Loader v-else-if="isFetching" />
     <div v-else class="quiz-container">
         <h1 class="quiz-title">
             <span
-                v-if="currentQuestionItem != null"
+                v-if="currentQuestion !== -1"
                 class="back-to-quiz-preview-icon"
             >
                 <font-awesome-icon
@@ -104,26 +65,24 @@ function goToPreviousQuestion() {
         </h1>
         <br />
         <QuizPreview
-            v-if="currentQuestionItem === null"
-            :questionsCount="quiz?.questions.length"
+            v-if="currentQuestion === -1"
+            :questionsCount="questions.length"
             :description="quiz?.description"
             :authors="quiz?.authors"
             :onStart="startQuiz"
         />
-        <Suspense>
-            <question
-                v-if="currentQuestionItem != null"
-                :id="currentQuestionItem.question_id"
-                :totalQuestions="quiz?.questions.length"
-                :rank="currentQuestionRank"
-                :key="currentQuestionItem.question_id"
-            >
-            </question>
-        </Suspense>
+        <question
+            v-if="currentQuestion !== -1"
+            :id="getCurrentQuestion()"
+            :totalQuestions="questions.length"
+            :rank="currentQuestion + 1"
+            :key="currentQuestion"
+        >
+        </question>
         <QuestionsNavigation
-            v-if="currentQuestionItem != null"
-            :isFirstQuestion="currentQuestionRank === 1"
-            :isLastQuestion="currentQuestionRank === quiz?.questions.length"
+            v-if="currentQuestion !== -1"
+            :showPrevious="currentQuestion > 0"
+            :showNext="currentQuestion + 1 < questions.length"
             :goToNextQuestion="goToNextQuestion"
             :goToPreviousQuestion="goToPreviousQuestion"
         />

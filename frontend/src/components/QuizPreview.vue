@@ -5,7 +5,7 @@ import NavigationButton from '@/components/NavigationButton.vue';
 
 interface QuizPreviewProps {
     questionsCount: number;
-    description: string;
+    description?: string;
     authors?: Quizoot.Author[];
     onStart: () => void;
 }

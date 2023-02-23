@@ -8,7 +8,7 @@ import FetchError from '@/components/FetchError.vue';
 import Loader from '@/components/Loader.vue';
 
 interface QuestionWrapperProps {
-    id: Quizoot.Question['id'];
+    id: Quizoot.ObjectId;
     rank: number;
     totalQuestions: number;
 }
@@ -41,9 +41,9 @@ const props = defineProps<QuestionWrapperProps>();
 
 const {
     data: question,
-    error: errorOccurred,
-    isFetching: isFetchingQuestion,
-} = await useFetch<Quizoot.Question>(`/api/questions/${props.id}`);
+    error,
+    isFetching,
+} = useFetch<Quizoot.Question>(`/api/questions/${props.id}`);
 
 const QuestionSpec: ComputedRef<Component> = computed(() => {
     if (question.value?.kind && question.value?.kind in components) {
@@ -72,8 +72,8 @@ function toggleHint() {
 
 <template>
     <div class="progress-bar"></div>
-    <FetchError v-if="errorOccurred" />
-    <Loader v-else-if="isFetchingQuestion" />
+    <FetchError v-if="error" />
+    <Loader v-else-if="isFetching" />
     <div v-else class="question-wrapper">
         <div class="question-number">
             <h1>

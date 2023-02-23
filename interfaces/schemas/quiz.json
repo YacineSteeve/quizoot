@@ -24,10 +24,10 @@
             "type": "number"
         },
         "questions": {
-            "description": "All the questions the quiz is made of.",
+            "description": "Id of all the questions the quiz is made of.",
             "type": "array",
             "items": {
-                "$ref": "#/definitions/Quizoot.QuestionItem"
+                "type": "string"
             }
         },
         "authors": {
@@ -53,35 +53,6 @@
         "title"
     ],
     "definitions": {
-        "Quizoot.QuestionItem": {
-            "type": "object",
-            "properties": {
-                "question_id": {
-                    "description": "Id of a question referenced in the quiz.",
-                    "pattern": "[a-z0-9]{24}",
-                    "type": "string"
-                },
-                "next_question_id": {
-                    "description": "Id of the next question in the quiz chronology. Is null if it is the last question.",
-                    "type": [
-                        "string",
-                        "null"
-                    ]
-                },
-                "prev_question_id": {
-                    "description": "Id of the previous question in the quiz chronology. Is null if it is the first question.",
-                    "type": [
-                        "string",
-                        "null"
-                    ]
-                }
-            },
-            "required": [
-                "next_question_id",
-                "prev_question_id",
-                "question_id"
-            ]
-        },
         "Quizoot.Author": {
             "type": "object",
             "properties": {
