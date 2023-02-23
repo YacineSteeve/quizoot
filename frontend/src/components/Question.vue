@@ -2,7 +2,6 @@
 import { computed, defineAsyncComponent, ref } from 'vue';
 import type { ComputedRef, Ref } from 'vue';
 import type { Quizoot } from '@interfaces/quizoot';
-import type { Question } from '@interfaces/quizoot.indexed';
 import { useFetch } from '@/lib/hooks';
 import { pascalToSnake } from '@/lib/string-utils';
 import FetchError from '@/components/FetchError.vue';
@@ -14,7 +13,9 @@ interface QuestionWrapperProps {
     totalQuestions: number;
 }
 
-type Component = Promise<object>;
+// Use any instead of Promise<object> so that we can use AyncComponent in the template.
+// See https://github.com/vuejs/vue-class-component/issues/323
+type Component = any;
 type ComponentsMap = Record<Quizoot.QuestionKind, Component>;
 
 function getComponents() {
@@ -42,10 +43,10 @@ const {
     data: question,
     error: errorOccurred,
     isFetching: isFetchingQuestion,
-} = await useFetch<Question>(`/api/questions/${props.id}`);
+} = await useFetch<Quizoot.Question>(`/api/questions/${props.id}`);
 
 const QuestionSpec: ComputedRef<Component> = computed(() => {
-    if (question.value?.kind in components) {
+    if (question.value?.kind && question.value?.kind in components) {
         return components[question.value?.kind as Quizoot.QuestionKind];
     } else {
         throw Error(`Unknown QuestionKind "${question.value?.kind}"`);
@@ -82,20 +83,22 @@ function toggleHint() {
         </div>
 
         <div class="question-props">
-            <span id="difficulty">{{ question.difficulty.toUpperCase() }}</span>
+            <span id="difficulty">{{
+                question?.difficulty.toUpperCase()
+            }}</span>
             <span>&#8226; </span>
-            <span id="grading">{{ question.grading.point_value }} pts</span>
+            <span id="grading">{{ question?.grading.point_value }} pts</span>
         </div>
 
         <div class="question">
-            <p>{{ question.question }}</p>
+            <p>{{ question?.question }}</p>
         </div>
 
         <keep-alive>
-            <QuestionSpec :spec="question.spec" />
+            <QuestionSpec :spec="question?.spec" />
         </keep-alive>
 
-        <div v-if="question.hint" class="question-hint">
+        <div v-if="question?.hint" class="question-hint">
             <div @click="toggleHint" class="hint-toggler">
                 <font-awesome-icon
                     v-if="displayHint"

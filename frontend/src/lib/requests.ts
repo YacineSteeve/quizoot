@@ -11,13 +11,16 @@ const quizootApi = axios.create({
     xsrfCookieName: 'csrftoken',
 });
 
-export type ApiResponse =
-    | number
-    | string
-    | boolean
-    | null
-    | ApiResponse[]
-    | { [x: string]: ApiResponse };
+// TODO: fix this type {@merchrist.kiki}
+export type ApiResponse = any;
+
+// export type ApiResponse =
+//     | number
+//     | string
+//     | boolean
+//     | null
+//     | ApiResponse[]
+//     | { [x: string]: ApiResponse };
 
 export async function makeRequest<TData extends ApiResponse>(
     requestConfig: AxiosRequestConfig

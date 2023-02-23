@@ -4,7 +4,7 @@ import type { Ref } from 'vue';
 import type { Quizoot } from '@interfaces/quizoot';
 
 interface UploadQuestionProps {
-    spec: Quizoot.UploadQuestion;
+    spec: Quizoot.UploadQuestionSpec;
 }
 
 interface HTMLInputEvent extends Event {

@@ -2,7 +2,7 @@
 import { ref, computed } from 'vue';
 import type { Quizoot } from '@interfaces/quizoot';
 interface TextQuestionProps {
-    spec: Quizoot.TextQuestion;
+    spec: Quizoot.TextQuestionSpec;
 }
 const props = defineProps<TextQuestionProps>();
 const answer = ref('');

@@ -100,21 +100,21 @@ function goToPreviousQuestion() {
                     icon="fa-solid fa-chevron-left"
                 />
             </span>
-            {{ quiz.title }}
+            {{ quiz?.title }}
         </h1>
         <br />
         <QuizPreview
             v-if="currentQuestionItem === null"
-            :questionsCount="quiz.questions.length"
-            :description="quiz.description"
-            :authors="quiz.authors"
+            :questionsCount="quiz?.questions.length"
+            :description="quiz?.description"
+            :authors="quiz?.authors"
             :onStart="startQuiz"
         />
         <Suspense>
             <question
                 v-if="currentQuestionItem != null"
                 :id="currentQuestionItem.question_id"
-                :totalQuestions="quiz.questions.length"
+                :totalQuestions="quiz?.questions.length"
                 :rank="currentQuestionRank"
                 :key="currentQuestionItem.question_id"
             >
@@ -123,7 +123,7 @@ function goToPreviousQuestion() {
         <QuestionsNavigation
             v-if="currentQuestionItem != null"
             :isFirstQuestion="currentQuestionRank === 1"
-            :isLastQuestion="currentQuestionRank === quiz.questions.length"
+            :isLastQuestion="currentQuestionRank === quiz?.questions.length"
             :goToNextQuestion="goToNextQuestion"
             :goToPreviousQuestion="goToPreviousQuestion"
         />
