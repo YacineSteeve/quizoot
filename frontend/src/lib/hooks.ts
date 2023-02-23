@@ -1,9 +1,9 @@
 import { ref, watch } from 'vue';
-import type { Ref } from 'vue';
-import type { AxiosRequestConfig } from 'axios';
 
-import { makeRequest } from '@/lib/requests';
 import type { ApiResponse } from '@/lib/requests';
+import type { AxiosRequestConfig } from 'axios';
+import type { Ref } from 'vue';
+import { makeRequest } from '@/lib/requests';
 
 export interface FetchResponse<T> {
     data: Ref<T | null>;
@@ -13,10 +13,10 @@ export interface FetchResponse<T> {
 
 type Options = Omit<AxiosRequestConfig, 'url'>;
 
-export async function useFetch<TData extends ApiResponse>(
+export function useFetch<TData extends ApiResponse>(
     url: string,
     options?: Options
-): Promise<FetchResponse<TData>> {
+): FetchResponse<TData> {
     const state: FetchResponse<TData> = {
         data: ref(null),
         error: ref(null),
@@ -24,21 +24,19 @@ export async function useFetch<TData extends ApiResponse>(
     };
 
     async function fetchData() {
-        try {
-            state.data.value = await makeRequest<TData>({
-                url,
-                ...options,
+        makeRequest<TData>({ url, ...options })
+            .then((data) => {
+                state.data.value = data;
+            })
+            .catch((error) => {
+                state.error.value = error;
+            })
+            .finally(() => {
+                state.isFetching.value = false;
             });
-        } catch (error) {
-            state.error.value = error;
-        } finally {
-            state.isFetching.value = false;
-        }
     }
 
-    await fetchData();
-
-    watch(() => url, fetchData);
+    fetchData();
 
     return state;
 }

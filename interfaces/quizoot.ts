@@ -1,5 +1,12 @@
 export declare namespace Quizoot {
 	/**
+	 * Id of a Quizoot object
+	 *
+	 * @pattern [a-z0-9]{24}
+	 */
+	type ObjectId = string;
+
+	/**
 	 * Different kind of question we might have.
 	 */
 	export type QuestionKind =
@@ -35,10 +42,8 @@ export declare namespace Quizoot {
 	interface QuestionBuilder<T extends QuestionKind> {
 		/**
 		 * Id of the question
-		 *
-		 * @pattern [a-z0-9]{24}
 		 */
-		id: string;
+		id: ObjectId;
 		/**
 		 * The actual question as a human-readable string.
 		 */
@@ -231,10 +236,8 @@ export declare namespace Quizoot {
 	export interface Quiz {
 		/**
 		 * Id of the quiz.
-		 *
-		 * @pattern [a-z0-9]{24}
 		 */
-		id: string;
+		id: ObjectId;
 		/**
 		 * The title (header) of the quiz.
 		 *
@@ -254,9 +257,9 @@ export declare namespace Quizoot {
 		 */
 		max_score: number;
 		/**
-		 * All the questions the quiz is made of.
+		 * Id of all the questions the quiz is made of.
 		 */
-		questions: QuestionItem[];
+		questions: ObjectId[];
 		/**
 		 * List of optional authors or contributors of the quiz. See {@link Author}.
 		 */
@@ -265,25 +268,6 @@ export declare namespace Quizoot {
 		 * List of optional tags associated with the quiz.
 		 */
 		tags?: string[];
-	}
-
-	interface QuestionItem {
-		/**
-		 * Id of a question referenced in the quiz.
-		 *
-		 * @pattern [a-z0-9]{24}
-		 */
-		question_id: string;
-		/**
-		 * Id of the next question in the quiz chronology. Is null if it is the last question.
-		 * @nullable
-		 */
-		next_question_id: string | null;
-		/**
-		 * Id of the previous question in the quiz chronology. Is null if it is the first question.
-		 * @nullable
-		 */
-		prev_question_id: string | null;
 	}
 
 	interface Author {

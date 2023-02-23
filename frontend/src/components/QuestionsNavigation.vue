@@ -2,8 +2,8 @@
 import NavigationButton from '@/components/NavigationButton.vue';
 
 interface QuestionsNavigationProps {
-    isFirstQuestion: boolean;
-    isLastQuestion: boolean;
+    showNext: boolean;
+    showPrevious: boolean;
     goToPreviousQuestion: () => void;
     goToNextQuestion: () => void;
 }
@@ -27,7 +27,7 @@ function goTo(s: 'next' | 'previous') {
 <template>
     <div class="navigation-button-group">
         <navigation-button
-            v-if="!props.isFirstQuestion"
+            v-if="props.showPrevious"
             @click="goTo('previous')"
             backgroundColor="var(--palette-mobster)"
             chevronLeft
@@ -37,7 +37,7 @@ function goTo(s: 'next' | 'previous') {
         </navigation-button>
         <div class="button-separator"></div>
         <navigation-button
-            v-if="!props.isLastQuestion"
+            v-if="props.showNext"
             @click="goTo('next')"
             backgroundColor="var(--main-purple-lightened)"
             chevronRight
