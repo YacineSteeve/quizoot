@@ -53,7 +53,7 @@ function goToPreviousQuestion() {
     <div v-else class="quiz-container">
         <h1 class="quiz-title">
             <span
-                v-if="currentQuestion != null"
+                v-if="currentQuestion !== -1"
                 class="back-to-quiz-preview-icon"
             >
                 <font-awesome-icon
@@ -80,7 +80,7 @@ function goToPreviousQuestion() {
         >
         </question>
         <QuestionsNavigation
-            v-if="currentQuestion != -1"
+            v-if="currentQuestion !== -1"
             :showPrevious="currentQuestion > 0"
             :showNext="currentQuestion + 1 < questions.length"
             :goToNextQuestion="goToNextQuestion"
