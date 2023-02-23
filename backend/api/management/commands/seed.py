@@ -1,5 +1,4 @@
 import json
-from argparse import ArgumentParser
 from pathlib import PosixPath
 
 from django.conf import settings
@@ -19,7 +18,7 @@ DATA_DIR: PosixPath = settings.BASE_DIR / "data"
 
 # TODO: add a logger ?
 class Command(BaseCommand):
-    help = "seed database for testing and development."
+    help = "Seed database for testing and development."
 
     def handle(self, *args, **options):
         # Always clear data
@@ -37,7 +36,7 @@ class Command(BaseCommand):
             )
 
     def seed_data(self, collection_name: CollectionName):
-        self.stdout.write('[INFO] seeding data in collection "%s"' % collection_name)
+        self.stdout.write('[INFO] Seeding data in collection "%s"' % collection_name)
         data = self._read_json_data(collection_name)
         collection = client.collection(collection_name)
         try:

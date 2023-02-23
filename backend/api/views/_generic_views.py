@@ -1,19 +1,17 @@
-from typing import Literal
-
 from django.http import Http404
 from pymongo.collection import ReturnDocument
 from rest_framework import status
 from rest_framework.request import Request
 from rest_framework.views import APIView
 
-from ..client import client
+from ..client import client, CollectionName
 from ..exceptions import InvalidData
 from ..utils import JsonResponse, get_new_id, get_sort_order, StringUtils
 from ..schemas import SchemaValidator
 
 
 class GenericApiView(APIView):
-    def __init__(self, collection_name: Literal["quizzes", "questions"]):
+    def __init__(self, collection_name: CollectionName):
         super().__init__()
         self._collection = client.collection(collection_name)
         self._validator = SchemaValidator(StringUtils.singularize(collection_name))
@@ -22,7 +20,7 @@ class GenericApiView(APIView):
 class ListView(GenericApiView):
     """LIST all documents and CREATE new document."""
 
-    def __init__(self, collection_name: Literal["quizzes", "questions"]):
+    def __init__(self, collection_name: CollectionName):
         super().__init__(collection_name)
 
     def get(self, request: Request):
@@ -51,7 +49,7 @@ class ListView(GenericApiView):
 class DetailView(GenericApiView):
     """GET, PATCH and DELETE a single document."""
 
-    def __init__(self, collection_name: Literal["quizzes", "questions"]):
+    def __init__(self, collection_name: CollectionName):
         super().__init__(collection_name)
 
     def get(self, request: Request, pk: str):
