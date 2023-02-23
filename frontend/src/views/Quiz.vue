@@ -36,7 +36,6 @@ function quitQuiz() {
 }
 
 function goToNextQuestion() {
-    debugger;
     currentQuestion.value = Math.min(
         currentQuestion.value + 1,
         questions.value.length
