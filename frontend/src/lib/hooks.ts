@@ -1,9 +1,8 @@
-import { ref, watch } from 'vue';
-
 import type { ApiResponse } from '@/lib/requests';
 import type { AxiosRequestConfig } from 'axios';
 import type { Ref } from 'vue';
 import { makeRequest } from '@/lib/requests';
+import { ref } from 'vue';
 
 export interface FetchResponse<T> {
     data: Ref<T | null>;
