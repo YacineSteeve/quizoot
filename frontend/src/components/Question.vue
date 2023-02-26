@@ -13,7 +13,7 @@ interface QuestionWrapperProps {
     totalQuestions: number;
 }
 
-// Use any instead of Promise<object> so that we can use AyncComponent in the template.
+// Use any instead of Promise<object> so that we can use AsyncComponent in the template.
 // See https://github.com/vuejs/vue-class-component/issues/323
 type Component = any;
 type ComponentsMap = Record<Quizoot.QuestionKind, Component>;

@@ -2,13 +2,19 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8" />
-        <link rel="icon" href="/icon-black.svg" />
+        <link rel="icon" href="/icon-black.svg" id="icon-link"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Quizoot</title>
     </head>
 
     <body>
         <div id="app"></div>
+        <script>
+            document.head.querySelector('#icon-link').href =
+                window.matchMedia('(prefers-color-scheme: dark)').matches
+                ? window.location.origin + '/icon-white.svg'
+                : window.location.origin + '/icon-black.svg';
+        </script>
         <script type="module" src="./src/main.ts"></script>
     </body>
 </html>
