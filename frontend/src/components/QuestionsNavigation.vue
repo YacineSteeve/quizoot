@@ -6,6 +6,7 @@ interface QuestionsNavigationProps {
     showPrevious: boolean;
     goToPreviousQuestion: () => void;
     goToNextQuestion: () => void;
+    submit?: () => void;
 }
 
 const props = defineProps<QuestionsNavigationProps>();
@@ -44,6 +45,18 @@ function goTo(s: 'next' | 'previous') {
             class="next-button button"
         >
             Next
+        </navigation-button>
+        <div
+            v-if="props.showPrevious && !props.showNext"
+            class="button-separator"
+        ></div>
+        <navigation-button
+            v-if="props.submit && props.showPrevious && !props.showNext"
+            @click="props.submit"
+            backgroundColor="var(--palette-cutty-sark)"
+            class="submit-button button"
+        >
+            Submit
         </navigation-button>
     </div>
 </template>

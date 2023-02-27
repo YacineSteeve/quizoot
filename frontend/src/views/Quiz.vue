@@ -3,6 +3,7 @@ import { ref, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import type { Quizoot } from '@interfaces/quizoot';
 import { useFetch } from '@/lib/hooks';
+import { log } from '@/lib';
 import QuizPreview from '@/components/QuizPreview.vue';
 import Question from '@/components/Question.vue';
 import QuestionsNavigation from '@/components/QuestionsNavigation.vue';
@@ -45,6 +46,11 @@ function goToNextQuestion() {
 function goToPreviousQuestion() {
     currentQuestion.value = Math.max(0, currentQuestion.value - 1);
 }
+
+function submitQuiz() {
+    // TODO
+    alert('Quiz submitted!');
+}
 </script>
 
 <template>
@@ -85,6 +91,7 @@ function goToPreviousQuestion() {
             :showNext="currentQuestion + 1 < questions.length"
             :goToNextQuestion="goToNextQuestion"
             :goToPreviousQuestion="goToPreviousQuestion"
+            :submit="submitQuiz"
         />
     </div>
 </template>

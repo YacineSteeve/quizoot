@@ -4,6 +4,7 @@ import type { ComputedRef, Ref } from 'vue';
 import type { Quizoot } from '@interfaces/quizoot';
 import { useFetch } from '@/lib/hooks';
 import { pascalToSnake } from '@/lib/string-utils';
+import ProgressBar from '@/components/ProgressBar.vue';
 import FetchError from '@/components/FetchError.vue';
 import Loader from '@/components/Loader.vue';
 
@@ -71,7 +72,7 @@ function toggleHint() {
 </script>
 
 <template>
-    <div class="progress-bar"></div>
+    <ProgressBar :currentStep="props.rank" :totalSteps="props.totalQuestions" />
     <FetchError v-if="error" />
     <Loader v-else-if="isFetching" />
     <div v-else class="question-wrapper">
