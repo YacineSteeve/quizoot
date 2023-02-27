@@ -11,6 +11,7 @@ const props = defineProps<ProgressBarProps>();
     <div class="progressbar-container">
         <div
             v-for="index in props.totalSteps"
+            :key="index"
             class="step"
             :class="{ passed: props.currentStep >= index }"
         >

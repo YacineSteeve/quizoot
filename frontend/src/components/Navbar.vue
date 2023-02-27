@@ -6,11 +6,14 @@ const route = useRoute();
 const current = ref(0);
 const nonMenuViews = ['Quiz'];
 
-watch(() => route.matched[0]?.name, (name: string) => {
-    if (nonMenuViews.includes(name)) {
-        current.value = 0;
+watch(
+    () => route.matched[0]?.name,
+    (name: string) => {
+        if (nonMenuViews.includes(name)) {
+            current.value = 0;
+        }
     }
-})
+);
 
 function setActive(index: number) {
     current.value = index;
@@ -33,7 +36,9 @@ function setActive(index: number) {
                     :class="{ isCurrent: current === 2 }"
                     @click="setActive(2)"
                 >
-                    <router-link to="/contact" title="Contact"> Contact </router-link>
+                    <router-link to="/contact" title="Contact">
+                        Contact
+                    </router-link>
                 </li>
                 <li id="logo" @click="setActive(0)">
                     <router-link to="/" title="Logo">
