@@ -8,6 +8,8 @@ import {
     faFileArrowUp,
     faSpinner,
     faTriangleExclamation,
+    faPenToSquare,
+    faTrash,
 } from '@fortawesome/free-solid-svg-icons';
 import {
     faFacebookF,
@@ -32,4 +34,6 @@ library.add({
     faFileArrowUp,
     faSpinner,
     faTriangleExclamation,
+    faPenToSquare,
+    faTrash,
 });

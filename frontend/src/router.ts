@@ -12,6 +12,28 @@ const routes: Array<RouteRecordRaw> = [
         name: 'Quiz',
         component: () => import('@/views/Quiz.vue'),
     },
+    {
+        path: '/admin',
+        name: 'Admin',
+        component: () => import('@/views/admin/Admin.vue'),
+        children: [
+            {
+                path: '',
+                name: 'Landing',
+                component: () => import('@/views/admin/Landing.vue'),
+            },
+            {
+                path: 'quizzes',
+                name: 'Quizzes',
+                component: () => import('@/views/admin/Quizzes.vue'),
+            },
+            {
+                path: 'questions',
+                name: 'Questions',
+                component: () => import('@/views/admin/Questions.vue'),
+            },
+        ],
+    }
 ];
 
 const router = createRouter({
