@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import {useFetch} from '@/lib/hooks';
+import { useFetch } from '@/lib/hooks';
 import Quiz from '../../../interfaces/schemas/quiz.json';
 import Question from '../../../interfaces/schemas/text_question.json';
+import FetchError from "@/components/FetchError.vue";
+import Loader from "@/components/Loader.vue";
 
 interface ManageProps {
     elements: 'Questions' | 'Quizzes';
@@ -15,24 +17,28 @@ const elementObject = props.elements === 'Quizzes' ? Quiz : Question;
 
 const properties = Object.keys(elementObject.properties);
 
-const { data } = useFetch(`/api/${elementsName}`);
+const { data, error, isFetching } = useFetch(`/api/${elementsName}`);
 
-const manageRoutes = (id?: string) => {
-    return {
-        create: `/admin/${elementsName}/create`,
-        update: `/admin/${elementsName}/${id}/update`,
-        delete: `/admin/${elementsName}/${id}/delete`,
-    };
-}
+const deleteElement = (id: string) => {
+    if (confirm('Are you sure you want to delete this ? This action is irreversible.')) {
+        useFetch(`/api/${elementsName}/${id}/`, {
+            method: 'DELETE',
+        });
+
+        window.location.reload();
+    }
+};
 
 </script>
 
 <template>
-    <div class="manage-container">
+    <FetchError v-if="error"/>
+    <Loader v-else-if="isFetching"/>
+    <div v-else class="manage-container">
         <div class="header">
             <h2>{{ props.elements }} ({{ data.length }})</h2>
             <span class="create-btn">
-                <router-link :to="manageRoutes().create">Create new</router-link>
+                <router-link :to="`/admin/${elementsName}/create`" title="New">Create new</router-link>
             </span>
         </div>
         <hr>
@@ -82,10 +88,10 @@ const manageRoutes = (id?: string) => {
                     </td>
                     <td class="edit-element">
                         <div>
-                            <router-link :to="manageRoutes(element.id).update">
+                            <router-link :to="`/admin/${elementsName}/${element.id}`" title="Update">
                                 <font-awesome-icon icon="fa-solid fa-pen-to-square"/>
                             </router-link>
-                            <router-link :to="manageRoutes(element.id).delete">
+                            <router-link :to="`/admin/${elementsName}`" @click="deleteElement(element.id)" title="Delete">
                                 <font-awesome-icon icon="fa-solid fa-trash"/>
                             </router-link>
                         </div>
