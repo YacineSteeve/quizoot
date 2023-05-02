@@ -1,7 +1,7 @@
 [
     {
         "id": "63e4d328ff20e0c6c067a34d",
-        "kind": "CHOICE_QUESTION",
+        "kind": "MULTIPLE_CHOICES_QUESTION",
         "question": "Which of the following are valid ways to specify the string literal foo'bar in Python ?",
         "spec": {
             "options": [
