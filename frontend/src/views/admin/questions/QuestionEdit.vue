@@ -6,14 +6,14 @@ import { JsonForms } from '@jsonforms/vue';
 import { vanillaRenderers } from '@jsonforms/vue-vanilla';
 import { useFetch } from '@/lib/hooks';
 import type { Quizoot } from '@interfaces/quizoot';
+import FetchError from '@/components/FetchError.vue';
+import Loader from '@/components/Loader.vue';
 // TODO: Fix relative paths
 import CodeQuestionSchema from '../../../../../interfaces/schemas/code_question.json';
 import MultipleChoicesQuestionSchema from '../../../../../interfaces/schemas/multiple_choices_question.json';
 import SingleChoiceQuestionSchema from '../../../../../interfaces/schemas/text_question.json';
 import TextQuestionSchema from '../../../../../interfaces/schemas/text_question.json';
 import UploadQuestionSchema from '../../../../../interfaces/schemas/upload_question.json';
-import FetchError from '@/components/FetchError.vue';
-import Loader from '@/components/Loader.vue';
 
 const route = useRoute();
 
@@ -46,8 +46,17 @@ watch(questionData, () => {
 });
 
 const questionSchema = computed(() => {
-    console.log(questionKind.value);
-    const schema = schemas[questionKind.value];
+    let kind = questionKind.value;
+
+    if (kind === 'choice_question') {
+        if ('answer_id' in questionData.value) {
+            kind = 'single_choice_question';
+        } else {
+            kind = 'multiple_choices_question';
+        }
+    }
+
+    const schema = schemas[kind];
 
     schema.properties.id.readOnly = true;
 

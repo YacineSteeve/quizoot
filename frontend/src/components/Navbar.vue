@@ -1,16 +1,46 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { ref, watch } from 'vue';
+import { useRoute } from 'vue-router';
+
+const route = useRoute();
+const current = ref(0);
+const nonMenuViews = ['Quiz'];
+
+watch(
+    () => route.matched[0]?.name,
+    (name: string) => {
+        if (nonMenuViews.includes(name)) {
+            current.value = 0;
+        }
+    }
+);
+
+function setActive(index: number) {
+    current.value = index;
+}
+</script>
 
 <template>
     <div>
         <div class="navbar">
             <ul class="links">
-                <li class="menu-item">
-                    <router-link to="/" title="Home"> Home </router-link>
+                <li
+                    class="menu-item"
+                    :class="{ isCurrent: current === 1 }"
+                    @click="setActive(1)"
+                >
+                    <router-link to="/" title="Home"> Home</router-link>
                 </li>
-                <li class="menu-item">
-                    <router-link to="/news" title="News"> News </router-link>
+                <li
+                    class="menu-item"
+                    :class="{ isCurrent: current === 2 }"
+                    @click="setActive(2)"
+                >
+                    <router-link to="/contact" title="Contact">
+                        Contact
+                    </router-link>
                 </li>
-                <li id="logo">
+                <li id="logo" @click="setActive(0)">
                     <router-link to="/" title="Logo">
                         <img
                             src="../assets/logo-no-background.svg"
@@ -18,13 +48,21 @@
                         />
                     </router-link>
                 </li>
-                <li class="menu-item">
-                    <router-link to="/contact" title="Contact">
-                        Contact
+                <li
+                    class="menu-item"
+                    :class="{ isCurrent: current === 3 }"
+                    @click="setActive(3)"
+                >
+                    <router-link to="/signup" title="Sign Up">
+                        Sign Up
                     </router-link>
                 </li>
-                <li class="menu-item">
-                    <router-link to="/about" title="About"> About </router-link>
+                <li
+                    class="menu-item"
+                    :class="{ isCurrent: current === 4 }"
+                    @click="setActive(4)"
+                >
+                    <router-link to="/login" title="Login"> Login</router-link>
                 </li>
             </ul>
         </div>
@@ -48,6 +86,7 @@
 
 .links {
     display: flex;
+    gap: 2px;
     align-items: center;
     flex-shrink: 0;
     width: 45vw;
@@ -72,6 +111,7 @@
 .links li.menu-item {
     flex: 1;
     height: 60%;
+    border-radius: 5px;
 }
 
 .links li.menu-item a {
@@ -107,8 +147,8 @@
     }
 }
 
+.links li.menu-item.isCurrent,
 .links li.menu-item:hover {
     background-color: var(--menu-hover-pink);
-    border-radius: 5px;
 }
 </style>
