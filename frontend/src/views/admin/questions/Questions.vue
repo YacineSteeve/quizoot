@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import type { Quizoot } from '@interfaces/quizoot';
 import Manage from '@/components/Manage.vue';
-
 </script>
 
 <template>
     <Manage elements="Questions">
-        <template #spec="{value: questionSpec}">
+        <template #spec="{ value: questionSpec }">
             <ul class="spec">
                 <li v-for="(spec, key) in questionSpec" :key="key">
                     <span class="key">{{ key }}: </span>
@@ -19,11 +18,11 @@ import Manage from '@/components/Manage.vue';
                 </li>
             </ul>
         </template>
-        <template #grading="{value: grading}">
+        <template #grading="{ value: grading }">
             <ul class="grading">
                 <li>
                     <span>Point Value:</span>
-                    {{ (grading as Quizoot.Grading).point_value}}
+                    {{ (grading as Quizoot.Grading).point_value }}
                 </li>
                 <li>
                     <span>Feedback:</span>

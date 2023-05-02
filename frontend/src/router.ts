@@ -40,20 +40,23 @@ const routes: Array<RouteRecordRaw> = [
             {
                 path: 'questions',
                 name: 'Questions',
-                component: () => import('@/views/admin/questions/Questions.vue'),
+                component: () =>
+                    import('@/views/admin/questions/Questions.vue'),
             },
             {
-                path: 'questions/create',
+                path: 'questions/create/:kind',
                 name: 'QuestionCreate',
-                component: () => import('@/views/admin/questions/QuestionEdit.vue'),
+                component: () =>
+                    import('@/views/admin/questions/QuestionEdit.vue'),
             },
             {
                 path: 'questions/:id',
                 name: 'QuestionEdit',
-                component: () => import('@/views/admin/questions/QuestionEdit.vue'),
+                component: () =>
+                    import('@/views/admin/questions/QuestionEdit.vue'),
             },
         ],
-    }
+    },
 ];
 
 const router = createRouter({

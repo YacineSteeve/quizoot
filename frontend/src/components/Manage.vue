@@ -1,9 +1,11 @@
 <script setup lang="ts">
+import { ref } from 'vue';
 import { useFetch } from '@/lib/hooks';
 import Quiz from '../../../interfaces/schemas/quiz.json';
 import Question from '../../../interfaces/schemas/text_question.json';
-import FetchError from "@/components/FetchError.vue";
-import Loader from "@/components/Loader.vue";
+import QuestionKind from '../../../interfaces/schemas/question_kind.json';
+import FetchError from '@/components/FetchError.vue';
+import Loader from '@/components/Loader.vue';
 
 interface ManageProps {
     elements: 'Questions' | 'Quizzes';
@@ -19,46 +21,75 @@ const properties = Object.keys(elementObject.properties);
 
 const { data, error, isFetching } = useFetch(`/api/${elementsName}`);
 
+const showQuestionKinds = ref(false);
+
+const chooseQuestionKind = () => {
+    showQuestionKinds.value = !showQuestionKinds.value;
+};
+
 const deleteElement = (id: string) => {
-    if (confirm('Are you sure you want to delete this ? This action is irreversible.')) {
-        useFetch(`/api/${elementsName}/${id}/`, {
+    if (
+        confirm(
+            'Are you sure you want to delete this ? This action is irreversible.'
+        )
+    ) {
+        const { error: deleteError } = useFetch(`/api/${elementsName}/${id}/`, {
             method: 'DELETE',
         });
+
+        if (deleteError.value) {
+            alert('An error occurred while deleting the element.');
+            return;
+        }
 
         window.location.reload();
     }
 };
-
 </script>
 
 <template>
-    <FetchError v-if="error"/>
-    <Loader v-else-if="isFetching"/>
+    <FetchError v-if="error" />
+    <Loader v-else-if="isFetching" />
     <div v-else class="manage-container">
         <div class="header">
             <h2>{{ props.elements }} ({{ data.length }})</h2>
-            <span class="create-btn">
-                <router-link :to="`/admin/${elementsName}/create`" title="New">Create new</router-link>
+            <span v-if="props.elements === 'Quizzes'" class="create-quiz">
+                <router-link :to="`/admin/${elementsName}/create`" title="New"
+                    >Create new</router-link
+                >
             </span>
+            <div v-else class="create-question">
+                <span @click="chooseQuestionKind">Create new</span>
+                <div v-if="showQuestionKinds">
+                    <router-link
+                        v-for="kind in QuestionKind.enum as string[]"
+                        :key="kind"
+                        :to="`/admin/${elementsName}/create/${kind.toLowerCase()}`"
+                        :title="`New ${kind}`"
+                    >
+                        {{ kind }}
+                    </router-link>
+                </div>
+            </div>
         </div>
-        <hr>
+        <hr />
         <div class="elements">
             <table>
                 <thead>
-                <tr>
-                    <th>N°</th>
-                    <th v-for="key in properties">
-                        {{ key.toUpperCase() }}
-                    </th>
-                    <th>ACTIONS</th>
-                </tr>
+                    <tr>
+                        <th>N°</th>
+                        <th v-for="key in properties" :key="key">
+                            {{ key.toUpperCase() }}
+                        </th>
+                        <th>ACTIONS</th>
+                    </tr>
                 </thead>
                 <tbody>
-                <tr v-for="(element, index) in data" :key="element.id">
-                    <td>{{ index + 1 }}</td>
-                    <td v-for="key in properties">
-                        <slot :name="key" :value="element[key]">
-                            <!--
+                    <tr v-for="(element, index) in data" :key="element.id">
+                        <td>{{ index + 1 }}</td>
+                        <td v-for="key in properties" :key="key">
+                            <slot :name="key" :value="element[key]">
+                                <!--
                                 By default, the slot will display the value of the property.
                                 If the property is an array, it will display the array as a list.
 
@@ -74,29 +105,45 @@ const deleteElement = (id: string) => {
                                     ...
                                 </Manage>
                             -->
-                            <div v-if="Array.isArray(element[key])">
-                                <ul>
-                                    <li v-for="item in element[key]">
-                                        {{ item }}
-                                    </li>
-                                </ul>
+                                <div v-if="Array.isArray(element[key])">
+                                    <ul>
+                                        <li
+                                            v-for="(item, index) in element[
+                                                key
+                                            ]"
+                                            :key="index"
+                                        >
+                                            {{ item }}
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div v-else>
+                                    {{ element[key] }}
+                                </div>
+                            </slot>
+                        </td>
+                        <td class="edit-element">
+                            <div>
+                                <router-link
+                                    :to="`/admin/${elementsName}/${element.id}`"
+                                    title="Update"
+                                >
+                                    <font-awesome-icon
+                                        icon="fa-solid fa-pen-to-square"
+                                    />
+                                </router-link>
+                                <router-link
+                                    :to="`/admin/${elementsName}`"
+                                    @click="deleteElement(element.id)"
+                                    title="Delete"
+                                >
+                                    <font-awesome-icon
+                                        icon="fa-solid fa-trash"
+                                    />
+                                </router-link>
                             </div>
-                            <div v-else>
-                                {{ element[key] }}
-                            </div>
-                        </slot>
-                    </td>
-                    <td class="edit-element">
-                        <div>
-                            <router-link :to="`/admin/${elementsName}/${element.id}`" title="Update">
-                                <font-awesome-icon icon="fa-solid fa-pen-to-square"/>
-                            </router-link>
-                            <router-link :to="`/admin/${elementsName}`" @click="deleteElement(element.id)" title="Delete">
-                                <font-awesome-icon icon="fa-solid fa-trash"/>
-                            </router-link>
-                        </div>
-                    </td>
-                </tr>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         </div>
@@ -115,7 +162,7 @@ const deleteElement = (id: string) => {
     justify-content: flex-start;
     align-items: center;
     width: 100%;
-    margin-bottom: .5em;
+    margin-bottom: 0.5em;
 }
 
 h2 {
@@ -126,7 +173,12 @@ h2 {
     padding: 0;
 }
 
-.create-btn a {
+.create-question {
+    position: relative;
+}
+
+.create-quiz a,
+.create-question span {
     text-decoration: none;
     color: #ffffff;
     font-weight: bold;
@@ -135,9 +187,36 @@ h2 {
     border-radius: 0.25em;
 }
 
-.create-btn a:hover {
+.create-quiz a:hover,
+.create-question span:hover {
     background-color: green;
     text-decoration: none;
+}
+
+.create-question div {
+    position: absolute;
+    top: -25%;
+    left: 125%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    padding: 5px;
+    background-color: #ffffffaa;
+}
+
+.create-question div a {
+    text-decoration: none;
+    color: #000000;
+    font-weight: bold;
+    padding: 0.25em;
+    border-radius: 0.25em;
+    border: thin solid #000000;
+    background-color: #ffffff;
+}
+
+.create-question div a:hover {
+    background-color: #000000;
+    color: #ffffff;
 }
 
 .elements {

@@ -1,16 +1,14 @@
 <script setup lang="ts">
 import type { Quizoot } from '@interfaces/quizoot';
 import Manage from '@/components/Manage.vue';
-
 </script>
 
 <template>
     <Manage elements="Quizzes">
-        <template #authors="{value: authors}">
+        <template #authors="{ value: authors }">
             <ul>
-                <li v-for="author in authors as Quizoot.Author[]">
-                    {{ author.name }} &nbsp;
-                    {{ author.surname ?? '' }} &nbsp;
+                <li v-for="author in authors as Quizoot.Author[]" :key="author">
+                    {{ author.name }} &nbsp; {{ author.surname ?? '' }} &nbsp;
                     {{ author.pseudo ? `(${author.pseudo})` : '' }} &nbsp;
                     {{ author.email ? `<${author.email}>` : '' }}
                 </li>
@@ -19,6 +17,4 @@ import Manage from '@/components/Manage.vue';
     </Manage>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>
