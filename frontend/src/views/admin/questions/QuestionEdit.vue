@@ -1,74 +1,141 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
+import { computed, ref } from 'vue';
 import type { Ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { JsonForms } from '@jsonforms/vue';
 import { vanillaRenderers } from '@jsonforms/vue-vanilla';
 import { useFetch } from '@/lib/hooks';
+import { snakeToPascal } from '@/lib/string-utils';
 import type { Quizoot } from '@interfaces/quizoot';
-import FetchError from '@/components/FetchError.vue';
-import Loader from '@/components/Loader.vue';
-// TODO: Fix relative paths
-import CodeQuestionSchema from '../../../../../interfaces/schemas/code_question.json';
-import MultipleChoicesQuestionSchema from '../../../../../interfaces/schemas/multiple_choices_question.json';
-import SingleChoiceQuestionSchema from '../../../../../interfaces/schemas/text_question.json';
-import TextQuestionSchema from '../../../../../interfaces/schemas/text_question.json';
-import UploadQuestionSchema from '../../../../../interfaces/schemas/upload_question.json';
+import QuestionSchema from '../../../../../interfaces/schemas/question.json'; // TODO: Fix relative paths
+
+/*
+    This seems to be the less maintainable way to do this 🤮💔
+    but it's the only way I found to make it work a bit.
+ */
+
+interface QuestionEditProps {
+    data: Quizoot.Question;
+}
+
+const props = defineProps<QuestionEditProps>();
 
 const route = useRoute();
 
-const schemas: Record<string, typeof TextQuestionSchema> = {
-    code_question: CodeQuestionSchema,
-    multiple_choices_question: MultipleChoicesQuestionSchema,
-    single_choice_question: SingleChoiceQuestionSchema,
-    text_question: TextQuestionSchema,
-    upload_question: UploadQuestionSchema,
-};
+const renderers = Object.freeze([...vanillaRenderers]);
 
 const questionId = (route.params.id as string) || null;
 
-const {
-    data: questionData,
-    error,
-    isFetching,
-} = questionId === null
-    ? { data: ref({}), error: ref(null), isFetching: ref(false) }
-    : useFetch<Quizoot.Question>(`/api/questions/${questionId}/`);
+const questionKind = props.data.kind?.toLowerCase() || 'text_question';
 
-const questionKind = ref<string>(
-    questionId === null ? (route.params.kind as string) : 'text_question'
-);
+const fillRefsOfProperties = (schema, definitionsMap) => {
+    if (schema.$ref) {
+        const definition = schema.$ref.split('/').pop();
 
-watch(questionData, () => {
-    questionKind.value = (
-        questionData.value as Quizoot.Question
-    ).kind.toLowerCase();
-});
+        if (definition) {
+            schema = definitionsMap[definition];
+        }
+    }
 
-const questionSchema = computed(() => {
-    let kind = questionKind.value;
+    if (schema.properties) {
+        for (const key in schema.properties) {
+            schema.properties[key] = fillRefsOfProperties(
+                schema.properties[key],
+                definitionsMap
+            );
+        }
+    }
+
+    if (schema.items) {
+        schema.items = fillRefsOfProperties(schema.items, definitionsMap);
+    }
+
+    return schema;
+};
+
+const getSchema = (kind: string): object => {
+    const formattedKind = snakeToPascal(kind);
+    const schema = QuestionSchema.definitions[`Quizoot.${formattedKind}`];
+
+    if (!schema) {
+        throw new Error(`Schema for kind ${kind} not found.`);
+    }
+
+    schema.properties.id.readOnly = true;
+
+    schema.properties.spec =
+        QuestionSchema.definitions[`Quizoot.${formattedKind}Spec`];
+
+    /*
+        -------------------------------------------------------------
+        I am doing these next three lines manually because of a bug
+        in the "fillRefsOfProperties" function.
+
+        Otherwise, I would have just done:
+
+        fillRefsOfProperties(schema, QuestionSchema.definitions);
+     */
+    schema.properties.grading = QuestionSchema.definitions[`Quizoot.Grading`];
+
+    schema.properties.grading.properties.feedback =
+        QuestionSchema.definitions[`Quizoot.Feedback`];
+
+    schema.properties.difficulty =
+        QuestionSchema.definitions[`Quizoot.Difficulty`];
+
+    //  -------------------------------------------------------------
+
+    fillRefsOfProperties(schema.properties.spec, QuestionSchema.definitions);
+
+    return schema;
+};
+
+const flattenNestedProperties = (schema, outputMap) => {
+    if (schema.properties) {
+        for (const key in schema.properties) {
+            if (schema.properties[key].properties) {
+                outputMap[key] = schema.properties[key];
+
+                flattenNestedProperties(schema.properties[key], outputMap);
+
+                delete schema.properties[key];
+            } else {
+                flattenNestedProperties(schema.properties[key], outputMap);
+            }
+        }
+    }
+};
+
+const getRequiredSchemas = () => {
+    const schemasMap = {};
+    let kind = questionKind;
 
     if (kind === 'choice_question') {
-        if ('answer_id' in questionData.value) {
+        if ('answer_id' in props.data.spec) {
             kind = 'single_choice_question';
         } else {
             kind = 'multiple_choices_question';
         }
     }
 
-    const schema = schemas[kind];
+    const baseSchema = getSchema(kind);
 
-    schema.properties.id.readOnly = true;
+    schemasMap['base'] = baseSchema;
 
-    return schema;
-});
+    flattenNestedProperties({ ...baseSchema }, schemasMap);
 
-const renderers = Object.freeze([...vanillaRenderers]);
+    // TODO: Generate states for each schema
+
+    return Object.values(schemasMap);
+};
+
+const questionSchemas = computed(() => getRequiredSchemas());
 
 const newQuizData: Ref<Quizoot.Question> = ref({} as Quizoot.Question);
 
-const onChange = (event) => {
-    newQuizData.value = event.data;
+const handleChange = (index: number) => (event) => {
+    // TODO: Combine correctly the data of all schemas into one object
+    // newQuizData.value = { ...event.data };
 };
 
 const cancelEdit = () => {
@@ -102,17 +169,17 @@ const saveQuiz = () => {
 </script>
 
 <template>
-    <FetchError v-if="error" />
-    <Loader v-else-if="isFetching" />
-    <div v-else>
+    <div>
         <h1 v-if="questionId === null">Create a new Question</h1>
         <h1 v-else>Edit Question {{ questionId }}</h1>
         <JsonForms
-            :data="questionData"
-            :schema="questionSchema"
+            v-for="(schema, index) in questionSchemas"
+            :key="index"
+            :data="{}"
+            :schema="schema"
             :renderers="renderers"
-            :onChange="onChange"
         />
+        <!-- :onChange="handleChange(index)" -->
         <div>
             <button @click.prevent="cancelEdit">Cancel</button>
             <button @click.prevent="saveQuiz">Save</button>

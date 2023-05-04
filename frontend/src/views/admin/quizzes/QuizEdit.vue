@@ -7,20 +7,16 @@ import { vanillaRenderers } from '@jsonforms/vue-vanilla';
 import quizSchema from '../../../../../interfaces/schemas/quiz.json';
 import type { Quizoot } from '@interfaces/quizoot';
 import { useFetch } from '@/lib/hooks';
-import FetchError from '@/components/FetchError.vue';
-import Loader from '@/components/Loader.vue';
+
+interface QuizEditProps {
+    data: Quizoot.Quiz;
+}
+
+const props = defineProps<QuizEditProps>();
 
 const route = useRoute();
 
 const quizId = (route.params.id as string) || null;
-
-const {
-    data: quizData,
-    error,
-    isFetching,
-} = quizId === null
-    ? { data: ref({}), error: ref(null), isFetching: ref(false) }
-    : useFetch<Quizoot.Quiz>(`/api/quizzes/${quizId}/`);
 
 const renderers = Object.freeze([...vanillaRenderers]);
 
@@ -63,13 +59,11 @@ const saveQuiz = () => {
 </script>
 
 <template>
-    <FetchError v-if="error" />
-    <Loader v-else-if="isFetching" />
-    <div v-else>
+    <div>
         <h1 v-if="quizId === null">Create a new Quiz</h1>
         <h1 v-else>Edit Quiz {{ quizId }}</h1>
         <JsonForms
-            :data="quizData"
+            :data="props.data"
             :schema="quizSchema"
             :renderers="renderers"
             :onChange="onChange"

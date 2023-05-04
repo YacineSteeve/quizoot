@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import type { Ref } from 'vue';
+import { useRouter } from 'vue-router';
 import { useFetch } from '@/lib/hooks';
+import type { Quizoot } from '@interfaces/quizoot';
 import Quiz from '../../../interfaces/schemas/quiz.json';
 import Question from '../../../interfaces/schemas/text_question.json';
 import QuestionKind from '../../../interfaces/schemas/question_kind.json';
@@ -13,7 +16,11 @@ interface ManageProps {
 
 const props = defineProps<ManageProps>();
 
-const elementsName = props.elements.toLowerCase();
+const router = useRouter();
+
+type ElementType = Quizoot.Question | Quizoot.Quiz;
+
+const elementsName: string = props.elements.toLowerCase();
 
 const elementObject = props.elements === 'Quizzes' ? Quiz : Question;
 
@@ -21,10 +28,33 @@ const properties = Object.keys(elementObject.properties);
 
 const { data, error, isFetching } = useFetch(`/api/${elementsName}`);
 
-const showQuestionKinds = ref(false);
+const showQuestionKinds: Ref<boolean> = ref(false);
 
 const chooseQuestionKind = () => {
     showQuestionKinds.value = !showQuestionKinds.value;
+};
+
+const editRoutes = {
+    create: (element: ElementType) => {
+        return {
+            path: `/admin/${elementsName}/edit`,
+            query: {
+                data: JSON.stringify(element),
+            },
+        };
+    },
+    update: (element: ElementType) => {
+        return {
+            path: `/admin/${elementsName}/edit/${element.id}`,
+            query: {
+                data: JSON.stringify(element),
+            },
+        };
+    },
+};
+
+const editElement = (action: 'create' | 'update', element?: ElementType) => {
+    router.push(editRoutes[action](element || {}));
 };
 
 const deleteElement = (id: string) => {
@@ -54,21 +84,20 @@ const deleteElement = (id: string) => {
         <div class="header">
             <h2>{{ props.elements }} ({{ data.length }})</h2>
             <span v-if="props.elements === 'Quizzes'" class="create-quiz">
-                <router-link :to="`/admin/${elementsName}/create`" title="New"
-                    >Create new</router-link
-                >
+                <button @click="editElement('create')">Create new</button>
             </span>
             <div v-else class="create-question">
                 <span @click="chooseQuestionKind">Create new</span>
                 <div v-if="showQuestionKinds">
-                    <router-link
+                    <button
                         v-for="kind in QuestionKind.enum as string[]"
                         :key="kind"
-                        :to="`/admin/${elementsName}/create/${kind.toLowerCase()}`"
-                        :title="`New ${kind}`"
+                        @click="
+                            editElement('create', { kind } as Quizoot.Question)
+                        "
                     >
                         {{ kind }}
-                    </router-link>
+                    </button>
                 </div>
             </div>
         </div>
@@ -124,23 +153,16 @@ const deleteElement = (id: string) => {
                         </td>
                         <td class="edit-element">
                             <div>
-                                <router-link
-                                    :to="`/admin/${elementsName}/${element.id}`"
-                                    title="Update"
-                                >
+                                <button @click="editElement('update', element)">
                                     <font-awesome-icon
                                         icon="fa-solid fa-pen-to-square"
                                     />
-                                </router-link>
-                                <router-link
-                                    :to="`/admin/${elementsName}`"
-                                    @click="deleteElement(element.id)"
-                                    title="Delete"
-                                >
+                                </button>
+                                <button @click="deleteElement(element.id)">
                                     <font-awesome-icon
                                         icon="fa-solid fa-trash"
                                     />
-                                </router-link>
+                                </button>
                             </div>
                         </td>
                     </tr>
@@ -177,9 +199,8 @@ h2 {
     position: relative;
 }
 
-.create-quiz a,
+.create-quiz button,
 .create-question span {
-    text-decoration: none;
     color: #ffffff;
     font-weight: bold;
     background-color: var(--text-green);
@@ -187,7 +208,7 @@ h2 {
     border-radius: 0.25em;
 }
 
-.create-quiz a:hover,
+.create-quiz button:hover,
 .create-question span:hover {
     background-color: green;
     text-decoration: none;
@@ -204,7 +225,7 @@ h2 {
     background-color: #ffffffaa;
 }
 
-.create-question div a {
+.create-question div button {
     text-decoration: none;
     color: #000000;
     font-weight: bold;
@@ -214,7 +235,7 @@ h2 {
     background-color: #ffffff;
 }
 
-.create-question div a:hover {
+.create-question div button:hover {
     background-color: #000000;
     color: #ffffff;
 }
@@ -248,26 +269,26 @@ td.edit-element div {
     align-items: center;
 }
 
-td.edit-element div a {
+td.edit-element div button {
     text-decoration: none;
     color: #ffffff;
     padding: 0.5em;
     border-radius: 0.25em;
 }
 
-td.edit-element div a:first-child {
+td.edit-element div button:first-child {
     background-color: #007bff;
 }
 
-td.edit-element div a:first-child:hover {
+td.edit-element div button:first-child:hover {
     background-color: #0069d9;
 }
 
-td.edit-element div a:last-child {
+td.edit-element div button:last-child {
     background-color: #dc3545;
 }
 
-td.edit-element div a:last-child:hover {
+td.edit-element div button:last-child:hover {
     background-color: #c82333;
 }
 
