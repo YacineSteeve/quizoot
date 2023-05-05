@@ -34,7 +34,7 @@ const chooseQuestionKind = () => {
     showQuestionKinds.value = !showQuestionKinds.value;
 };
 
-const editRoutes = {
+const editionRoutes = {
     create: (element: ElementType) => {
         return {
             path: `/admin/${elementsName}/edit`,
@@ -54,7 +54,7 @@ const editRoutes = {
 };
 
 const editElement = (action: 'create' | 'update', element?: ElementType) => {
-    router.push(editRoutes[action](element || {}));
+    router.push(editionRoutes[action](element || {}));
 };
 
 const deleteElement = (id: string) => {
@@ -88,6 +88,13 @@ const deleteElement = (id: string) => {
             </span>
             <div v-else class="create-question">
                 <span @click="chooseQuestionKind">Create new</span>
+                <!--
+                    I found very more easier to choose the question kind before creating ui.
+
+                    The other way is to create the question ui (without the part for the spec)
+                    and then dynamically generate the corresponding spec ui when the user
+                    choose the kind in the dropdown list (see QuestionEdit.vue).
+                    -->
                 <div v-if="showQuestionKinds">
                     <button
                         v-for="kind in QuestionKind.enum as string[]"

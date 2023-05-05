@@ -19,7 +19,7 @@ import Manage from '@/components/Manage.vue';
             </ul>
         </template>
         <template #grading="{ value: grading }">
-            <ul class="grading">
+            <ul v-if="grading" class="grading">
                 <li>
                     <span>Point Value:</span>
                     {{ (grading as Quizoot.Grading).point_value }}

@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { ref } from 'vue';
 import type { Ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { JsonForms } from '@jsonforms/vue';
+import type { JsonSchema } from '@jsonforms/core';
 import { vanillaRenderers } from '@jsonforms/vue-vanilla';
 import { useFetch } from '@/lib/hooks';
 import { snakeToPascal } from '@/lib/string-utils';
@@ -18,17 +19,83 @@ interface QuestionEditProps {
     data: Quizoot.Question;
 }
 
+type SchemasMap = Record<string, JsonSchema>;
+
+type StatesMap = Record<string, Ref>;
+
 const props = defineProps<QuestionEditProps>();
 
 const route = useRoute();
 
 const renderers = Object.freeze([...vanillaRenderers]);
 
-const questionId = (route.params.id as string) || null;
+const initState = (key: string, data: object, state: Ref) => {
+    if (key === 'base') {
+        state.value = data;
+        state.value.kind = getFormattedQuestionKind(state.value.kind);
+    } else if (key in data) {
+        state.value = data[key];
+    } else {
+        for (const nestedKey in data) {
+            if (typeof data[nestedKey] === 'object') {
+                initState(key, data[nestedKey], state);
+            }
+        }
+    }
+};
 
-const questionKind = props.data.kind?.toLowerCase() || 'text_question';
+const initDataKey = (key: string, value: any, data: object) => {
+    if (key in data) {
+        data[key] = value;
+    } else {
+        for (const nestedKey in data) {
+            if (typeof data[nestedKey] === 'object') {
+                initDataKey(key, data[nestedKey], value);
+            }
+        }
+    }
+};
 
-const fillRefsOfProperties = (schema, definitionsMap) => {
+const getRebuiltQuestionData = (statesMap: StatesMap): Quizoot.Question => {
+    const data = { ...statesMap['base'].value };
+
+    data.kind = getRestoredQuestionKind(data.kind);
+
+    for (const key in statesMap) {
+        if (key !== 'base') {
+            initDataKey(key, statesMap[key].value, data);
+        }
+    }
+
+    return data as Quizoot.Question;
+};
+
+const getFormattedQuestionKind = (kind: string): string => {
+    if (kind === 'CHOICE_QUESTION') {
+        if ('answer_id' in props.data.spec) {
+            return 'SINGLE_CHOICE_QUESTION';
+        } else {
+            return 'MULTIPLE_CHOICES_QUESTION';
+        }
+    }
+
+    return kind.toLowerCase();
+};
+
+const getRestoredQuestionKind = (kind: string): string => {
+    if (
+        ['SINGLE_CHOICE_QUESTION', 'MULTIPLE_CHOICES_QUESTION'].includes(kind)
+    ) {
+        return 'CHOICE_QUESTION';
+    }
+
+    return kind;
+};
+
+const resolveRefsOfProperties = (
+    schema: JsonSchema,
+    definitionsMap: SchemasMap
+) => {
     if (schema.$ref) {
         const definition = schema.$ref.split('/').pop();
 
@@ -39,7 +106,7 @@ const fillRefsOfProperties = (schema, definitionsMap) => {
 
     if (schema.properties) {
         for (const key in schema.properties) {
-            schema.properties[key] = fillRefsOfProperties(
+            schema.properties[key] = resolveRefsOfProperties(
                 schema.properties[key],
                 definitionsMap
             );
@@ -47,13 +114,16 @@ const fillRefsOfProperties = (schema, definitionsMap) => {
     }
 
     if (schema.items) {
-        schema.items = fillRefsOfProperties(schema.items, definitionsMap);
+        schema.items = resolveRefsOfProperties(
+            schema.items as JsonSchema,
+            definitionsMap
+        );
     }
 
     return schema;
 };
 
-const getSchema = (kind: string): object => {
+const getSchema = (kind: string): JsonSchema => {
     const formattedKind = snakeToPascal(kind);
     const schema = QuestionSchema.definitions[`Quizoot.${formattedKind}`];
 
@@ -66,39 +136,18 @@ const getSchema = (kind: string): object => {
     schema.properties.spec =
         QuestionSchema.definitions[`Quizoot.${formattedKind}Spec`];
 
-    /*
-        -------------------------------------------------------------
-        I am doing these next three lines manually because of a bug
-        in the "fillRefsOfProperties" function.
-
-        Otherwise, I would have just done:
-
-        fillRefsOfProperties(schema, QuestionSchema.definitions);
-     */
-    schema.properties.grading = QuestionSchema.definitions[`Quizoot.Grading`];
-
-    schema.properties.grading.properties.feedback =
-        QuestionSchema.definitions[`Quizoot.Feedback`];
-
-    schema.properties.difficulty =
-        QuestionSchema.definitions[`Quizoot.Difficulty`];
-
-    //  -------------------------------------------------------------
-
-    fillRefsOfProperties(schema.properties.spec, QuestionSchema.definitions);
+    resolveRefsOfProperties(schema, QuestionSchema.definitions);
 
     return schema;
 };
 
-const flattenNestedProperties = (schema, outputMap) => {
+const flattenNestedProperties = (schema: JsonSchema, outputMap: SchemasMap) => {
     if (schema.properties) {
         for (const key in schema.properties) {
             if (schema.properties[key].properties) {
                 outputMap[key] = schema.properties[key];
 
                 flattenNestedProperties(schema.properties[key], outputMap);
-
-                delete schema.properties[key];
             } else {
                 flattenNestedProperties(schema.properties[key], outputMap);
             }
@@ -106,36 +155,37 @@ const flattenNestedProperties = (schema, outputMap) => {
     }
 };
 
-const getRequiredSchemas = () => {
-    const schemasMap = {};
-    let kind = questionKind;
+const getNestedSchemas = (baseSchema: JsonSchema): [SchemasMap, StatesMap] => {
+    const schemasMap = {} as SchemasMap;
+    const statesMap = {} as StatesMap;
 
-    if (kind === 'choice_question') {
-        if ('answer_id' in props.data.spec) {
-            kind = 'single_choice_question';
-        } else {
-            kind = 'multiple_choices_question';
-        }
+    schemasMap['base'] = { ...baseSchema } as JsonSchema;
+
+    flattenNestedProperties(schemasMap['base'], schemasMap);
+
+    for (const key in schemasMap) {
+        statesMap[key] = ref({});
     }
 
-    const baseSchema = getSchema(kind);
+    for (const key in schemasMap) {
+        initState(key, props.data, statesMap[key]);
+    }
 
-    schemasMap['base'] = baseSchema;
-
-    flattenNestedProperties({ ...baseSchema }, schemasMap);
-
-    // TODO: Generate states for each schema
-
-    return Object.values(schemasMap);
+    return [schemasMap, statesMap];
 };
 
-const questionSchemas = computed(() => getRequiredSchemas());
+const questionId = (route.params.id as string) || null;
+
+const questionKind = getFormattedQuestionKind(props.data.kind).toLowerCase();
+
+const baseQuestionSchema = getSchema(questionKind);
+
+const [questionSchemas, schemasStates] = getNestedSchemas(baseQuestionSchema);
 
 const newQuizData: Ref<Quizoot.Question> = ref({} as Quizoot.Question);
 
-const handleChange = (index: number) => (event) => {
-    // TODO: Combine correctly the data of all schemas into one object
-    // newQuizData.value = { ...event.data };
+const handleChange = (key: string) => (event) => {
+    schemasStates[key].value = event.data;
 };
 
 const cancelEdit = () => {
@@ -149,10 +199,12 @@ const cancelEdit = () => {
 };
 
 const saveQuiz = () => {
+    newQuizData.value = getRebuiltQuestionData(schemasStates);
+
     const saveParams =
         questionId === null
-            ? { url: '/api/quizzes/', method: 'POST' }
-            : { url: `/api/quizzes/${questionId}/`, method: 'PATCH' };
+            ? { url: '/api/questions/', method: 'POST' }
+            : { url: `/api/questions/${questionId}/`, method: 'PATCH' };
 
     const { error: saveError } = useFetch<Quizoot.Question>(saveParams.url, {
         method: saveParams.method,
@@ -173,13 +225,13 @@ const saveQuiz = () => {
         <h1 v-if="questionId === null">Create a new Question</h1>
         <h1 v-else>Edit Question {{ questionId }}</h1>
         <JsonForms
-            v-for="(schema, index) in questionSchemas"
+            v-for="([key, schema], index) in Object.entries(questionSchemas)"
             :key="index"
-            :data="{}"
+            :data="schemasStates[key]"
             :schema="schema"
             :renderers="renderers"
+            :onChange="handleChange(key)"
         />
-        <!-- :onChange="handleChange(index)" -->
         <div>
             <button @click.prevent="cancelEdit">Cancel</button>
             <button @click.prevent="saveQuiz">Save</button>
