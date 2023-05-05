@@ -1,5 +1,5 @@
 import { describe, it } from 'mocha';
-import { pascalToSnake, snakeToPascal } from '../string-utils';
+import { pascalToSnake, snakeToPascal, capitalize } from '../string-utils';
 import assert from 'assert';
 
 describe('string-utils', () => {
@@ -52,6 +52,20 @@ describe('string-utils', () => {
             const input = 'camel_case';
             const expectedOutput = 'CamelCase';
             assert.strictEqual(snakeToPascal(input), expectedOutput);
+        });
+    });
+
+    describe('.capitalize', () => {
+        it('capitalized first letter', () => {
+            const input = 'hello world';
+            const expectedOutput = 'Hello world';
+            assert.strictEqual(capitalize(input), expectedOutput);
+        });
+
+        it('noop for capitalized first letter', () => {
+            const input = 'Hello world';
+            const expectedOutput = 'Hello world';
+            assert.strictEqual(capitalize(input), expectedOutput);
         });
     });
 });

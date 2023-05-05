@@ -4,7 +4,7 @@ import type { Ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { JsonForms } from '@jsonforms/vue';
 import { vanillaRenderers } from '@jsonforms/vue-vanilla';
-import quizSchema from '../../../../../interfaces/schemas/quiz.json';
+import { QuizSchema as quizSchema } from '@interfaces/schemas';
 import type { Quizoot } from '@interfaces/quizoot';
 import { useFetch } from '@/lib/hooks';
 

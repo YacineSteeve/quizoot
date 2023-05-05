@@ -8,7 +8,7 @@ import { vanillaRenderers } from '@jsonforms/vue-vanilla';
 import { useFetch } from '@/lib/hooks';
 import { snakeToPascal } from '@/lib/string-utils';
 import type { Quizoot } from '@interfaces/quizoot';
-import QuestionSchema from '../../../../../interfaces/schemas/question.json'; // TODO: Fix relative paths
+import { QuestionSchema } from '@interfaces/schemas';
 
 /*
     This seems to be the less maintainable way to do this 🤮💔
@@ -162,6 +162,8 @@ const getNestedSchemas = (baseSchema: JsonSchema): [SchemasMap, StatesMap] => {
     schemasMap['base'] = { ...baseSchema } as JsonSchema;
 
     flattenNestedProperties(schemasMap['base'], schemasMap);
+
+    // TODO: Cache the schemas map to avoid rebuilding it on every render
 
     for (const key in schemasMap) {
         statesMap[key] = ref({});

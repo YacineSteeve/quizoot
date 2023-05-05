@@ -20,8 +20,14 @@ export function pascalToSnake(s: string) {
  * @returns The converted string
  */
 export function snakeToPascal(s: string): string {
-    return s
-        .split('_')
-        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-        .join('');
+    return s.split('_').map(capitalize).join('');
+}
+
+/**
+ * Helper function that capitalizes the first letter of a string
+ * @param s The string to capitalize
+ * @returns The capitalized string
+ */
+export function capitalize(s: string): string {
+    return s.charAt(0).toUpperCase() + s.slice(1);
 }

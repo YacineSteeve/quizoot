@@ -3,10 +3,10 @@ import { ref } from 'vue';
 import type { Ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useFetch } from '@/lib/hooks';
+import { QuizSchema as Quiz } from '@interfaces/schemas';
+import { TextQuestionSchema as Question } from '@interfaces/schemas';
+import { QuestionKindSchema as QuestionKind } from '@interfaces/schemas';
 import type { Quizoot } from '@interfaces/quizoot';
-import Quiz from '../../../interfaces/schemas/quiz.json';
-import Question from '../../../interfaces/schemas/text_question.json';
-import QuestionKind from '../../../interfaces/schemas/question_kind.json';
 import FetchError from '@/components/FetchError.vue';
 import Loader from '@/components/Loader.vue';
 
@@ -208,6 +208,7 @@ h2 {
 
 .create-quiz button,
 .create-question span {
+    cursor: pointer;
     color: #ffffff;
     font-weight: bold;
     background-color: var(--text-green);
@@ -233,7 +234,7 @@ h2 {
 }
 
 .create-question div button {
-    text-decoration: none;
+    cursor: pointer;
     color: #000000;
     font-weight: bold;
     padding: 0.25em;
@@ -277,7 +278,7 @@ td.edit-element div {
 }
 
 td.edit-element div button {
-    text-decoration: none;
+    cursor: pointer;
     color: #ffffff;
     padding: 0.5em;
     border-radius: 0.25em;

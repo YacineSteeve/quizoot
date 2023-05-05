@@ -15,7 +15,8 @@ const program = tjs.getProgramFromFiles([path.resolve(SOURCE_FILE_PATH)]);
 
 async function main() {
 	const schema = generateSchema('QuestionKind');
-	saveSchema('question_kind', schema);
+	await saveSchema('question_kind', schema);
+
 	const questionKinds = ((schema?.enum as string[]) ?? []).map((s) =>
 		s.toLowerCase()
 	);
@@ -24,17 +25,20 @@ async function main() {
 	for (const kind of questionKinds) {
 		try {
 			const schema = generateSchema(snakeToPascal(kind));
-			saveSchema(kind, schema);
+			await saveSchema(kind, schema);
 		} catch (err) {
 			console.error('Could not generate schema', kind);
 		}
 	}
 
 	// Generate question schema (union of all questions)
-	saveSchema('question', generateSchema('Question'));
+	await saveSchema('question', generateSchema('Question'));
 
 	// Generate quiz schema
-	saveSchema('quiz', generateSchema('Quiz'));
+	await saveSchema('quiz', generateSchema('Quiz'));
+
+	// Generate index.ts file
+	await generateIndexFile(['quiz', 'question', 'question_kind', ...questionKinds]);
 }
 
 function generateSchema(typeName: string) {
@@ -49,6 +53,23 @@ async function saveSchema(name: string, schema: tjs.Definition | null) {
 		(err) => {
 			if (err) {
 				console.error(`unable to save ${name} schema.`);
+			}
+		}
+	);
+}
+
+async function generateIndexFile(schemasNames: string[]) {
+	const indexFileContent = schemasNames
+		.map((name) => `export { default as ${snakeToPascal(name)}Schema } from './${name}.json';`)
+		.join('\n\n');
+
+	console.log('[INFO] Generating index file')
+	return fs.writeFile(
+		path.join(SCHEMAS_DIR, 'index.ts'),
+		indexFileContent,
+		(err) => {
+			if (err) {
+				console.error(`Unable to generate index file.`);
 			}
 		}
 	);
