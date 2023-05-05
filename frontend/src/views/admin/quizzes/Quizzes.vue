@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import type { Quizoot } from '@interfaces/quizoot';
-import Manage from '@/components/Manage.vue';
+import AdminManage from '@/components/AdminManage.vue';
 </script>
 
 <template>
-    <Manage elements="Quizzes">
+    <admin-manage elements="Quizzes">
         <template #authors="{ value: authors }">
             <ul>
                 <li v-for="author in authors as Quizoot.Author[]" :key="author">
@@ -14,7 +14,7 @@ import Manage from '@/components/Manage.vue';
                 </li>
             </ul>
         </template>
-    </Manage>
+    </admin-manage>
 </template>
 
 <style scoped></style>

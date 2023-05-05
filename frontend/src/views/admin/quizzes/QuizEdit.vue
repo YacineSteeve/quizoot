@@ -7,6 +7,7 @@ import { vanillaRenderers } from '@jsonforms/vue-vanilla';
 import { QuizSchema as quizSchema } from '@interfaces/schemas';
 import type { Quizoot } from '@interfaces/quizoot';
 import { useFetch } from '@/lib/hooks';
+import AdminManageEdit from '@/components/AdminManageEdit.vue';
 
 interface QuizEditProps {
     data: Quizoot.Quiz;
@@ -24,7 +25,7 @@ quizSchema.properties.id.readOnly = true;
 
 const newQuizData: Ref<Quizoot.Quiz> = ref({} as Quizoot.Quiz);
 
-const onChange = (event) => {
+const handleDataChange = (event) => {
     newQuizData.value = event.data;
 };
 
@@ -59,20 +60,19 @@ const saveQuiz = () => {
 </script>
 
 <template>
-    <div>
-        <h1 v-if="quizId === null">Create a new Quiz</h1>
-        <h1 v-else>Edit Quiz {{ quizId }}</h1>
+    <admin-manage-edit
+        element="quiz"
+        :elementId="quizId"
+        :onCanceled="cancelEdit"
+        :onSaved="saveQuiz"
+    >
         <JsonForms
             :data="props.data"
             :schema="quizSchema"
             :renderers="renderers"
-            :onChange="onChange"
+            :onChange="handleDataChange"
         />
-        <div>
-            <button @click.prevent="cancelEdit">Cancel</button>
-            <button @click.prevent="saveQuiz">Save</button>
-        </div>
-    </div>
+    </admin-manage-edit>
 </template>
 
 <style scoped></style>

@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import type { Quizoot } from '@interfaces/quizoot';
-import Manage from '@/components/Manage.vue';
+import AdminManage from '@/components/AdminManage.vue';
 </script>
 
 <template>
-    <Manage elements="Questions">
+    <admin-manage elements="Questions">
         <template #spec="{ value: questionSpec }">
             <ul class="spec">
                 <li v-for="(spec, key) in questionSpec" :key="key">
@@ -30,7 +30,7 @@ import Manage from '@/components/Manage.vue';
                 </li>
             </ul>
         </template>
-    </Manage>
+    </admin-manage>
 </template>
 
 <style scoped>

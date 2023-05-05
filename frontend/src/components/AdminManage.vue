@@ -80,7 +80,7 @@ const deleteElement = (id: string) => {
 <template>
     <FetchError v-if="error" />
     <Loader v-else-if="isFetching" />
-    <div v-else class="manage-container">
+    <div v-else class="admin-manage-container">
         <div class="header">
             <h2>{{ props.elements }} ({{ data.length }})</h2>
             <span v-if="props.elements === 'Quizzes'" class="create-quiz">
@@ -180,7 +180,7 @@ const deleteElement = (id: string) => {
 </template>
 
 <style scoped>
-.manage-container {
+.admin-manage-container {
     width: 100%;
     margin-inline: auto;
 }

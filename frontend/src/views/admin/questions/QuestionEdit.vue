@@ -9,6 +9,7 @@ import { useFetch } from '@/lib/hooks';
 import { snakeToPascal } from '@/lib/string-utils';
 import type { Quizoot } from '@interfaces/quizoot';
 import { QuestionSchema } from '@interfaces/schemas';
+import AdminManageEdit from '@/components/AdminManageEdit.vue';
 
 /*
     This seems to be the less maintainable way to do this 🤮💔
@@ -186,7 +187,7 @@ const [questionSchemas, schemasStates] = getNestedSchemas(baseQuestionSchema);
 
 const newQuizData: Ref<Quizoot.Question> = ref({} as Quizoot.Question);
 
-const handleChange = (key: string) => (event) => {
+const handleDataChange = (key: string) => (event) => {
     schemasStates[key].value = event.data;
 };
 
@@ -223,22 +224,21 @@ const saveQuiz = () => {
 </script>
 
 <template>
-    <div>
-        <h1 v-if="questionId === null">Create a new Question</h1>
-        <h1 v-else>Edit Question {{ questionId }}</h1>
+    <admin-manage-edit
+        element="question"
+        :elementId="questionId"
+        :onCanceled="cancelEdit"
+        :onSaved="saveQuiz"
+    >
         <JsonForms
             v-for="([key, schema], index) in Object.entries(questionSchemas)"
             :key="index"
             :data="schemasStates[key]"
             :schema="schema"
             :renderers="renderers"
-            :onChange="handleChange(key)"
+            :onChange="handleDataChange(key)"
         />
-        <div>
-            <button @click.prevent="cancelEdit">Cancel</button>
-            <button @click.prevent="saveQuiz">Save</button>
-        </div>
-    </div>
+    </admin-manage-edit>
 </template>
 
 <style scoped></style>
