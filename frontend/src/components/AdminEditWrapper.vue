@@ -10,7 +10,7 @@ const props = defineProps<AdminManageEditProps>();
 </script>
 
 <template>
-    <div class="admin-manage-edit-container">
+    <div class="admin-edit-wrapper-container">
         <h1 v-if="props.elementId === null">
             Create a new {{ props.element }}
         </h1>
@@ -25,15 +25,22 @@ const props = defineProps<AdminManageEditProps>();
 </template>
 
 <style scoped>
+.admin-edit-wrapper-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1em;
+}
+
 h1 {
     width: 100%;
     text-align: left;
-    margin-bottom: 1em;
+    margin-bottom: 0;
 }
 
 hr {
     width: 100%;
-    margin-bottom: 2em;
+    margin-bottom: 1em;
 }
 
 .buttons {
@@ -45,11 +52,12 @@ hr {
 
 .buttons button {
     color: #ffffff;
-    padding: 0.5em 1em;
-    border-radius: 5px;
+    cursor: pointer;
     font-size: 1em;
     font-weight: bold;
-    cursor: pointer;
+    padding: 0.5em 1em;
+    border-radius: 0.25em;
+    border: none;
 }
 
 .buttons button:first-child {
@@ -66,5 +74,12 @@ hr {
 
 .buttons button:last-child:hover {
     background-color: green;
+}
+
+@media only screen and (max-width: 600px) {
+    h1,
+    hr {
+        width: 90%;
+    }
 }
 </style>

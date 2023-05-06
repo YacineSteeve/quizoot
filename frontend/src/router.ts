@@ -23,29 +23,22 @@ const routes: Array<RouteRecordRaw> = [
                 component: () => import('@/views/admin/Landing.vue'),
             },
             {
-                path: 'quizzes',
-                name: 'Quizzes',
-                component: () => import('@/views/admin/quizzes/Quizzes.vue'),
+                path: ':elements',
+                name: 'List',
+                component: () => import('@/views/admin/List.vue'),
             },
             {
                 path: 'quizzes/edit/:id?',
                 name: 'QuizCreate',
-                component: () => import('@/views/admin/quizzes/QuizEdit.vue'),
+                component: () => import('@/views/admin/edit/QuizEdit.vue'),
                 props: (route) => ({
                     data: JSON.parse(route.query.data),
                 }),
             },
             {
-                path: 'questions',
-                name: 'Questions',
-                component: () =>
-                    import('@/views/admin/questions/Questions.vue'),
-            },
-            {
                 path: 'questions/edit/:id?',
                 name: 'QuestionEdit',
-                component: () =>
-                    import('@/views/admin/questions/QuestionEdit.vue'),
+                component: () => import('@/views/admin/edit/QuestionEdit.vue'),
                 props: (route) => ({
                     data: JSON.parse(route.query.data),
                 }),

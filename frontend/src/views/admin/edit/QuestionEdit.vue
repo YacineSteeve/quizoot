@@ -1,20 +1,19 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import type { Ref } from 'vue';
 import { useRoute } from 'vue-router';
-import { JsonForms } from '@jsonforms/vue';
-import type { JsonSchema } from '@jsonforms/core';
 import { vanillaRenderers } from '@jsonforms/vue-vanilla';
+import { JsonForms } from '@jsonforms/vue';
+import type { JsonFormsChangeEvent } from '@jsonforms/vue';
+import type { JsonSchema } from '@jsonforms/core';
 import { useFetch } from '@/lib/hooks';
 import { snakeToPascal } from '@/lib/string-utils';
 import type { Quizoot } from '@interfaces/quizoot';
-import { QuestionSchema } from '@interfaces/schemas';
-import AdminManageEdit from '@/components/AdminManageEdit.vue';
-
-/*
-    This seems to be the less maintainable way to do this 🤮💔
-    but it's the only way I found to make it work a bit.
- */
+import {
+    QuestionKindSchema as QuestionKind,
+    QuestionSchema,
+} from '@interfaces/schemas';
+import AdminEditWrapper from '@/components/AdminEditWrapper.vue';
 
 interface QuestionEditProps {
     data: Quizoot.Question;
@@ -30,7 +29,38 @@ const route = useRoute();
 
 const renderers = Object.freeze([...vanillaRenderers]);
 
-const initState = (key: string, data: object, state: Ref) => {
+const questionId = (route.params.id as string) || null;
+
+const questionKindSelected: Ref<boolean> = ref(props.data.kind != undefined);
+
+const questionKind: Ref = ref(
+    questionKindSelected.value ? props.data.kind : null
+);
+
+const questionData: Ref<Quizoot.Question> = ref(props.data);
+
+const [questionSchemas, schemasStates]: [Ref<SchemasMap>, Ref<StatesMap>] = [
+    ref({} as SchemasMap),
+    ref({} as StatesMap),
+];
+
+watch(
+    questionKind,
+    (value) => {
+        if (questionKindSelected.value) {
+            questionData.value.kind = value;
+
+            const formattedKind = getFormattedQuestionKind(value).toLowerCase();
+            const baseSchema = getSchema(formattedKind);
+
+            [questionSchemas.value, schemasStates.value] =
+                getNestedSchemas(baseSchema);
+        }
+    },
+    { immediate: true }
+);
+
+function initState(key: string, data: object, state: Ref) {
     if (key === 'base') {
         state.value = data;
         state.value.kind = getFormattedQuestionKind(state.value.kind);
@@ -43,9 +73,9 @@ const initState = (key: string, data: object, state: Ref) => {
             }
         }
     }
-};
+}
 
-const initDataKey = (key: string, value: any, data: object) => {
+function initDataKey(key: string, value: any, data: object) {
     if (key in data) {
         data[key] = value;
     } else {
@@ -55,9 +85,9 @@ const initDataKey = (key: string, value: any, data: object) => {
             }
         }
     }
-};
+}
 
-const getRebuiltQuestionData = (statesMap: StatesMap): Quizoot.Question => {
+function getRebuiltQuestionData(statesMap: StatesMap): Quizoot.Question {
     const data = { ...statesMap['base'].value };
 
     data.kind = getRestoredQuestionKind(data.kind);
@@ -69,9 +99,9 @@ const getRebuiltQuestionData = (statesMap: StatesMap): Quizoot.Question => {
     }
 
     return data as Quizoot.Question;
-};
+}
 
-const getFormattedQuestionKind = (kind: string): string => {
+function getFormattedQuestionKind(kind: string): string {
     if (kind === 'CHOICE_QUESTION') {
         if ('answer_id' in props.data.spec) {
             return 'SINGLE_CHOICE_QUESTION';
@@ -80,10 +110,10 @@ const getFormattedQuestionKind = (kind: string): string => {
         }
     }
 
-    return kind.toLowerCase();
-};
+    return kind;
+}
 
-const getRestoredQuestionKind = (kind: string): string => {
+function getRestoredQuestionKind(kind: string): string {
     if (
         ['SINGLE_CHOICE_QUESTION', 'MULTIPLE_CHOICES_QUESTION'].includes(kind)
     ) {
@@ -91,12 +121,12 @@ const getRestoredQuestionKind = (kind: string): string => {
     }
 
     return kind;
-};
+}
 
-const resolveRefsOfProperties = (
+function resolveRefsOfProperties(
     schema: JsonSchema,
     definitionsMap: SchemasMap
-) => {
+) {
     if (schema.$ref) {
         const definition = schema.$ref.split('/').pop();
 
@@ -122,9 +152,9 @@ const resolveRefsOfProperties = (
     }
 
     return schema;
-};
+}
 
-const getSchema = (kind: string): JsonSchema => {
+function getSchema(kind: string): JsonSchema {
     const formattedKind = snakeToPascal(kind);
     const schema = QuestionSchema.definitions[`Quizoot.${formattedKind}`];
 
@@ -140,9 +170,9 @@ const getSchema = (kind: string): JsonSchema => {
     resolveRefsOfProperties(schema, QuestionSchema.definitions);
 
     return schema;
-};
+}
 
-const flattenNestedProperties = (schema: JsonSchema, outputMap: SchemasMap) => {
+function flattenNestedProperties(schema: JsonSchema, outputMap: SchemasMap) {
     if (schema.properties) {
         for (const key in schema.properties) {
             if (schema.properties[key].properties) {
@@ -154,9 +184,9 @@ const flattenNestedProperties = (schema: JsonSchema, outputMap: SchemasMap) => {
             }
         }
     }
-};
+}
 
-const getNestedSchemas = (baseSchema: JsonSchema): [SchemasMap, StatesMap] => {
+function getNestedSchemas(baseSchema: JsonSchema): [SchemasMap, StatesMap] {
     const schemasMap = {} as SchemasMap;
     const statesMap = {} as StatesMap;
 
@@ -175,23 +205,20 @@ const getNestedSchemas = (baseSchema: JsonSchema): [SchemasMap, StatesMap] => {
     }
 
     return [schemasMap, statesMap];
-};
+}
 
-const questionId = (route.params.id as string) || null;
+function chooseQuestionKind(kind: Quizoot.QuestionKind) {
+    questionKind.value = kind;
+    questionKindSelected.value = true;
+}
 
-const questionKind = getFormattedQuestionKind(props.data.kind).toLowerCase();
+function handleDataChange(key: string) {
+    return (event: JsonFormsChangeEvent) => {
+        schemasStates.value[key].value = event.data;
+    };
+}
 
-const baseQuestionSchema = getSchema(questionKind);
-
-const [questionSchemas, schemasStates] = getNestedSchemas(baseQuestionSchema);
-
-const newQuizData: Ref<Quizoot.Question> = ref({} as Quizoot.Question);
-
-const handleDataChange = (key: string) => (event) => {
-    schemasStates[key].value = event.data;
-};
-
-const cancelEdit = () => {
+function cancelEdit() {
     if (
         confirm(
             'Are you sure you want to cancel ? All unsaved changes will be lost.'
@@ -199,10 +226,10 @@ const cancelEdit = () => {
     ) {
         window.history.back();
     }
-};
+}
 
-const saveQuiz = () => {
-    newQuizData.value = getRebuiltQuestionData(schemasStates);
+function saveQuiz() {
+    questionData.value = getRebuiltQuestionData(schemasStates.value);
 
     const saveParams =
         questionId === null
@@ -211,7 +238,7 @@ const saveQuiz = () => {
 
     const { error: saveError } = useFetch<Quizoot.Question>(saveParams.url, {
         method: saveParams.method,
-        data: newQuizData.value, // TODO: Fix validation
+        data: questionData.value,
     });
 
     if (saveError.value) {
@@ -220,17 +247,29 @@ const saveQuiz = () => {
     }
 
     window.history.back();
-};
+}
 </script>
 
 <template>
-    <admin-manage-edit
+    <admin-edit-wrapper
         element="question"
         :elementId="questionId"
         :onCanceled="cancelEdit"
         :onSaved="saveQuiz"
     >
+        <div v-if="!questionKindSelected" class="choose-kind">
+            <h2>Choose a question kind</h2>
+            <button
+                v-for="kind in QuestionKind.enum as Quizoot.QuestionKind[]"
+                :key="kind"
+                @click="chooseQuestionKind(kind)"
+            >
+                {{ kind }}
+            </button>
+        </div>
+
         <JsonForms
+            v-else
             v-for="([key, schema], index) in Object.entries(questionSchemas)"
             :key="index"
             :data="schemasStates[key]"
@@ -238,7 +277,29 @@ const saveQuiz = () => {
             :renderers="renderers"
             :onChange="handleDataChange(key)"
         />
-    </admin-manage-edit>
+    </admin-edit-wrapper>
 </template>
 
-<style scoped></style>
+<style scoped>
+.choose-kind {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+.choose-kind button {
+    cursor: pointer;
+    color: #000000;
+    font-weight: bold;
+    padding: 0.5em;
+    border-radius: 0.25em;
+    border: none;
+    width: fit-content;
+    background-color: #ffffff;
+}
+
+.choose-kind button:hover {
+    background-color: #000000;
+    color: #ffffff;
+}
+</style>

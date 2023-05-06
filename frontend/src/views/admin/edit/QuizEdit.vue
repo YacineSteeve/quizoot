@@ -2,12 +2,13 @@
 import { ref } from 'vue';
 import type { Ref } from 'vue';
 import { useRoute } from 'vue-router';
-import { JsonForms } from '@jsonforms/vue';
 import { vanillaRenderers } from '@jsonforms/vue-vanilla';
+import { JsonForms } from '@jsonforms/vue';
+import type { JsonFormsChangeEvent } from '@jsonforms/vue';
 import { QuizSchema as quizSchema } from '@interfaces/schemas';
 import type { Quizoot } from '@interfaces/quizoot';
 import { useFetch } from '@/lib/hooks';
-import AdminManageEdit from '@/components/AdminManageEdit.vue';
+import AdminEditWrapper from '@/components/AdminEditWrapper.vue';
 
 interface QuizEditProps {
     data: Quizoot.Quiz;
@@ -17,19 +18,19 @@ const props = defineProps<QuizEditProps>();
 
 const route = useRoute();
 
+const renderers = Object.freeze([...vanillaRenderers]);
+
 const quizId = (route.params.id as string) || null;
 
-const renderers = Object.freeze([...vanillaRenderers]);
+const quizData: Ref<Quizoot.Quiz> = ref(props.data);
 
 quizSchema.properties.id.readOnly = true;
 
-const newQuizData: Ref<Quizoot.Quiz> = ref({} as Quizoot.Quiz);
+function handleDataChange(event: JsonFormsChangeEvent) {
+    quizData.value = event.data;
+}
 
-const handleDataChange = (event) => {
-    newQuizData.value = event.data;
-};
-
-const cancelEdit = () => {
+function cancelEdit() {
     if (
         confirm(
             'Are you sure you want to cancel ? All unsaved changes will be lost.'
@@ -37,9 +38,9 @@ const cancelEdit = () => {
     ) {
         window.history.back();
     }
-};
+}
 
-const saveQuiz = () => {
+function saveQuiz() {
     const saveParams =
         quizId === null
             ? { url: '/api/quizzes/', method: 'POST' }
@@ -47,7 +48,7 @@ const saveQuiz = () => {
 
     const { error: saveError } = useFetch<Quizoot.Quiz>(saveParams.url, {
         method: saveParams.method,
-        data: newQuizData.value, // TODO: Fix validation
+        data: quizData.value,
     });
 
     if (saveError.value) {
@@ -56,23 +57,23 @@ const saveQuiz = () => {
     }
 
     window.history.back();
-};
+}
 </script>
 
 <template>
-    <admin-manage-edit
+    <admin-edit-wrapper
         element="quiz"
         :elementId="quizId"
         :onCanceled="cancelEdit"
         :onSaved="saveQuiz"
     >
         <JsonForms
-            :data="props.data"
+            :data="quizData"
             :schema="quizSchema"
             :renderers="renderers"
             :onChange="handleDataChange"
         />
-    </admin-manage-edit>
+    </admin-edit-wrapper>
 </template>
 
 <style scoped></style>
