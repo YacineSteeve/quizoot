@@ -47,7 +47,7 @@ function goToPreviousQuestion() {
 }
 
 function submitQuiz() {
-    // TODO
+    // TODO: compute score and submit quiz
     alert('Quiz submitted!');
 }
 </script>

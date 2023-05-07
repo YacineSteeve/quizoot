@@ -24,7 +24,9 @@ const quizId = (route.params.id as string) || null;
 
 const quizData: Ref<Quizoot.Quiz> = ref(props.data);
 
-quizSchema.properties.id.readOnly = true;
+type QuizSchemaId = typeof quizSchema.properties.id & { readOnly: boolean };
+
+(quizSchema.properties.id as QuizSchemaId).readOnly = true;
 
 function handleDataChange(event: JsonFormsChangeEvent) {
     quizData.value = event.data;

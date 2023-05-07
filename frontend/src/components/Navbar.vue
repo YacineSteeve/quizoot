@@ -1,15 +1,16 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
+import type { RouteRecordName } from 'vue-router';
 
 const route = useRoute();
 const current = ref(0);
-const nonMenuViews = ['Quiz'];
+const nonMenuViews: RouteRecordName[] = ['Quiz'];
 
 watch(
     () => route.matched[0]?.name,
-    (name: string) => {
-        if (nonMenuViews.includes(name)) {
+    (name) => {
+        if (name && nonMenuViews.includes(name)) {
             current.value = 0;
         }
     }

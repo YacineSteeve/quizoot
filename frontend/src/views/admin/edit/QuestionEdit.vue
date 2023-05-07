@@ -19,6 +19,8 @@ interface QuestionEditProps {
     data: Quizoot.Question;
 }
 
+type SchemaDefinitionKey = keyof typeof QuestionSchema.definitions;
+
 type SchemasMap = Record<string, JsonSchema>;
 
 type StatesMap = Record<string, Ref>;
@@ -44,6 +46,12 @@ const [questionSchemas, schemasStates]: [Ref<SchemasMap>, Ref<StatesMap>] = [
     ref({} as StatesMap),
 ];
 
+const isDefinition = (
+    schema: JsonSchema
+): schema is typeof schema & { properties: any } => {
+    return Object.prototype.hasOwnProperty.call(schema, 'properties');
+};
+
 watch(
     questionKind,
     (value) => {
@@ -60,7 +68,7 @@ watch(
     { immediate: true }
 );
 
-function initState(key: string, data: object, state: Ref) {
+function initState(key: string, data: { [key: string]: any }, state: Ref) {
     if (key === 'base') {
         state.value = data;
         state.value.kind = getFormattedQuestionKind(state.value.kind);
@@ -75,7 +83,7 @@ function initState(key: string, data: object, state: Ref) {
     }
 }
 
-function initDataKey(key: string, value: any, data: object) {
+function initDataKey(key: string, value: any, data: { [key: string]: any }) {
     if (key in data) {
         data[key] = value;
     } else {
@@ -123,10 +131,7 @@ function getRestoredQuestionKind(kind: string): string {
     return kind;
 }
 
-function resolveRefsOfProperties(
-    schema: JsonSchema,
-    definitionsMap: SchemasMap
-) {
+function resolveRefs(schema: JsonSchema, definitionsMap: SchemasMap) {
     if (schema.$ref) {
         const definition = schema.$ref.split('/').pop();
 
@@ -137,7 +142,7 @@ function resolveRefsOfProperties(
 
     if (schema.properties) {
         for (const key in schema.properties) {
-            schema.properties[key] = resolveRefsOfProperties(
+            schema.properties[key] = resolveRefs(
                 schema.properties[key],
                 definitionsMap
             );
@@ -145,10 +150,7 @@ function resolveRefsOfProperties(
     }
 
     if (schema.items) {
-        schema.items = resolveRefsOfProperties(
-            schema.items as JsonSchema,
-            definitionsMap
-        );
+        schema.items = resolveRefs(schema.items as JsonSchema, definitionsMap);
     }
 
     return schema;
@@ -156,18 +158,25 @@ function resolveRefsOfProperties(
 
 function getSchema(kind: string): JsonSchema {
     const formattedKind = snakeToPascal(kind);
-    const schema = QuestionSchema.definitions[`Quizoot.${formattedKind}`];
+    const schema =
+        QuestionSchema.definitions[
+            `Quizoot.${formattedKind}` as SchemaDefinitionKey
+        ];
 
     if (!schema) {
         throw new Error(`Schema for kind ${kind} not found.`);
     }
 
-    schema.properties.id.readOnly = true;
+    if (isDefinition(schema)) {
+        schema.properties.id.readOnly = true;
 
-    schema.properties.spec =
-        QuestionSchema.definitions[`Quizoot.${formattedKind}Spec`];
+        schema.properties.spec =
+            QuestionSchema.definitions[
+                `Quizoot.${formattedKind}Spec` as SchemaDefinitionKey
+            ];
+    }
 
-    resolveRefsOfProperties(schema, QuestionSchema.definitions);
+    resolveRefs(schema, QuestionSchema.definitions);
 
     return schema;
 }
@@ -260,7 +269,7 @@ function saveQuiz() {
         <div v-if="!questionKindSelected" class="choose-kind">
             <h2>Choose a question kind</h2>
             <button
-                v-for="kind in QuestionKind.enum as Quizoot.QuestionKind[]"
+                v-for="kind in QuestionKind.enum"
                 :key="kind"
                 @click="chooseQuestionKind(kind)"
             >

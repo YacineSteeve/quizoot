@@ -3,6 +3,8 @@ import { API_BASE_URL, log } from '.';
 import type { AxiosRequestConfig } from 'axios';
 import axios from 'axios';
 
+import type { Quizoot } from '@interfaces/quizoot';
+
 const quizootApi = axios.create({
     baseURL: API_BASE_URL,
     timeout: 1000,
@@ -11,16 +13,11 @@ const quizootApi = axios.create({
     xsrfCookieName: 'csrftoken',
 });
 
-// TODO: fix this type {@merchrist.kiki}
-export type ApiResponse = any;
-
-// export type ApiResponse =
-//     | number
-//     | string
-//     | boolean
-//     | null
-//     | ApiResponse[]
-//     | { [x: string]: ApiResponse };
+export type ApiResponse =
+    | Quizoot.Quiz
+    | Quizoot.Quiz[]
+    | Quizoot.Question
+    | Quizoot.Question[];
 
 export async function makeRequest<TData extends ApiResponse>(
     requestConfig: AxiosRequestConfig
