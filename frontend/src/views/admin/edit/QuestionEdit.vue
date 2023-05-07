@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { ref, reactive, watch } from 'vue';
 import type { Ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { vanillaRenderers } from '@jsonforms/vue-vanilla';
@@ -21,9 +21,16 @@ interface QuestionEditProps {
 
 type SchemaDefinitionKey = keyof typeof QuestionSchema.definitions;
 
-type SchemasMap = Record<string, JsonSchema>;
+type SchemasName = 'base' | 'spec' | 'grading' | 'feedback';
 
-type StatesMap = Record<string, Ref>;
+type SchemasMap = Record<SchemasName, JsonSchema>;
+
+interface StatesMap {
+    base: Quizoot.Question;
+    spec: Quizoot.Question['spec'];
+    grading: Quizoot.Question['grading'];
+    feedback: Quizoot.Question['grading']['feedback'];
+}
 
 const props = defineProps<QuestionEditProps>();
 
@@ -41,10 +48,21 @@ const questionKind: Ref = ref(
 
 const questionData: Ref<Quizoot.Question> = ref(props.data);
 
-const [questionSchemas, schemasStates]: [Ref<SchemasMap>, Ref<StatesMap>] = [
-    ref({} as SchemasMap),
-    ref({} as StatesMap),
-];
+const questionSchemas: SchemasMap = {} as SchemasMap;
+
+const schemasStates: StatesMap = questionKindSelected.value
+    ? reactive({
+          base: questionData.value,
+          spec: questionData.value.spec,
+          grading: questionData.value.grading,
+          feedback: questionData.value.grading.feedback,
+      })
+    : reactive({
+          base: {} as Quizoot.Question,
+          spec: {} as Quizoot.Question['spec'],
+          grading: {} as Quizoot.Question['grading'],
+          feedback: {} as Quizoot.Question['grading']['feedback'],
+      });
 
 const isDefinition = (
     schema: JsonSchema
@@ -58,58 +76,28 @@ watch(
         if (questionKindSelected.value) {
             questionData.value.kind = value;
 
-            const formattedKind = getFormattedQuestionKind(value).toLowerCase();
-            const baseSchema = getSchema(formattedKind);
+            const kind = getFormattedQuestionKind(value);
+            const baseSchema = getSchema(kind.toLowerCase());
 
-            [questionSchemas.value, schemasStates.value] =
-                getNestedSchemas(baseSchema);
+            if (isDefinition(baseSchema)) {
+                questionSchemas.base = baseSchema;
+                questionSchemas.spec = baseSchema.properties.spec;
+                questionSchemas.grading = baseSchema.properties.grading;
+                questionSchemas.feedback =
+                    baseSchema.properties.grading.properties.feedback;
+            }
+
+            schemasStates.base.kind = kind;
         }
     },
     { immediate: true }
 );
 
-function initState(key: string, data: { [key: string]: any }, state: Ref) {
-    if (key === 'base') {
-        state.value = data;
-        state.value.kind = getFormattedQuestionKind(state.value.kind);
-    } else if (key in data) {
-        state.value = data[key];
-    } else {
-        for (const nestedKey in data) {
-            if (typeof data[nestedKey] === 'object') {
-                initState(key, data[nestedKey], state);
-            }
-        }
-    }
-}
-
-function initDataKey(key: string, value: any, data: { [key: string]: any }) {
-    if (key in data) {
-        data[key] = value;
-    } else {
-        for (const nestedKey in data) {
-            if (typeof data[nestedKey] === 'object') {
-                initDataKey(key, data[nestedKey], value);
-            }
-        }
-    }
-}
-
-function getRebuiltQuestionData(statesMap: StatesMap): Quizoot.Question {
-    const data = { ...statesMap['base'].value };
-
-    data.kind = getRestoredQuestionKind(data.kind);
-
-    for (const key in statesMap) {
-        if (key !== 'base') {
-            initDataKey(key, statesMap[key].value, data);
-        }
+function getFormattedQuestionKind(kind: string): Quizoot.QuestionKind {
+    if (!QuestionKind.enum.includes(kind as Quizoot.QuestionKind)) {
+        throw new Error(`Question kind ${kind} is not valid.`);
     }
 
-    return data as Quizoot.Question;
-}
-
-function getFormattedQuestionKind(kind: string): string {
     if (kind === 'CHOICE_QUESTION') {
         if ('answer_id' in props.data.spec) {
             return 'SINGLE_CHOICE_QUESTION';
@@ -118,10 +106,10 @@ function getFormattedQuestionKind(kind: string): string {
         }
     }
 
-    return kind;
+    return kind as Quizoot.QuestionKind;
 }
 
-function getRestoredQuestionKind(kind: string): string {
+function getRestoredQuestionKind(kind: Quizoot.QuestionKind): string {
     if (
         ['SINGLE_CHOICE_QUESTION', 'MULTIPLE_CHOICES_QUESTION'].includes(kind)
     ) {
@@ -131,7 +119,10 @@ function getRestoredQuestionKind(kind: string): string {
     return kind;
 }
 
-function resolveRefs(schema: JsonSchema, definitionsMap: SchemasMap) {
+function resolveRefs(
+    schema: JsonSchema,
+    definitionsMap: { [key: string]: JsonSchema }
+) {
     if (schema.$ref) {
         const definition = schema.$ref.split('/').pop();
 
@@ -181,49 +172,14 @@ function getSchema(kind: string): JsonSchema {
     return schema;
 }
 
-function flattenNestedProperties(schema: JsonSchema, outputMap: SchemasMap) {
-    if (schema.properties) {
-        for (const key in schema.properties) {
-            if (schema.properties[key].properties) {
-                outputMap[key] = schema.properties[key];
-
-                flattenNestedProperties(schema.properties[key], outputMap);
-            } else {
-                flattenNestedProperties(schema.properties[key], outputMap);
-            }
-        }
-    }
-}
-
-function getNestedSchemas(baseSchema: JsonSchema): [SchemasMap, StatesMap] {
-    const schemasMap = {} as SchemasMap;
-    const statesMap = {} as StatesMap;
-
-    schemasMap['base'] = { ...baseSchema } as JsonSchema;
-
-    flattenNestedProperties(schemasMap['base'], schemasMap);
-
-    // TODO: Cache the schemas map to avoid rebuilding it on every render
-
-    for (const key in schemasMap) {
-        statesMap[key] = ref({});
-    }
-
-    for (const key in schemasMap) {
-        initState(key, props.data, statesMap[key]);
-    }
-
-    return [schemasMap, statesMap];
-}
-
 function chooseQuestionKind(kind: Quizoot.QuestionKind) {
     questionKind.value = kind;
     questionKindSelected.value = true;
 }
 
-function handleDataChange(key: string) {
+function handleDataChange(key: SchemasName) {
     return (event: JsonFormsChangeEvent) => {
-        schemasStates.value[key].value = event.data;
+        schemasStates[key] = event.data;
     };
 }
 
@@ -238,7 +194,16 @@ function cancelEdit() {
 }
 
 function saveQuiz() {
-    questionData.value = getRebuiltQuestionData(schemasStates.value);
+    questionData.value = {
+        ...schemasStates.base,
+        // @ts-ignore
+        kind: getRestoredQuestionKind(schemasStates.base.kind),
+        spec: schemasStates.spec,
+        grading: {
+            ...schemasStates.grading,
+            feedback: schemasStates.feedback,
+        },
+    };
 
     const saveParams =
         questionId === null
@@ -284,7 +249,7 @@ function saveQuiz() {
             :data="schemasStates[key]"
             :schema="schema"
             :renderers="renderers"
-            :onChange="handleDataChange(key)"
+            :onChange="handleDataChange(key as SchemasName)"
         />
     </admin-edit-wrapper>
 </template>
