@@ -38,7 +38,7 @@
     align-items: center;
 }
 
-.vertical-layout-item .control[id="#/properties/id"] > .error {
+.vertical-layout-item .control[id='#/properties/id'] > .error {
     display: none;
 }
 
@@ -50,14 +50,14 @@
 .vertical-layout-item .array-list .array-list-legend {
     display: flex;
     gap: 1em;
-    padding: .5em 1em;
+    padding: 0.5em 1em;
     border: 2px groove rgb(192, 192, 192);
 }
 
 .vertical-layout-item .array-list button {
     cursor: pointer;
     font-size: 1em;
-    margin: .1em;
+    margin: 0.1em;
     border: 1px solid black;
     border-radius: 2px;
 }
