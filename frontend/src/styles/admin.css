@@ -1,0 +1,87 @@
+.vertical-layout {
+    width: 75%;
+    gap: 1em;
+}
+
+.vertical-layout-item div[uischema] {
+    display: none;
+}
+
+.vertical-layout-item .control {
+    flex-direction: row;
+    justify-content: flex-start;
+    width: 100%;
+}
+
+.vertical-layout-item .control > .label {
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+    width: 20%;
+}
+
+.vertical-layout-item .control > .wrapper {
+    width: 50%;
+    height: 2.5em;
+}
+
+.vertical-layout-item .control > .description,
+.vertical-layout-item .control > .error {
+    width: 30%;
+    height: 2.5em;
+    display: flex;
+    justify-content: center;
+    overflow: auto;
+}
+
+.vertical-layout-item .control > .error {
+    align-items: center;
+}
+
+.vertical-layout-item .control[id="#/properties/id"] > .error {
+    display: none;
+}
+
+.vertical-layout-item .control > .wrapper .input {
+    height: 100%;
+    font-size: 1.1em;
+}
+
+.vertical-layout-item .array-list .array-list-legend {
+    display: flex;
+    gap: 1em;
+    padding: .5em 1em;
+    border: 2px groove rgb(192, 192, 192);
+}
+
+.vertical-layout-item .array-list button {
+    cursor: pointer;
+    font-size: 1em;
+    margin: .1em;
+    border: 1px solid black;
+    border-radius: 2px;
+}
+
+.vertical-layout-item .array-list .array-list-add {
+    color: #ffffff;
+    background-color: var(--text-green);
+}
+
+.vertical-layout-item .array-list .array-list-item {
+    background-color: #eeeeef;
+}
+
+.vertical-layout-item .array-list .array-list-item .array-list-item-label {
+    border: 1px solid black;
+    background-color: #ddeeee;
+}
+
+.vertical-layout-item .array-list .array-list-item .array-list-item-delete {
+    color: #ffffff;
+    background-color: var(--text-red);
+}
+
+.vertical-layout-item .array-list .array-list-item .array-list-item-content {
+    margin-block: 1em;
+    padding: 1em;
+}

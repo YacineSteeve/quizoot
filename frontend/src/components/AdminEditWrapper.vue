@@ -47,7 +47,7 @@ hr {
     display: flex;
     justify-content: center;
     gap: 3em;
-    margin-top: 3em;
+    margin-top: 2em;
 }
 
 .buttons button {
