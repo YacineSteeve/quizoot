@@ -6,8 +6,6 @@ import type { Quizoot } from '@interfaces/quizoot';
 import FetchError from '@/components/FetchError.vue';
 import Loader from '@/components/Loader.vue';
 
-type ElementType = Quizoot.Question | Quizoot.Quiz;
-
 const route = useRoute();
 
 const router = useRouter();
@@ -19,9 +17,14 @@ const properties =
         ? ['id', 'question', 'kind']
         : ['id', 'title', 'description', 'questions'];
 
-const { data, error, isFetching } = useFetch(`/api/${elementsName}`);
+const { data, error, isFetching } = useFetch<
+    Quizoot.Question[] | Quizoot.Quiz[]
+>(`/api/${elementsName}`);
 
-function editElement(action: 'create' | 'update', element?: ElementType) {
+function editElement(
+    action: 'create' | 'update',
+    element?: Quizoot.Question | Quizoot.Quiz
+) {
     router.push({
         path:
             action === 'create'
@@ -58,7 +61,7 @@ function deleteElement(id: string) {
     <Loader v-else-if="isFetching" />
     <div v-else class="admin-list-container">
         <div class="header">
-            <h2>{{ capitalize(elementsName) }} ({{ data.length }})</h2>
+            <h2>{{ capitalize(elementsName) }} ({{ data?.length }})</h2>
             <button class="create-element" @click="editElement('create')">
                 Create new
             </button>

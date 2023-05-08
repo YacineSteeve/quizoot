@@ -11,7 +11,7 @@
         "build-only": "vite build",
         "type-check": "vue-tsc --noEmit",
         "lint": "eslint src/ --fix",
-        "format": "yarn prettier --write src/ '!**/*.{vue}'"
+        "format": "prettier --write src/ '!**/*.{vue}'"
     },
     "dependencies": {
         "@fortawesome/fontawesome-svg-core": "^6.2.0",

@@ -1,3 +1,9 @@
-singleQuote: true
-proseWrap: always
-useTabs: true
+singleQuote: false
+proseWrap: "always"
+useTabs: false
+tabWidth: 4
+overrides:
+    - files: "*.ts"
+      options:
+          singleQuote: true
+          printWidth: 80

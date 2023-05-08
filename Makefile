@@ -48,11 +48,29 @@ serve-back:
 	@$(VENV_PYTHON) manage.py runserver
 
 ## Linting and formatting
-lint: venv
-	@$(LINTER) .
+lint-back: venv
+	@$(MAKE) $(MAKE_TAG) echo-cyan msg="\nLinting backend code..."
+	@$(LINTER) . && $(MAKE) $(MAKE_TAG) echo-green msg="Backend code is clean ! ✨"
 
-format: venv
-	@$(FORMATTER) .
+lint-front:
+	@$(MAKE) $(MAKE_TAG) echo-cyan msg="\nLinting frontend code..."
+	@yarn --cwd ./frontend/ run lint && $(MAKE) $(MAKE_TAG) echo-green msg="Frontend code is clean ! ✨"
+
+lint: lint-back lint-front
+
+format-back: venv
+	@$(MAKE) $(MAKE_TAG) echo-cyan msg="\nFormatting backend code..."
+	@$(FORMATTER) . && $(MAKE) $(MAKE_TAG) echo-green msg="Backend code is formatted ! ✨"
+
+format-front:
+	@$(MAKE) $(MAKE_TAG) echo-cyan msg="\nFormatting frontend code..."
+	@yarn --cwd ./frontend/ run format && $(MAKE) $(MAKE_TAG) echo-green msg="Frontend code is formatted ! ✨"
+
+format-interface:
+	@$(MAKE) $(MAKE_TAG) echo-cyan msg="\nFormatting interface code..."
+	@yarn --cwd ./interfaces/ run format && $(MAKE) $(MAKE_TAG) echo-green msg="Interface code is formatted ! ✨"
+
+format: format-back format-front format-interface
 
 ## echo with different colors font https://gist.github.com/iamnewton/8754917
 echo-cyan:

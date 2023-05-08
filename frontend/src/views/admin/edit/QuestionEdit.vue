@@ -21,9 +21,7 @@ interface QuestionEditProps {
 
 type SchemaDefinitionKey = keyof typeof QuestionSchema.definitions;
 
-type SchemasName = 'base' | 'spec' | 'grading' | 'feedback';
-
-type SchemasMap = Record<SchemasName, JsonSchema>;
+type SchemasMap = Record<'base' | 'spec' | 'grading' | 'feedback', JsonSchema>;
 
 interface StatesMap {
     base: Quizoot.Question;
@@ -64,12 +62,6 @@ const schemasStates: StatesMap = questionKindSelected.value
           feedback: {} as Quizoot.Question['grading']['feedback'],
       });
 
-const isDefinition = (
-    schema: JsonSchema
-): schema is typeof schema & { properties: any } => {
-    return Object.prototype.hasOwnProperty.call(schema, 'properties');
-};
-
 watch(
     questionKind,
     (value) => {
@@ -92,6 +84,19 @@ watch(
     },
     { immediate: true }
 );
+
+function hasProperty<T extends object, K extends PropertyKey>(
+    obj: T,
+    key: K
+): obj is T & Record<K, unknown> {
+    return Object.prototype.hasOwnProperty.call(obj, key);
+}
+
+function isDefinition(
+    schema: JsonSchema
+): schema is typeof schema & { properties: any } {
+    return hasProperty(schema, 'properties');
+}
 
 function getFormattedQuestionKind(kind: string): Quizoot.QuestionKind {
     if (!QuestionKind.enum.includes(kind as Quizoot.QuestionKind)) {
@@ -177,9 +182,13 @@ function chooseQuestionKind(kind: Quizoot.QuestionKind) {
     questionKindSelected.value = true;
 }
 
-function handleDataChange(key: SchemasName) {
+function handleDataChange(key: string) {
     return (event: JsonFormsChangeEvent) => {
-        schemasStates[key] = event.data;
+        if (!hasProperty(schemasStates, key)) {
+            throw new Error(`State ${key} not found.`);
+        }
+
+        schemasStates[key as keyof typeof schemasStates] = event.data;
     };
 }
 
@@ -244,12 +253,12 @@ function saveQuiz() {
 
         <JsonForms
             v-else
-            v-for="([key, schema], index) in Object.entries(questionSchemas)"
-            :key="index"
+            v-for="[key, schema] in Object.entries(questionSchemas)"
+            :key="key"
             :data="schemasStates[key]"
             :schema="schema"
             :renderers="renderers"
-            :onChange="handleDataChange(key as SchemasName)"
+            :onChange="handleDataChange(key)"
         />
     </admin-edit-wrapper>
 </template>
