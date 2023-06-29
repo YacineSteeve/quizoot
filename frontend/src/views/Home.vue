@@ -2,13 +2,13 @@
 import QuizCard from '@/components/QuizCard.vue';
 import { useRouter } from 'vue-router';
 import { useFetch } from '@/lib/hooks';
-import type { Quiz } from '@interfaces/quizoot.indexed';
+import type { Quizoot } from '@interfaces/quizoot';
 
 const router = useRouter();
 
-const { data: quizzes } = useFetch<Quiz[]>('/api/quizzes');
+const { data: quizzes } = useFetch<Quizoot.Quiz[]>('/api/quizzes');
 
-function goToQuiz(quizId: number) {
+function goToQuiz(quizId: Quizoot.Quiz['id']) {
     router.push({ path: `/quiz/${quizId}` });
 }
 </script>

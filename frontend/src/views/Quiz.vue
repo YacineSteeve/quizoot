@@ -45,6 +45,11 @@ function goToNextQuestion() {
 function goToPreviousQuestion() {
     currentQuestion.value = Math.max(0, currentQuestion.value - 1);
 }
+
+function submitQuiz() {
+    // TODO: compute score and submit quiz
+    alert('Quiz submitted!');
+}
 </script>
 
 <template>
@@ -85,6 +90,7 @@ function goToPreviousQuestion() {
             :showNext="currentQuestion + 1 < questions.length"
             :goToNextQuestion="goToNextQuestion"
             :goToPreviousQuestion="goToPreviousQuestion"
+            :onSubmit="submitQuiz"
         />
     </div>
 </template>

@@ -18,4 +18,4 @@ jobs:
     - name: Setup virtual environment
       run: make venv
     - name: Run pycodestyle
-      run: source venv/bin/activate; make lint
+      run: source venv/bin/activate; make lint-back

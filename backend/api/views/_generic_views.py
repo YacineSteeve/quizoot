@@ -25,7 +25,13 @@ class ListView(GenericApiView):
 
     def get(self, request: Request):
         sort_order = get_sort_order(request.query_params, self._collection)
-        return JsonResponse(data=self._collection.find(sort=sort_order))
+        documents = []
+
+        for document in self._collection.find(sort=sort_order):
+            document.pop("_id", None)
+            documents.append(document)
+
+        return JsonResponse(data=documents)
 
     def post(self, request: Request):
         data = request.data
@@ -58,6 +64,7 @@ class DetailView(GenericApiView):
         if document is None:
             raise Http404("There is no document matching your query.")
         else:
+            document.pop("_id", None)
             return JsonResponse(data=document)
 
     def patch(self, request: Request, pk: str) -> JsonResponse:

@@ -14,6 +14,7 @@ export default defineConfig(({ mode }) => {
         resolve: {
             alias: {
                 '@': fileURLToPath(new URL('./src', import.meta.url)),
+                '@interfaces': fileURLToPath(new URL('../interfaces', import.meta.url)),
             },
         },
         server: {

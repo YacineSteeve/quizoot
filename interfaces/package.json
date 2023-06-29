@@ -3,6 +3,7 @@
     "version": "0.1.0",
     "private": true,
     "scripts": {
+        "format": "prettier --write .",
         "gen-schemas": "yarn ts-node ."
     },
     "devDependencies": {

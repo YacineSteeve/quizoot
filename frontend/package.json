@@ -11,7 +11,7 @@
         "build-only": "vite build",
         "type-check": "vue-tsc --noEmit",
         "lint": "eslint src/ --fix",
-        "format": "yarn prettier --write src/ '!**/*.{vue}'"
+        "format": "prettier --write src/ '!**/*.{vue}'"
     },
     "dependencies": {
         "@fortawesome/fontawesome-svg-core": "^6.2.0",
@@ -19,6 +19,9 @@
         "@fortawesome/free-regular-svg-icons": "^6.2.0",
         "@fortawesome/free-solid-svg-icons": "^6.2.0",
         "@fortawesome/vue-fontawesome": "^3.0.1",
+        "@jsonforms/core": "^3.0.0",
+        "@jsonforms/vue": "^3.0.0",
+        "@jsonforms/vue-vanilla": "^3.0.0",
         "axios": "^1.2.1",
         "vue": "^3.2.38",
         "vue-router": "4",
